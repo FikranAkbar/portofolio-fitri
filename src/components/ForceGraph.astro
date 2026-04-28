@@ -1,0 +1,310 @@
+---
+export interface Props {
+  nodes?: { id: string; label: string; url?: string }[];
+  centerLabel?: string;
+}
+
+const {
+  centerLabel = "Fitri",
+  nodes = [
+    { id: "about",      label: "About Me"   },
+    { id: "skills",     label: "Skills"     },
+    { id: "projects",   label: "Projects"   },
+    { id: "experience", label: "Experience" },
+    { id: "education",  label: "Education"  },
+    { id: "contact",    label: "Contact"    },
+    { id: "blog",       label: "Blog"       },
+    { id: "design",     label: "Design"     },
+  ],
+} = Astro.props;
+---
+
+<div
+  id="force-graph-wrapper"
+  data-nodes={JSON.stringify(nodes)}
+  data-center-label={centerLabel}
+>
+  <svg id="force-graph-svg" aria-label="Force-Directed Graph"></svg>
+</div>
+
+<!-- No define:vars → Vite processes this as a normal ES module -->
+<script>
+  import {
+    forceSimulation,
+    forceLink,
+    forceManyBody,
+    forceCollide,
+  } from "d3-force";
+
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  function init() {
+    const wrap = document.getElementById("force-graph-wrapper") as HTMLElement;
+    const svg  = document.getElementById("force-graph-svg")     as unknown as SVGSVGElement;
+    if (!wrap || !svg) return;
+
+    // Read data from attributes
+    const nodes       = JSON.parse(wrap.dataset.nodes        ?? "[]") as { id: string; label: string }[];
+    const centerLabel = wrap.dataset.centerLabel ?? "Me";
+
+    // ── Dimensions ──────────────────────────────────────────────────────────
+    let W = wrap.clientWidth  || 800;
+    let H = wrap.clientHeight || 520;
+
+    function setViewBox() {
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      svg.setAttribute("width",  String(W));
+      svg.setAttribute("height", String(H));
+    }
+    setViewBox();
+
+    // ── Simulation nodes / links ─────────────────────────────────────────
+    const CENTER_ID = "__center__";
+
+    type SimNode = {
+      id: string; label: string; isCenter: boolean;
+      x?: number; y?: number; fx?: number | null; fy?: number | null;
+      vx?: number; vy?: number;
+    };
+
+    const simNodes: SimNode[] = [
+      // No fx/fy → node floats freely from the start
+      { id: CENTER_ID, label: centerLabel, isCenter: true, x: W / 2, y: H / 2 },
+      ...nodes.map(n => ({ ...n, isCenter: false })),
+    ];
+
+    const simLinks = nodes.map(n => ({ source: CENTER_ID, target: n.id }));
+
+    // ── D3 simulation ────────────────────────────────────────────────────
+    const simulation = forceSimulation<SimNode>(simNodes)
+      .force("link",    forceLink(simLinks).id((d: any) => d.id).distance(180).strength(0.35))
+      .force("charge",  forceManyBody().strength(-250))
+      .force("collide", forceCollide().radius(56).strength(0.85))
+      // No forceCenter — labels follow the center node via forceLink only
+      .alphaDecay(0.025)
+      .velocityDecay(0.45)
+      .alphaTarget(0)
+      .alphaMin(0.001);
+
+    // ── SVG helpers ──────────────────────────────────────────────────────
+    const ns = "http://www.w3.org/2000/svg";
+    const el = (tag: string) => document.createElementNS(ns, tag);
+
+    // Defs
+    const defs = el("defs");
+
+    // Gradient
+    const grad = el("radialGradient") as SVGRadialGradientElement;
+    grad.id = "cg";
+    ["cx","cy","r"].forEach(a => grad.setAttribute(a,"50%"));
+    const s1 = el("stop"); s1.setAttribute("offset","0%");   s1.setAttribute("stop-color","#e2e8f0");
+    const s2 = el("stop"); s2.setAttribute("offset","100%"); s2.setAttribute("stop-color","#94a3b8");
+    grad.append(s1, s2);
+
+    // Glow filter
+    const filt = el("filter"); filt.id = "glow";
+    filt.setAttribute("x","-60%"); filt.setAttribute("y","-60%");
+    filt.setAttribute("width","220%"); filt.setAttribute("height","220%");
+    const blur = el("feGaussianBlur"); blur.setAttribute("stdDeviation","6"); blur.setAttribute("result","cb");
+    const merge = el("feMerge");
+    const mn1 = el("feMergeNode"); mn1.setAttribute("in","cb");
+    const mn2 = el("feMergeNode"); mn2.setAttribute("in","SourceGraphic");
+    merge.append(mn1, mn2); filt.append(blur, merge);
+
+    defs.append(grad, filt);
+    svg.appendChild(defs);
+
+    // Groups
+    const linkG = el("g"); svg.appendChild(linkG);
+    const nodeG = el("g"); svg.appendChild(nodeG);
+
+    // ── Links ────────────────────────────────────────────────────────────
+    const linkEls = simLinks.map(() => {
+      const line = el("line");
+      line.setAttribute("stroke","#cbd5e1");
+      line.setAttribute("stroke-width","1.2");
+      line.setAttribute("stroke-dasharray","5 5");
+      line.setAttribute("stroke-linecap","round");
+      linkG.appendChild(line);
+      return line;
+    });
+
+    // ── Nodes ────────────────────────────────────────────────────────────
+    const nodeElMap: Record<string, SVGGElement> = {};
+
+    simNodes.forEach(d => {
+      const g = el("g") as SVGGElement;
+      nodeElMap[d.id] = g;
+
+      if (d.isCenter) {
+        g.style.cursor = "grab";
+
+        // Pulse ring
+        const ring = el("circle");
+        ring.setAttribute("r","50"); ring.setAttribute("fill","none");
+        ring.setAttribute("stroke","#94a3b8"); ring.setAttribute("stroke-width","1");
+        ring.setAttribute("opacity","0.3"); ring.classList.add("pulse-ring");
+
+        // Main circle
+        const circ = el("circle");
+        circ.setAttribute("r","38"); circ.setAttribute("fill","url(#cg)");
+        circ.setAttribute("stroke","#64748b"); circ.setAttribute("stroke-width","1.5");
+
+        // Text
+        const txt = el("text");
+        txt.setAttribute("text-anchor","middle"); txt.setAttribute("dominant-baseline","middle");
+        txt.setAttribute("fill","#1e293b"); txt.setAttribute("font-size","15");
+        txt.setAttribute("font-weight","600"); txt.setAttribute("font-family","system-ui,sans-serif");
+        txt.setAttribute("pointer-events","none");
+        txt.textContent = d.label;
+
+        g.append(ring, circ, txt);
+
+        g.addEventListener("mouseenter", () => { circ.setAttribute("filter","url(#glow)"); circ.setAttribute("stroke","#334155"); });
+        g.addEventListener("mouseleave", () => { circ.removeAttribute("filter"); circ.setAttribute("stroke","#64748b"); });
+
+      } else {
+        g.style.cursor = "pointer";
+
+        const rect = el("rect");
+        rect.setAttribute("rx","8"); rect.setAttribute("ry","8");
+        rect.setAttribute("fill","#f8fafc"); rect.setAttribute("stroke","#e2e8f0");
+        rect.setAttribute("stroke-width","1");
+
+        const txt = el("text");
+        txt.setAttribute("text-anchor","middle"); txt.setAttribute("dominant-baseline","middle");
+        txt.setAttribute("fill","#475569"); txt.setAttribute("font-size","12");
+        txt.setAttribute("font-weight","500"); txt.setAttribute("font-family","system-ui,sans-serif");
+        txt.setAttribute("pointer-events","none");
+        txt.textContent = d.label;
+
+        g.append(rect, txt);
+
+        // Size rect after append
+        requestAnimationFrame(() => {
+          try {
+            const b = txt.getBBox();
+            const px = 14, py = 8;
+            rect.setAttribute("width",  String(b.width  + px * 2));
+            rect.setAttribute("height", String(b.height + py * 2));
+            rect.setAttribute("x", String(-(b.width  / 2 + px)));
+            rect.setAttribute("y", String(-(b.height / 2 + py)));
+          } catch(_) {}
+        });
+
+        g.addEventListener("mouseenter", () => {
+          rect.setAttribute("fill","#f1f5f9"); rect.setAttribute("stroke","#94a3b8");
+          txt.setAttribute("fill","#1e293b");
+        });
+        g.addEventListener("mouseleave", () => {
+          rect.setAttribute("fill","#f8fafc"); rect.setAttribute("stroke","#e2e8f0");
+          txt.setAttribute("fill","#475569");
+        });
+      }
+
+      nodeG.appendChild(g);
+    });
+
+    // ── Drag (center node) ───────────────────────────────────────────────
+    const centerG    = nodeElMap[CENTER_ID];
+    const centerNode = simNodes.find(n => n.isCenter)!;
+
+    function svgPoint(e: MouseEvent | TouchEvent) {
+      const pt = (svg as any).createSVGPoint() as SVGPoint;
+      const src = "touches" in e ? e.touches[0] : e;
+      pt.x = src.clientX; pt.y = src.clientY;
+      return pt.matrixTransform((svg as any).getScreenCTM().inverse());
+    }
+
+    let dragging = false;
+
+    centerG.addEventListener("mousedown", e => {
+      e.preventDefault(); dragging = true;
+      centerG.style.cursor = "grabbing";
+      simulation.alphaTarget(0.4).restart();
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup",   onUp);
+    });
+
+    centerG.addEventListener("touchstart", e => {
+      dragging = true;
+      simulation.alphaTarget(0.4).restart();
+      window.addEventListener("touchmove", onMove as any, { passive: false });
+      window.addEventListener("touchend",  onUp);
+    }, { passive: true });
+
+    function onMove(e: MouseEvent | TouchEvent) {
+      if (!dragging) return;
+      (e as Event).preventDefault();
+      const p = svgPoint(e as MouseEvent);
+      centerNode.fx = p.x; centerNode.fy = p.y;
+    }
+
+    function onUp() {
+      dragging = false;
+      centerG.style.cursor = "grab";
+      // Keep fx/fy so the node STAYS where it was dropped,
+      // but let label nodes settle with a short warm-up then cool down.
+      simulation.alphaTarget(0.08);
+      setTimeout(() => simulation.alphaTarget(0), 600);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup",   onUp);
+      window.removeEventListener("touchmove", onMove as any);
+      window.removeEventListener("touchend",  onUp);
+    }
+
+    // ── Tick ─────────────────────────────────────────────────────────────
+    simulation.on("tick", () => {
+      (simLinks as any[]).forEach((link, i) => {
+        const s = link.source, t = link.target;
+        linkEls[i].setAttribute("x1", String(s.x ?? 0));
+        linkEls[i].setAttribute("y1", String(s.y ?? 0));
+        linkEls[i].setAttribute("x2", String(t.x ?? 0));
+        linkEls[i].setAttribute("y2", String(t.y ?? 0));
+      });
+      simNodes.forEach(d => {
+        const g = nodeElMap[d.id];
+        if (g) g.setAttribute("transform", `translate(${d.x ?? 0},${d.y ?? 0})`);
+      });
+    });
+
+    // ── Resize ───────────────────────────────────────────────────────────
+    new ResizeObserver(() => {
+      W = wrap.clientWidth; H = wrap.clientHeight;
+      setViewBox();
+      simulation.alpha(0.3).restart();
+    }).observe(wrap);
+  }
+
+  // Run after DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>
+
+<style>
+  #force-graph-wrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+    overflow: hidden;
+  }
+
+  #force-graph-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @keyframes pulse {
+    0%   { r: 42;  opacity: 0.5; }
+    70%  { r: 62;  opacity: 0;   }
+    100% { r: 42;  opacity: 0;   }
+  }
+
+  :global(.pulse-ring) {
+    animation: pulse 2.8s ease-out infinite;
+  }
+</style>
+
