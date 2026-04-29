@@ -8,4 +8,13 @@ yarn-error.log*
 /.pnp
 .pnp.js
 
+# Build output
+/dist/
+
+# Astro generated
+/.astro/
+
+# macOS
+.DS_Store
+
 .vscode/*
