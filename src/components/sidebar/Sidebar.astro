@@ -1,0 +1,50 @@
+---
+import Avatar from './Avatar.astro';
+import NavMenu from './NavMenu.astro';
+import SocialLinks from './SocialLinks.astro';
+---
+
+<aside class="w-[300px] shrink-0 bg-white h-full flex flex-col border-r border-gray-100 overflow-y-auto scrollbar-hide">
+  <div class="flex flex-col flex-1 px-6 py-8 gap-8">
+
+    <!-- Profile Section -->
+    <div class="flex flex-col gap-4">
+      <Avatar />
+      <div>
+        <!-- Pink accent label above name (floating tag style) -->
+        <span
+          class="inline-flex items-center gap-1 text-[10px] font-semibold text-[#FF49DB] bg-pink-50 border border-pink-100 px-2 py-0.5 rounded-full mb-1.5"
+          aria-hidden="true"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-[#FF49DB] animate-pulse"></span>
+          Available for work
+        </span>
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 leading-tight">
+          Fitri Zahwa
+        </h1>
+        <p class="text-sm text-gray-400 font-light mt-0.5 leading-snug">
+          UI/UX Designer,<br />Illustrator, Pixel Artist
+        </p>
+      </div>
+      <p class="text-xs text-gray-500 leading-relaxed font-light">
+        I am a designer who loves building delightful software that solves real&nbsp;problems.
+      </p>
+    </div>
+
+    <!-- Divider -->
+    <hr class="border-gray-100" />
+
+    <!-- Navigation -->
+    <NavMenu />
+
+    <!-- Divider -->
+    <hr class="border-gray-100" />
+
+    <!-- Social links pushed to bottom -->
+    <div class="mt-auto">
+      <SocialLinks />
+    </div>
+
+  </div>
+</aside>
+

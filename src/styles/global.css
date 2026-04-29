@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  /* Pink cursor dot indicator */
+  .cursor-dot {
+    width: 8px;
+    height: 8px;
+    background: #FF49DB;
+    border-radius: 50%;
+    pointer-events: none;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: opacity 0.2s;
+    mix-blend-mode: multiply;
+  }
+
+  /* Nav item hover arrow slide-in */
+  .nav-item .arrow-icon {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .nav-item:hover .arrow-icon {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Pulse animation for center node ring */
+@keyframes pulse-ring {
+  0%   { r: 44; opacity: 0.5; }
+  70%  { r: 64; opacity: 0;   }
+  100% { r: 44; opacity: 0;   }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2.8s ease-out infinite;
+}
+
+/* Floating label pink fade */
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.float-label {
+  animation: float-in 0.4s ease forwards;
+}
+
+

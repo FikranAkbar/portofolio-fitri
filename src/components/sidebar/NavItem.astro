@@ -1,0 +1,30 @@
+---
+export interface NavItemProps {
+  href: string;
+  label: string;
+  active?: boolean;
+}
+const { href, label, active = false } = Astro.props as NavItemProps;
+---
+
+<a
+  href={href}
+  class:list={[
+    "nav-item group flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all duration-200 cursor-pointer",
+    active
+      ? "bg-gray-100 text-gray-900 font-medium"
+      : "text-gray-500 hover:bg-gray-50 hover:text-gray-800"
+  ]}
+>
+  <span>{label}</span>
+  <span
+    class:list={[
+      "arrow-icon text-gray-400 transition-all duration-200",
+      active ? "opacity-100 translate-x-0" : ""
+    ]}
+    aria-hidden="true"
+  >
+    →
+  </span>
+</a>
+

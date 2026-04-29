@@ -4,14 +4,21 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-      "dev": "astro dev",
+    "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.4",
+    "@astrojs/tailwind": "^6.0.2",
     "@types/d3-force": "^3.0.10",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "astro": "^6.1.10",
-    "d3-force": "^3.0.0"
+    "d3-force": "^3.0.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "tailwindcss": "^3.4.19"
   },
   "devDependencies": {
     "typescript": "^5.5.3"
