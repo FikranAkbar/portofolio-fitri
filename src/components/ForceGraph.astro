@@ -76,12 +76,12 @@ const {
 
     // ── D3 simulation ────────────────────────────────────────────────────
     const simulation = forceSimulation<SimNode>(simNodes)
-      .force("link",    forceLink(simLinks).id((d: any) => d.id).distance(180).strength(0.35))
+      .force("link",    forceLink(simLinks).id((d: any) => d.id).distance(180).strength(0.08))
       .force("charge",  forceManyBody().strength(-250))
       .force("collide", forceCollide().radius(56).strength(0.85))
       // No forceCenter — labels follow the center node via forceLink only
-      .alphaDecay(0.025)
-      .velocityDecay(0.45)
+      .alphaDecay(0.015)
+      .velocityDecay(0.65)
       .alphaTarget(0)
       .alphaMin(0.001);
 
