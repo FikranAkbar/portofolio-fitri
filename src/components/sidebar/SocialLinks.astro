@@ -24,7 +24,7 @@ const links = [
 ---
 
 <div>
-  <p class="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
+  <p class="text-xs font-semibold tracking-widest uppercase mb-2" style="color:#6D6D6D">
     Find Me At
   </p>
   <div class="flex flex-col gap-1.5">
@@ -33,10 +33,11 @@ const links = [
         href={link.href}
         target="_blank"
         rel="noopener noreferrer"
-        class="group inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors duration-200"
+        class="group inline-flex items-center gap-1.5 text-xs transition-colors duration-200"
+        style="color:#6D6D6D"
       >
-        <span class="text-gray-300 group-hover:text-[#FF49DB] transition-colors duration-200 [&>svg]:w-3 [&>svg]:h-3" set:html={link.icon} />
-        <span>{link.label}</span>
+        <span class="transition-colors duration-200 [&>svg]:w-3 [&>svg]:h-3 group-hover:[&>svg]:stroke-[#FF49DB] group-hover:[&>svg]:fill-[#FF49DB]" style="color:#6D6D6D" set:html={link.icon} />
+        <span class="group-hover:text-[#000000] transition-colors duration-200">{link.label}</span>
       </a>
     ))}
   </div>

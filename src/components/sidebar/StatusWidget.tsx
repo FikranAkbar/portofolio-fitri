@@ -21,18 +21,14 @@ export default function StatusWidget() {
   }, []);
 
   return (
-    <div
-      className="rounded-xl px-4 pt-3 pb-5 font-mono text-xs leading-relaxed select-none"
-      style={{ background: '#EEEADE', color: '#6B6560' }}
-    >
-      {/* Live clock */}
-      <p className="text-sm font-medium tracking-tight" style={{ color: '#4A453F' }}>
+    <div className="select-none font-mono">
+      {/* Live clock — 16px */}
+      <p className="font-medium tracking-tight" style={{ fontSize: '16px', color: '#000000' }}>
         {time}
       </p>
 
-      {/* Status row */}
+      {/* Status row — 14px */}
       <div className="flex items-center gap-1.5 mt-1">
-        {/* Green pulse dot */}
         <span className="relative inline-flex h-2 w-2">
           <span
             className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping"
@@ -43,11 +39,10 @@ export default function StatusWidget() {
             style={{ background: '#4CAF50' }}
           />
         </span>
-        <span className="uppercase tracking-widest text-[10px]" style={{ color: '#6B6560' }}>
+        <span className="uppercase tracking-widest" style={{ fontSize: '14px', color: '#6D6D6D' }}>
           All Systems Operational
         </span>
       </div>
     </div>
   );
 }
-

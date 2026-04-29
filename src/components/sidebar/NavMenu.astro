@@ -16,7 +16,7 @@ const navItems = [
 -->
 <nav aria-label="Explore navigation">
   <div class="bg-gray-100 rounded-xl p-5">
-    <p class="text-sm font-semibold tracking-widest text-gray-500 uppercase mb-2">
+    <p class="text-sm font-semibold tracking-widest uppercase mb-2" style="color:#6D6D6D">
       Explore
     </p>
     <div class="flex flex-col gap-1">
@@ -24,18 +24,17 @@ const navItems = [
         <a
           href={item.href}
           class:list={[
-            "group flex items-center justify-between px-2 py-2 rounded-lg text-base transition-all duration-200",
+            "group flex items-center justify-between px-2 py-1.5 rounded-lg text-base transition-all duration-200",
             item.active
-              ? "bg-white text-gray-900 font-medium shadow-sm"
-              : "text-gray-500 hover:bg-white hover:text-gray-800 hover:shadow-sm"
+              ? "bg-white shadow-sm font-medium"
+              : "hover:bg-white hover:shadow-sm"
           ]}
+          style={item.active ? "color:#000000" : "color:#6D6D6D"}
         >
           <span>{item.label}</span>
           <span
-            class:list={[
-              "text-sm transition-colors duration-200",
-              item.active ? "text-gray-500" : "text-gray-300 group-hover:text-gray-500"
-            ]}
+            class="text-sm transition-colors duration-200"
+            style={item.active ? "color:#6D6D6D" : "color:#D1D5DB"}
             aria-hidden="true"
           >→</span>
         </a>
