@@ -2,6 +2,7 @@
 import Avatar from './Avatar.astro';
 import NavMenu from './NavMenu.astro';
 import SocialLinks from './SocialLinks.astro';
+import StatusWidget from './StatusWidget.tsx';
 ---
 
 <!--
@@ -38,11 +39,12 @@ import SocialLinks from './SocialLinks.astro';
       </p>
     </div>
 
-    <!-- ③ Card Explore + Text Link -->
+    <!-- ③ Card Explore + Text Link + Status -->
     <div class="flex flex-col gap-6 flex-1">
       <NavMenu />
-      <div class="mt-auto">
+      <div class="mt-auto flex flex-col gap-6">
         <SocialLinks />
+        <StatusWidget client:load />
       </div>
     </div>
 

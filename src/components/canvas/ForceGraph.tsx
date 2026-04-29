@@ -427,7 +427,7 @@ function CursorDot() {
   return (
     <div
       ref={dotRef}
-      className="fixed w-2 h-2 rounded-full pointer-events-none z-[9999] transition-opacity duration-200"
+      className="fixed w-4 h-4 rounded-full pointer-events-none z-[9999]"
       style={{
         background: '#FF49DB',
         transform: 'translate(-50%, -50%)',
