@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['"DM Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['"Space Mono"', 'Courier New', 'monospace'],
       },
       colors: {
         pink: {

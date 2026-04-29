@@ -8,24 +8,38 @@ const navItems = [
 ];
 ---
 
+<!--
+  Explore card: bg-gray-100, rounded-xl, 20px padding (p-5)
+  Label → items gap: 8px (mb-2)
+  Between items: 4px (gap-1)
+  Arrows always visible
+-->
 <nav aria-label="Explore navigation">
-  <p class="text-base font-semibold tracking-widest text-gray-900 uppercase mb-3">
-    Explore
-  </p>
-  <div class="flex flex-col gap-1">
-    {navItems.map(item => (
-      <a
-        href={item.href}
-        class:list={[
-          "nav-item group flex items-center justify-between px-3 py-2.5 rounded-lg text-base transition-all duration-200",
-          item.active
-            ? "bg-gray-100 text-gray-900 font-medium"
-            : "text-gray-500 hover:bg-gray-50 hover:text-gray-800"
-        ]}
-      >
-        <span>{item.label}</span>
-        <span class="arrow-icon text-gray-400" aria-hidden="true">→</span>
-      </a>
-    ))}
+  <div class="bg-gray-100 rounded-xl p-5">
+    <p class="text-sm font-semibold tracking-widest text-gray-500 uppercase mb-2">
+      Explore
+    </p>
+    <div class="flex flex-col gap-1">
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class:list={[
+            "group flex items-center justify-between px-2 py-2 rounded-lg text-base transition-all duration-200",
+            item.active
+              ? "bg-white text-gray-900 font-medium shadow-sm"
+              : "text-gray-500 hover:bg-white hover:text-gray-800 hover:shadow-sm"
+          ]}
+        >
+          <span>{item.label}</span>
+          <span
+            class:list={[
+              "text-sm transition-colors duration-200",
+              item.active ? "text-gray-500" : "text-gray-300 group-hover:text-gray-500"
+            ]}
+            aria-hidden="true"
+          >→</span>
+        </a>
+      ))}
+    </div>
   </div>
 </nav>

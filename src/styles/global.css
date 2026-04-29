@@ -33,17 +33,6 @@
     transition: opacity 0.2s;
     mix-blend-mode: multiply;
   }
-
-  /* Nav item hover arrow slide-in */
-  .nav-item .arrow-icon {
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-  .nav-item:hover .arrow-icon {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 @layer utilities {
