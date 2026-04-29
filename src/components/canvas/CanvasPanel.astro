@@ -2,10 +2,12 @@
 import ForceGraph from './ForceGraph.tsx';
 ---
 
+<!-- Canvas padding: 24px all sides (p-6) -->
 <section
-  class="flex-1 h-full relative overflow-hidden bg-[#F5F5F5]"
+  class="flex-1 h-full relative bg-[#F5F5F5] p-6"
   aria-label="Interactive canvas"
 >
-  <ForceGraph client:load />
+  <div class="w-full h-full relative overflow-hidden">
+    <ForceGraph client:load />
+  </div>
 </section>
-

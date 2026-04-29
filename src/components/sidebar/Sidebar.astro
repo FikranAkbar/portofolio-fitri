@@ -4,47 +4,46 @@ import NavMenu from './NavMenu.astro';
 import SocialLinks from './SocialLinks.astro';
 ---
 
-<aside class="w-[300px] shrink-0 bg-white h-full flex flex-col border-r border-gray-100 overflow-y-auto scrollbar-hide">
-  <div class="flex flex-col flex-1 px-6 py-8 gap-8">
+<!--
+  Main menu card:  288px wide, full viewport height
+  Inner padding:   24px left/right (px-6), 28px top/bottom (py-7)
+  3 main components spaced 24px apart (gap-6):
+    1. Logo
+    2. Introduction
+    3. Card Explore + Text Link
+-->
+<aside
+  class="w-[288px] shrink-0 bg-white h-full flex flex-col overflow-y-auto scrollbar-hide rounded-2xl shadow-sm"
+>
+  <div class="flex flex-col flex-1 px-6 py-7 gap-6">
 
-    <!-- Profile Section -->
-    <div class="flex flex-col gap-4">
+    <!-- ① Logo -->
+    <div>
       <Avatar />
+    </div>
+
+    <!-- ② Introduction -->
+    <div class="flex flex-col gap-2">
       <div>
-        <!-- Pink accent label above name (floating tag style) -->
-        <span
-          class="inline-flex items-center gap-1 text-[10px] font-semibold text-[#FF49DB] bg-pink-50 border border-pink-100 px-2 py-0.5 rounded-full mb-1.5"
-          aria-hidden="true"
-        >
-          <span class="w-1.5 h-1.5 rounded-full bg-[#FF49DB] animate-pulse"></span>
-          Available for work
-        </span>
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900 leading-tight">
+        <h1 class="text-[32px] font-bold leading-tight text-gray-900 font-display tracking-tight">
           Fitri Zahwa
         </h1>
-        <p class="text-sm text-gray-400 font-light mt-0.5 leading-snug">
+        <p class="text-base text-gray-400 font-normal mt-1 leading-snug">
           UI/UX Designer,<br />Illustrator, Pixel Artist
         </p>
       </div>
-      <p class="text-xs text-gray-500 leading-relaxed font-light">
+      <p class="text-base text-gray-500 leading-relaxed font-normal">
         I am a designer who loves building delightful software that solves real&nbsp;problems.
       </p>
     </div>
 
-    <!-- Divider -->
-    <hr class="border-gray-100" />
-
-    <!-- Navigation -->
-    <NavMenu />
-
-    <!-- Divider -->
-    <hr class="border-gray-100" />
-
-    <!-- Social links pushed to bottom -->
-    <div class="mt-auto">
-      <SocialLinks />
+    <!-- ③ Card Explore + Text Link -->
+    <div class="flex flex-col gap-6 flex-1">
+      <NavMenu />
+      <div class="mt-auto">
+        <SocialLinks />
+      </div>
     </div>
 
   </div>
 </aside>
-
