@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   forceSimulation,
   forceLink,
@@ -10,8 +10,8 @@ import {
 type NodeDef = {
   id: string;
   label: string;
-  sublabel?: string; // center node: location; branch node: not used
-  desc?: string;     // branch node: hover description
+  sublabel?: string;
+  desc?: string;
   type: 'center' | 'branch';
 };
 type SimNode = NodeDef & {
@@ -28,6 +28,7 @@ const NODES: NodeDef[] = [
   { id: 'read',    label: 'Title',       desc: 'Description',   type: 'branch' },
   { id: 'design',  label: 'Title',       desc: 'Description',   type: 'branch' },
   { id: 'contact', label: 'Title',       desc: 'Description',   type: 'branch' },
+  { id: 'about',   label: 'Title',       desc: 'Description',   type: 'branch' },
 ];
 
 const LINKS: { source: string; target: string }[] = [
@@ -35,6 +36,7 @@ const LINKS: { source: string; target: string }[] = [
   { source: 'center', target: 'read'    },
   { source: 'center', target: 'design'  },
   { source: 'center', target: 'contact' },
+  { source: 'center', target: 'about'   },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -57,10 +59,54 @@ const txt = (
   return t;
 };
 
+// ─── Node Card Overlay ───────────────────────────────────────────────────────
+function NodeCard({ node, onClose }: { node: NodeDef; onClose: () => void }) {
+  return (
+    <div
+      className="absolute inset-0 flex items-center justify-center z-20"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]" />
+
+      {/* Card */}
+      <div
+        className="relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90%] overflow-hidden"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Window chrome */}
+        <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100">
+          <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+          <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+          <span className="w-3 h-3 rounded-full bg-[#28C840]" />
+          <span className="ml-2 text-sm font-medium text-gray-800 select-none">Title</span>
+          <span className="ml-2 text-sm text-gray-400 select-none">Description</span>
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-8 flex flex-col items-center gap-3 min-h-[200px] justify-center">
+          <p className="text-gray-400 text-sm tracking-wide select-none">Content coming soon</p>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end px-4 pb-4">
+          <button
+            onClick={onClose}
+            className="text-xs text-gray-400 hover:text-gray-600 transition-colors select-none px-3 py-1.5 rounded-lg border border-gray-200 hover:border-gray-300"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function ForceGraph() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef  = useRef<SVGSVGElement>(null);
+  const [activeNode, setActiveNode] = useState<NodeDef | null>(null);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -118,12 +164,6 @@ export default function ForceGraph() {
       nodeElMap[d.id] = g;
 
       if (d.type === 'center') {
-        // ────────────────────────────────────────────────────────
-        //  Center node:
-        //  • Circle 56px diameter (r=28), white fill, 1px black border
-        //  • "Fitri Zahwa" — Inter 500 16px #000000 — below circle
-        //  • "📍 Indonesia"  — Inter 500 16px #6D6D6D — below name
-        // ────────────────────────────────────────────────────────
         g.style.cursor = 'grab';
 
         const circ = el('circle');
@@ -133,9 +173,37 @@ export default function ForceGraph() {
         circ.setAttribute('stroke-width', '1');
 
         const name = txt(d.label, { size: 16, weight: 500, fill: '#000000', dy: 44 });
-        const loc  = txt(`📍 ${d.sublabel ?? ''}`, { size: 16, weight: 500, fill: '#6D6D6D', dy: 64 });
 
-        g.append(circ, name, loc);
+        // Location row: mage location-pin icon + country text
+        const locGroup = el('g') as SVGGElement;
+        locGroup.setAttribute('pointer-events', 'none');
+
+        // Mage location-pin icon (24×24 viewbox) scaled to ~12px
+        const pinWrap = el('g') as SVGGElement;
+        pinWrap.setAttribute('transform', 'translate(-38, 57) scale(0.5)');
+        const pinPath = el('path');
+        pinPath.setAttribute('fill', 'none');
+        pinPath.setAttribute('stroke', '#6D6D6D');
+        pinPath.setAttribute('stroke-linecap', 'round');
+        pinPath.setAttribute('stroke-linejoin', 'round');
+        pinPath.setAttribute('stroke-width', '1.5');
+        pinPath.setAttribute('d', 'M12 13.632A5.441 5.441 0 1 0 12 2.75a5.441 5.441 0 0 0 0 10.882m0 0v7.618');
+        pinWrap.appendChild(pinPath);
+
+        const locText = el('text') as SVGTextElement;
+        locText.setAttribute('font-family', 'Inter, system-ui, sans-serif');
+        locText.setAttribute('font-size', '16');
+        locText.setAttribute('font-weight', '500');
+        locText.setAttribute('fill', '#6D6D6D');
+        locText.setAttribute('text-anchor', 'start');
+        locText.setAttribute('dominant-baseline', 'middle');
+        locText.setAttribute('x', '-26');
+        locText.setAttribute('y', '64');
+        locText.setAttribute('pointer-events', 'none');
+        locText.textContent = d.sublabel ?? '';
+
+        locGroup.append(pinWrap, locText);
+        g.append(circ, name, locGroup);
 
         g.addEventListener('mouseenter', () => {
           circ.setAttribute('stroke', '#FF49DB');
@@ -145,12 +213,6 @@ export default function ForceGraph() {
         });
 
       } else {
-        // ────────────────────────────────────────────────────────
-        //  Branch node:
-        //  • Square 56×56, white fill, 1px black border (no radius)
-        //  • "Title"       — Inter regular 16px #000000 — below box
-        //  • "Description" — Inter medium  16px #6D6D6D — below title (hover only)
-        // ────────────────────────────────────────────────────────
         g.style.cursor = 'pointer';
 
         const box = el('rect');
@@ -177,6 +239,11 @@ export default function ForceGraph() {
         g.addEventListener('mouseleave', () => {
           box.setAttribute('stroke', '#000000');
           desc.style.opacity = '0';
+        });
+
+        // ── Click → open card ──────────────────────────────────────────────
+        g.addEventListener('click', () => {
+          setActiveNode(d);
         });
       }
 
@@ -283,6 +350,9 @@ export default function ForceGraph() {
         drag the center node
       </p>
       <svg ref={svgRef} className="w-full h-full block" aria-label="Force graph" />
+      {activeNode && (
+        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} />
+      )}
       <CursorDot />
     </div>
   );
