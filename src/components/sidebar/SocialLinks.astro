@@ -33,10 +33,10 @@ const links = [
         href={link.href}
         target="_blank"
         rel="noopener noreferrer"
-        class="group inline-flex items-center gap-1.5 text-xs transition-colors duration-200"
+        class="group inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
         style="color:#6D6D6D"
       >
-        <span class="transition-colors duration-200 [&>svg]:w-3 [&>svg]:h-3 group-hover:[&>svg]:stroke-[#FF49DB] group-hover:[&>svg]:fill-[#FF49DB]" style="color:#6D6D6D" set:html={link.icon} />
+        <span class="transition-colors duration-200 [&>svg]:w-3.5 [&>svg]:h-3.5 group-hover:[&>svg]:stroke-[#FF49DB] group-hover:[&>svg]:fill-[#FF49DB]" style="color:#6D6D6D" set:html={link.icon} />
         <span class="group-hover:text-[#000000] transition-colors duration-200">{link.label}</span>
       </a>
     ))}

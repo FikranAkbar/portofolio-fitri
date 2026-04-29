@@ -322,7 +322,10 @@ export default function ForceGraph() {
       if (!dragging) return;
       (e as Event).preventDefault();
       const p = svgPoint(e as MouseEvent);
-      centerNode.fx = p.x; centerNode.fy = p.y;
+      // Clamp drag position so center node stays inside canvas
+      const margin = 50;
+      centerNode.fx = Math.max(margin, Math.min(W - margin, p.x));
+      centerNode.fy = Math.max(margin, Math.min(H - margin, p.y));
     }
 
     function onUp() {
@@ -346,6 +349,13 @@ export default function ForceGraph() {
 
     // ── Tick ─────────────────────────────────────────────────────────────────
     simulation.on('tick', () => {
+      // Clamp every node so it can't leave the canvas
+      simNodes.forEach(d => {
+        const r = d.type === 'center' ? 52 : 56;
+        d.x = Math.max(r, Math.min(W - r, d.x ?? W / 2));
+        d.y = Math.max(r, Math.min(H - r, d.y ?? H / 2));
+      });
+
       (simLinks as any[]).forEach((link, i) => {
         const s = link.source as SimNode, t = link.target as SimNode;
         linkEls[i].setAttribute('x1', String(s.x ?? 0));
