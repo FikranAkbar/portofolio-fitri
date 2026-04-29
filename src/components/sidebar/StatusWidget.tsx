@@ -22,7 +22,7 @@ export default function StatusWidget() {
 
   return (
     <div
-      className="rounded-xl px-4 py-3 font-mono text-xs leading-relaxed select-none"
+      className="rounded-xl px-4 pt-3 pb-5 font-mono text-xs leading-relaxed select-none"
       style={{ background: '#EEEADE', color: '#6B6560' }}
     >
       {/* Live clock */}
