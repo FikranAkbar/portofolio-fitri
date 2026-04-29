@@ -6,30 +6,29 @@ import StatusWidget from './StatusWidget.tsx';
 ---
 
 <!--
-  Main menu card:  288px wide, full viewport height
-  Inner padding:   24px left/right (px-6), 28px top/bottom (py-7)
-  3 main components spaced 24px apart (gap-6):
-    1. Logo
-    2. Introduction
-    3. Card Explore + Text Link
+  Sidebar card layout (non-scrollable, viewport-fitted):
+  - aside:         h-full overflow-hidden  → clips any overflow, no scroll
+  - inner wrapper: flex-1 min-h-0          → allows flex children to shrink below content size
+  - ① ②:          shrink-0               → Avatar + Introduction never shrink
+  - ③:             flex-1 min-h-0          → fills remaining space, can compress
+  - bottom group:  mt-auto shrink-0        → always sticks to bottom
 -->
 <aside
-  class="w-[288px] shrink-0 bg-white h-full flex flex-col overflow-y-auto scrollbar-hide rounded-2xl shadow-sm"
+  class="w-[288px] shrink-0 bg-white h-full flex flex-col overflow-hidden rounded-2xl shadow-sm"
 >
-  <div class="flex flex-col flex-1 px-6 py-7 gap-6">
+  <div class="flex flex-col flex-1 min-h-0 px-6 py-7 gap-5">
 
-    <!-- ① Logo -->
-    <div>
+    <!-- ① Logo — fixed size -->
+    <div class="shrink-0">
       <Avatar />
     </div>
 
-    <!-- ② Introduction -->
-    <div class="flex flex-col gap-2">
+    <!-- ② Introduction — fixed size -->
+    <div class="flex flex-col gap-2 shrink-0">
       <div>
         <h1 class="text-[32px] font-bold leading-tight text-gray-900 font-display tracking-tight">
           Fitri Zahwa
         </h1>
-        <!-- Subtitle uses Space Mono — matches the monospace style in the design -->
         <p class="text-sm text-gray-400 font-normal mt-2 leading-snug font-mono">
           UI/UX Designer,<br />Illustrator, Pixel Artist
         </p>
@@ -39,10 +38,15 @@ import StatusWidget from './StatusWidget.tsx';
       </p>
     </div>
 
-    <!-- ③ Card Explore + Text Link + Status -->
-    <div class="flex flex-col gap-6 flex-1">
-      <NavMenu />
-      <div class="mt-auto flex flex-col gap-6">
+    <!-- ③ Explore + bottom — fills all leftover space -->
+    <div class="flex flex-col flex-1 min-h-0">
+      <!-- Explore card: sits at top of this section -->
+      <div class="shrink-0">
+        <NavMenu />
+      </div>
+
+      <!-- Bottom group: SocialLinks + StatusWidget pushed to bottom -->
+      <div class="mt-auto shrink-0 flex flex-col gap-5 pt-5">
         <SocialLinks />
         <StatusWidget client:load />
       </div>
