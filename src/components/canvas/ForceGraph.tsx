@@ -167,12 +167,12 @@ export default function ForceGraph() {
         g.style.cursor = 'grab';
 
         const circ = el('circle');
-        circ.setAttribute('r', '28');
+        circ.setAttribute('r', '30');
         circ.setAttribute('fill', '#ffffff');
         circ.setAttribute('stroke', '#000000');
         circ.setAttribute('stroke-width', '1');
 
-        const name = txt(d.label, { size: 16, weight: 500, fill: '#000000', dy: 44 });
+        const name = txt(d.label, { size: 16, weight: 500, fill: '#000000', dy: 48 });
 
         // Location row: mage location-pin icon + country text
         const locGroup = el('g') as SVGGElement;
@@ -206,7 +206,7 @@ export default function ForceGraph() {
         g.append(circ, name, locGroup);
 
         g.addEventListener('mouseenter', () => {
-          circ.setAttribute('stroke', '#FF49DB');
+          circ.setAttribute('stroke', '#E73AA4');
         });
         g.addEventListener('mouseleave', () => {
           circ.setAttribute('stroke', '#000000');
@@ -216,24 +216,24 @@ export default function ForceGraph() {
         g.style.cursor = 'pointer';
 
         const box = el('rect');
-        box.setAttribute('x', '-28');
-        box.setAttribute('y', '-28');
-        box.setAttribute('width',  '56');
-        box.setAttribute('height', '56');
+        box.setAttribute('x', '-24');
+        box.setAttribute('y', '-24');
+        box.setAttribute('width',  '48');
+        box.setAttribute('height', '48');
         box.setAttribute('fill',   '#ffffff');
         box.setAttribute('stroke', '#000000');
         box.setAttribute('stroke-width', '1');
 
-        const title = txt(d.label, { size: 16, weight: 400, fill: '#000000', dy: 48 });
+        const title = txt(d.label, { size: 16, weight: 400, fill: '#000000', dy: 44 });
 
-        const desc = txt(d.desc ?? 'Description', { size: 16, weight: 500, fill: '#6D6D6D', dy: 68 });
+        const desc = txt(d.desc ?? 'Description', { size: 16, weight: 500, fill: '#6D6D6D', dy: 64 });
         desc.style.opacity    = '0';
         desc.style.transition = 'opacity 0.2s ease';
 
         g.append(box, title, desc);
 
         g.addEventListener('mouseenter', () => {
-          box.setAttribute('stroke', '#FF49DB');
+          box.setAttribute('stroke', '#E73AA4');
           desc.style.opacity = '1';
         });
         g.addEventListener('mouseleave', () => {
@@ -383,7 +383,7 @@ function CursorDot() {
     <div
       ref={dotRef}
       className="fixed w-4 h-4 rounded-full pointer-events-none z-[9999]"
-      style={{ background: '#FF49DB', transform: 'translate(-50%,-50%)', mixBlendMode: 'multiply', left: '-20px', top: '-20px' }}
+      style={{ background: '#E73AA4', transform: 'translate(-50%,-50%)', mixBlendMode: 'multiply', left: '-20px', top: '-20px' }}
       aria-hidden="true"
     />
   );

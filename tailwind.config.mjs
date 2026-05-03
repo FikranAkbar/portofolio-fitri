@@ -10,7 +10,7 @@ export default {
       },
       colors: {
         pink: {
-          accent: '#FF49DB',
+          accent: '#E73AA4',
         },
         canvas: '#F5F5F5',
       },
