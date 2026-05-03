@@ -1,24 +1,30 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 const links = [
   {
     label: 'Email',
     href: 'mailto:fitri@example.com',
-    icon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0"><rect width="18.5" height="17" x="2.682" y="3.5" rx="4"/><path stroke-linecap="round" stroke-linejoin="round" d="m2.729 7.59l7.205 4.13a3.96 3.96 0 0 0 3.975 0l7.225-4.13"/></svg>`,
+    ionicon: null,
+    customIcon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0"><rect width="18.5" height="17" x="2.682" y="3.5" rx="4"/><path stroke-linecap="round" stroke-linejoin="round" d="m2.729 7.59l7.205 4.13a3.96 3.96 0 0 0 3.975 0l7.225-4.13"/></svg>`,
   },
   {
     label: 'LinkedIn',
     href: 'https://linkedin.com',
-    icon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="shrink-0"><path d="M17.303 2.25H6.697A4.447 4.447 0 0 0 2.25 6.697v10.606a4.447 4.447 0 0 0 4.447 4.447h10.606a4.447 4.447 0 0 0 4.447-4.447V6.697a4.447 4.447 0 0 0-4.447-4.447m-8.46 15.742a.4.4 0 0 1-.4.423h-1.78a.41.41 0 0 1-.4-.412V10.6a.4.4 0 0 1 .4-.411h1.78a.4.4 0 0 1 .4.411zM7.52 8.632a1.467 1.467 0 1 1 .022-2.935A1.467 1.467 0 0 1 7.52 8.63m10.817 9.35a.39.39 0 0 1-.378.388H16.08a.39.39 0 0 1-.378-.389v-3.424c0-.511.156-2.223-1.356-2.223c-1.179 0-1.412 1.2-1.457 1.734v3.991a.39.39 0 0 1-.378.39h-1.823a.39.39 0 0 1-.389-.39v-7.493a.39.39 0 0 1 .39-.378h1.822a.39.39 0 0 1 .39.378v.645a2.59 2.59 0 0 1 2.434-1.112c3.035 0 3.024 2.835 3.024 4.447z"/></svg>`,
+    ionicon: 'ion:logo-linkedin',
+    customIcon: null,
   },
   {
     label: 'GitHub',
     href: 'https://github.com',
-    icon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="shrink-0"><path d="M11.963 2.382C.554 2.621-1.82 17.93 8.852 21.602c.498.093.684-.219.684-.478v-1.68c-2.79.601-3.38-1.317-3.38-1.317a2.6 2.6 0 0 0-1.121-1.442c-.902-.612.072-.602.072-.602a2.07 2.07 0 0 1 1.536 1.038a2.167 2.167 0 0 0 2.924.819c.052-.5.275-.965.633-1.317c-2.23-.25-4.564-1.1-4.564-4.875a3.76 3.76 0 0 1 1.038-2.645a3.46 3.46 0 0 1 .103-2.634s.84-.26 2.76 1.037a9.6 9.6 0 0 1 5.02 0c1.908-1.276 2.748-1.038 2.748-1.038c.365.828.398 1.763.093 2.614a3.75 3.75 0 0 1 1.037 2.645c0 3.786-2.344 4.626-4.574 4.865c1.038.55.602 4.086.664 4.522c0 .259.176.57.695.477c10.642-3.64 8.152-18.97-3.257-19.209"/></svg>`,
+    ionicon: 'ion:logo-github',
+    customIcon: null,
   },
   {
     label: 'Instagram',
     href: 'https://instagram.com',
-    icon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="shrink-0"><path d="M13.61 12.243a1.6 1.6 0 1 1-1.56-1.63a1.62 1.62 0 0 1 1.56 1.63"/><path d="M14.763 7.233H9.338a2.024 2.024 0 0 0-2.024 2.024v5.547a2.024 2.024 0 0 0 2.024 2.024h5.425a2.024 2.024 0 0 0 2.024-2.024V9.267a2.026 2.026 0 0 0-2.024-2.034m-2.713 7.723a2.703 2.703 0 1 1 2.642-2.703a2.67 2.67 0 0 1-2.642 2.703m2.936-5.405a.496.496 0 0 1-.496-.506a.506.506 0 1 1 1.012 0a.496.496 0 0 1-.557.506z"/><path d="M12.05 2a10 10 0 1 0-.1 20a10 10 0 0 0 .1-20m6.073 12.702a3.39 3.39 0 0 1-3.41 3.411H9.389a3.39 3.39 0 0 1-3.411-3.41V9.378a3.39 3.39 0 0 1 3.41-3.411h5.325a3.39 3.39 0 0 1 3.41 3.41z"/></svg>`,
+    ionicon: 'ion:logo-instagram',
+    customIcon: null,
   },
 ];
 ---
@@ -36,7 +42,14 @@ const links = [
         class="group inline-flex items-center gap-2 text-[16px] transition-colors duration-200"
         style="color:#6D6D6D"
       >
-        <span class="transition-colors duration-200 [&>svg]:w-4 [&>svg]:h-4 group-hover:[&>svg]:stroke-[#E73AA4] group-hover:[&>svg]:fill-[#E73AA4]" style="color:#6D6D6D" set:html={link.icon} />
+        {link.ionicon ? (
+          <Icon
+            name={link.ionicon}
+            class="shrink-0 w-4 h-4 transition-colors duration-200 group-hover:text-[#E73AA4]"
+          />
+        ) : (
+          <span class="transition-colors duration-200 [&>svg]:w-4 [&>svg]:h-4 group-hover:[&>svg]:stroke-[#E73AA4]" style="color:#6D6D6D" set:html={link.customIcon} />
+        )}
         <span class="group-hover:text-[#000000] transition-colors duration-200">{link.label}</span>
       </a>
     ))}

@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   forceSimulation,
   forceLink,
   forceManyBody,
   forceCollide,
 } from 'd3-force';
+import { icons as mageIcons } from '@iconify-json/mage';
+
+// ─── Extract Mage icon path ───────────────────────────────────────────────────
+function getMagePath(name: string): string {
+  const body = (mageIcons.icons as Record<string, { body: string }>)[name]?.body ?? '';
+  return body.match(/d="([^"]+)"/)?.[1] ?? '';
+}
+const MAGE_LOCATION_PIN_D = getMagePath('location-pin');
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 type NodeDef = {
@@ -23,20 +32,28 @@ type SimLink = { source: string | SimNode; target: string | SimNode };
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const NODES: NodeDef[] = [
-  { id: 'center',  label: 'Fitri Zahwa', sublabel: 'Indonesia', type: 'center' },
-  { id: 'work',    label: 'Title',       desc: 'Description',   type: 'branch' },
-  { id: 'read',    label: 'Title',       desc: 'Description',   type: 'branch' },
-  { id: 'design',  label: 'Title',       desc: 'Description',   type: 'branch' },
-  { id: 'contact', label: 'Title',       desc: 'Description',   type: 'branch' },
-  { id: 'about',   label: 'Title',       desc: 'Description',   type: 'branch' },
+  { id: 'center',    label: 'Fitri Zahwa', sublabel: 'Indonesia',  type: 'center' },
+  { id: 'about',     label: 'About',       desc: 'Who I am',       type: 'branch' },
+  { id: 'resume',    label: 'Resume',      desc: 'My experience',  type: 'branch' },
+  { id: 'project',   label: 'Project',     desc: 'My works',       type: 'branch' },
+  { id: 'testimony', label: 'Testimony',   desc: 'What they say',  type: 'branch' },
+  { id: 'read',      label: 'Read',        desc: 'My reading list',type: 'branch' },
+  { id: 'listen',    label: 'Listen',      desc: 'What I hear',    type: 'branch' },
+  { id: 'watch',     label: 'Watch',       desc: 'What I watch',   type: 'branch' },
+  { id: 'drawing',   label: 'Drawing',     desc: 'My sketches',    type: 'branch' },
+  { id: 'pixelart',  label: 'Pixel-Art',   desc: 'My pixel art',   type: 'branch' },
 ];
 
 const LINKS: { source: string; target: string }[] = [
-  { source: 'center', target: 'work'    },
-  { source: 'center', target: 'read'    },
-  { source: 'center', target: 'design'  },
-  { source: 'center', target: 'contact' },
-  { source: 'center', target: 'about'   },
+  { source: 'center', target: 'about'     },
+  { source: 'center', target: 'resume'    },
+  { source: 'center', target: 'project'   },
+  { source: 'center', target: 'testimony' },
+  { source: 'center', target: 'read'      },
+  { source: 'center', target: 'listen'    },
+  { source: 'center', target: 'watch'     },
+  { source: 'center', target: 'drawing'   },
+  { source: 'center', target: 'pixelart'  },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -58,6 +75,112 @@ const txt = (
   t.textContent = content;
   return t;
 };
+
+// ─── Project Page Overlay ────────────────────────────────────────────────────
+const PROJECT_ITEMS = [
+  { num: '01', title: 'Title', desc: 'Desc', tags: ['Tag 1', 'Tag 2', 'Tag 3'], role: 'Placeholder Role', team: 'Placeholder Team', timeframe: 'Jan 2025 - Present' },
+  { num: '02', title: 'Title', desc: 'Desc', tags: ['Tag 1', 'Tag 2', 'Tag 3'], role: 'Placeholder Role', team: 'Placeholder Team', timeframe: 'Mar 2025 - Jun 2025' },
+  { num: '03', title: 'Title', desc: 'Desc', tags: ['Tag 1', 'Tag 2', 'Tag 3'], role: 'Placeholder Role', team: 'Placeholder Team', timeframe: 'Jul 2024 - Dec 2024' },
+  { num: '04', title: 'Title', desc: 'Desc', tags: ['Tag 1', 'Tag 2', 'Tag 3'], role: 'Placeholder Role', team: 'Placeholder Team', timeframe: 'Aug 2023 - Feb 2024' },
+];
+
+function ProjectPage({ onClose, origin }: { onClose: () => void; origin: { x: number; y: number } | null }) {
+  const [closing, setClosing] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  function handleClose() {
+    setClosing(true);
+    setTimeout(onClose, 200);
+  }
+
+  const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
+
+  return (
+    <div
+      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${closing ? 'mac-close' : 'mac-open'}`}
+      style={{ transformOrigin }}
+    >
+      {/* Window chrome */}
+      <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 shrink-0">
+        <button
+          onClick={handleClose}
+          title="Close"
+          className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90
+            transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
+          aria-label="Close"
+        >
+          <svg className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+            viewBox="0 0 8 8" fill="none" stroke="#7A0000" strokeWidth="1.5" strokeLinecap="round">
+            <line x1="1" y1="1" x2="7" y2="7" /><line x1="7" y1="1" x2="1" y2="7" />
+          </svg>
+        </button>
+        <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+        <span className="w-3 h-3 rounded-full bg-[#28C840]" />
+        <span className="ml-2 text-sm font-medium text-gray-800 select-none">Project</span>
+        <span className="ml-2 text-sm text-gray-400 select-none">My works</span>
+      </div>
+
+      {/* Scrollable grid */}
+      <div className="overflow-y-auto p-5 scrollbar-hide flex-1">
+      {/* Two independent columns — expand in one column doesn't affect the other */}
+        <div className="flex gap-4">
+          {[0, 1].map(col => (
+            <div key={col} className="flex flex-col gap-4 flex-1">
+              {PROJECT_ITEMS.filter((_, i) => i % 2 === col).map(p => (
+                <div
+                  key={p.num}
+                  className="border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-[#E73AA4] hover:shadow-md"
+                  onMouseEnter={() => {
+                    setHoveredCard(p.num);
+                    window.dispatchEvent(new CustomEvent('project-cursor', { detail: { active: true } }));
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredCard(null);
+                    window.dispatchEvent(new CustomEvent('project-cursor', { detail: { active: false } }));
+                  }}
+                >
+                  <div className="flex justify-end px-3 pt-2.5">
+                    <span className="text-[10px] font-mono text-gray-300 tracking-widest">NO. {p.num}</span>
+                  </div>
+                  <div className="mx-3 mb-3 bg-gray-100 rounded-lg h-36 flex items-center justify-center">
+                    <span className="text-xs text-gray-300 tracking-wide select-none">Cover Image</span>
+                  </div>
+                  <div className="px-3 pb-2 flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-sm font-medium text-gray-800 select-none">{p.title}</p>
+                      <div className="flex gap-1 shrink-0">
+                        {p.tags.map(tag => (
+                          <span key={tag} className="text-[10px] bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full select-none">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-400 select-none">{p.desc}</p>
+                  </div>
+                  {/* Expand: Role / Team / Timeframe */}
+                  <div className={`overflow-hidden transition-all duration-300 ease-in-out ${hoveredCard === p.num ? 'max-h-28 opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="border-t border-dashed border-gray-200 mx-3 mt-1 mb-2" />
+                    <div className="px-3 pb-3 flex flex-col gap-1">
+                      {[
+                        { label: 'Role',      value: p.role      },
+                        { label: 'Team',      value: p.team      },
+                        { label: 'Timeframe', value: p.timeframe },
+                      ].map(row => (
+                        <div key={row.label} className="flex gap-3 text-xs">
+                          <span className="text-gray-400 uppercase tracking-wider font-medium w-20 shrink-0 select-none">{row.label}</span>
+                          <span className="text-gray-600 select-none">{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ─── Node Card Overlay ───────────────────────────────────────────────────────
 function NodeCard({
@@ -168,13 +291,39 @@ export default function ForceGraph() {
     const simLinks: SimLink[] = LINKS.map(l => ({ ...l }));
 
     const simulation = forceSimulation<SimNode>(simNodes)
-      .force('link',    forceLink<SimNode, SimLink>(simLinks).id(d => d.id).distance(180).strength(0.08))
-      .force('charge',  forceManyBody().strength(-320))
-      .force('collide', forceCollide<SimNode>().radius(72).strength(0.9))
-      .alphaDecay(0.015)
-      .velocityDecay(0.65)
-      .alphaTarget(0)
-      .alphaMin(0.001);
+      .force('link',    forceLink<SimNode, SimLink>(simLinks).id(d => d.id).distance(180).strength(0.06))
+      .force('charge',  forceManyBody().strength(-260))
+      .force('collide', forceCollide<SimNode>().radius(72).strength(0.7))
+      .alphaDecay(0)      // don't auto-decay — orbital force keeps it alive
+      .velocityDecay(0.38)
+      .alphaTarget(0.08)  // run forever at low energy
+      .alphaMin(0);
+
+    // Per-node orbital speed multiplier (slight variation = natural feel)
+    const orbitSpeed: Record<string, number> = {};
+    simNodes.forEach(d => {
+      if (d.type === 'branch') orbitSpeed[d.id] = 0.75 + Math.random() * 0.5;
+    });
+
+    const ORBIT_FORCE = 0.28; // tangential acceleration per tick
+
+    // ── Orbital force (applied every tick by d3) ──────────────────────────────
+    simulation.force('orbital', () => {
+      if (dragging) return;
+      const center = simNodes.find(n => n.id === 'center')!;
+      const cx = center.x ?? W / 2;
+      const cy = center.y ?? H / 2;
+      simNodes.forEach(d => {
+        if (d.type !== 'branch') return;
+        const dx = (d.x ?? 0) - cx;
+        const dy = (d.y ?? 0) - cy;
+        const r   = Math.sqrt(dx * dx + dy * dy) || 1;
+        const spd = ORBIT_FORCE * (orbitSpeed[d.id] ?? 1);
+        // Counter-clockwise tangential unit vector: (-dy/r, dx/r)
+        d.vx = (d.vx ?? 0) + (-dy / r) * spd;
+        d.vy = (d.vy ?? 0) + (dx  / r) * spd;
+      });
+    });
 
     // ── Groups ────────────────────────────────────────────────────────────────
     const linkG = el('g'); svg.appendChild(linkG);
@@ -188,6 +337,7 @@ export default function ForceGraph() {
       line.setAttribute('stroke-dasharray', '6 4');
       line.setAttribute('stroke-linecap', 'round');
       line.setAttribute('opacity', '0.85');
+      (line as SVGLineElement).style.transition = 'opacity 0.25s ease';
       linkG.appendChild(line);
       return line;
     });
@@ -223,7 +373,7 @@ export default function ForceGraph() {
         pinPath.setAttribute('stroke-linecap', 'round');
         pinPath.setAttribute('stroke-linejoin', 'round');
         pinPath.setAttribute('stroke-width', '1.5');
-        pinPath.setAttribute('d', 'M12 13.632A5.441 5.441 0 1 0 12 2.75a5.441 5.441 0 0 0 0 10.882m0 0v7.618');
+        pinPath.setAttribute('d', MAGE_LOCATION_PIN_D);
         pinWrap.appendChild(pinPath);
 
         const locText = el('text') as SVGTextElement;
@@ -268,13 +418,36 @@ export default function ForceGraph() {
 
         g.append(box, title, desc);
 
+        g.style.transition = 'opacity 0.25s ease';
+
         g.addEventListener('mouseenter', () => {
           box.setAttribute('stroke', '#E73AA4');
           desc.style.opacity = '1';
+
+          // Dim all other branch nodes
+          simNodes.forEach(other => {
+            if (other.type !== 'branch' || other.id === d.id) return;
+            const og = nodeElMap[other.id];
+            if (og) og.style.opacity = '0.1';
+          });
+          // Dim links that don't belong to this node
+          LINKS.forEach((link, i) => {
+            if (link.target !== d.id) linkEls[i].style.opacity = '0.08';
+          });
         });
+
         g.addEventListener('mouseleave', () => {
           box.setAttribute('stroke', '#000000');
           desc.style.opacity = '0';
+
+          // Restore all branch nodes
+          simNodes.forEach(other => {
+            if (other.type !== 'branch') return;
+            const og = nodeElMap[other.id];
+            if (og) og.style.opacity = '1';
+          });
+          // Restore all links
+          linkEls.forEach(line => { line.style.opacity = '0.85'; });
         });
 
         // ── Click → open card ──────────────────────────────────────────────
@@ -345,12 +518,13 @@ export default function ForceGraph() {
       centerG.style.cursor = 'grab';
       centerNode.fx = null; centerNode.fy = null;
 
+      // Burst of energy on release → then smoothly return to orbital cruise
       (simulation.force('link') as any).strength(0.18);
-      simulation.velocityDecay(0.28).alphaTarget(0.35).restart();
-      setTimeout(() => { simulation.velocityDecay(0.50).alphaTarget(0.15); }, 450);
+      simulation.velocityDecay(0.22).alphaTarget(0.40).restart();
+      setTimeout(() => { simulation.velocityDecay(0.30).alphaTarget(0.20); }, 400);
       setTimeout(() => {
-        (simulation.force('link') as any).strength(0.08);
-        simulation.velocityDecay(0.70).alphaTarget(0);
+        (simulation.force('link') as any).strength(0.06);
+        simulation.velocityDecay(0.38).alphaTarget(0.08);
       }, 900);
 
       window.removeEventListener('mousemove', onMove);
@@ -385,9 +559,17 @@ export default function ForceGraph() {
     });
     ro.observe(wrap);
 
+    // ── Sidebar "Project" trigger ─────────────────────────────────────────────
+    function handleOpenProject() {
+      setNodeOrigin(null); // animate from center
+      setActiveNode(NODES.find(n => n.id === 'project') ?? null);
+    }
+    window.addEventListener('open-project-page', handleOpenProject);
+
     return () => {
       simulation.stop();
       ro.disconnect();
+      window.removeEventListener('open-project-page', handleOpenProject);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup',   onUp);
     };
@@ -403,8 +585,13 @@ export default function ForceGraph() {
         drag the center node
       </p>
       <svg ref={svgRef} className="w-full h-full block" aria-label="Force graph" />
-      {activeNode && (
-        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} origin={nodeOrigin} />
+      {activeNode && activeNode.id === 'project' && createPortal(
+        <ProjectPage onClose={() => setActiveNode(null)} origin={nodeOrigin} />,
+        document.getElementById('canvas-overlay')!
+      )}
+      {activeNode && activeNode.id !== 'project' && createPortal(
+        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} origin={nodeOrigin} />,
+        document.getElementById('canvas-overlay')!
       )}
       <CursorDot />
     </div>
@@ -414,6 +601,7 @@ export default function ForceGraph() {
 // ── Cursor Dot ────────────────────────────────────────────────────────────────
 function CursorDot() {
   const dotRef = useRef<HTMLDivElement>(null);
+  const [hovering, setHovering] = useState(false);
 
   useEffect(() => {
     const dot = dotRef.current;
@@ -428,16 +616,44 @@ function CursorDot() {
       });
     }
 
+    function onProjectCursor(e: Event) {
+      const active = (e as CustomEvent<{ active: boolean }>).detail.active;
+      setHovering(active);
+    }
+
     window.addEventListener('mousemove', move);
-    return () => { window.removeEventListener('mousemove', move); cancelAnimationFrame(raf); };
+    window.addEventListener('project-cursor', onProjectCursor);
+    return () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('project-cursor', onProjectCursor);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
     <div
       ref={dotRef}
-      className="fixed w-4 h-4 rounded-full pointer-events-none z-[9999]"
-      style={{ background: '#E73AA4', transform: 'translate(-50%,-50%)', mixBlendMode: 'multiply', left: '-20px', top: '-20px' }}
+      className="fixed pointer-events-none z-[9999]"
+      style={{ transform: 'translate(-50%,-50%)', left: '-20px', top: '-20px' }}
       aria-hidden="true"
-    />
+    >
+      <div
+        className="flex items-center justify-center overflow-hidden transition-all duration-200 ease-out"
+        style={{
+          background: '#E73AA4',
+          borderRadius: '9999px',
+          mixBlendMode: hovering ? 'normal' : 'multiply',
+          width:  hovering ? '136px' : '16px',
+          height: hovering ? '32px'  : '16px',
+        }}
+      >
+        <span
+          className="text-white text-[11px] font-semibold tracking-wide select-none whitespace-nowrap transition-opacity duration-150"
+          style={{ opacity: hovering ? 1 : 0, transitionDelay: hovering ? '80ms' : '0ms' }}
+        >
+          View Case Study
+        </span>
+      </div>
+    </div>
   );
 }
