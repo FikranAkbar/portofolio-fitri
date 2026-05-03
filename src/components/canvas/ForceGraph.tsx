@@ -137,35 +137,35 @@ function ProjectPage({ onClose, origin, forceClose }: { onClose: () => void; ori
                     window.dispatchEvent(new CustomEvent('project-cursor', { detail: { active: false } }));
                   }}
                 >
-                  <div className="flex justify-end px-3 pt-2.5">
-                    <span className="text-[10px] font-mono text-gray-300 tracking-widest">NO. {p.num}</span>
+                  <div className="flex justify-end px-4 pt-4">
+                    <span className="text-xs font-mono text-gray-300 tracking-widest">NO. {p.num}</span>
                   </div>
-                  <div className="mx-3 mb-3 bg-gray-100 rounded-lg h-36 flex items-center justify-center">
+                  <div className="mx-4 mb-4 bg-gray-100 rounded-lg h-36 flex items-center justify-center">
                     <span className="text-xs text-gray-300 tracking-wide select-none">Cover Image</span>
                   </div>
-                  <div className="px-3 pb-2 flex flex-col gap-1.5">
+                  <div className="px-4 pb-4 flex flex-col gap-4">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm font-medium text-gray-800 select-none">{p.title}</p>
+                      <p className="text-[18px] font-medium text-gray-800 select-none">{p.title}</p>
                       <div className="flex gap-1 shrink-0">
                         {p.tags.map(tag => (
-                          <span key={tag} className="text-[10px] bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full select-none">{tag}</span>
+                          <span key={tag} className="text-[14px] bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full select-none">{tag}</span>
                         ))}
                       </div>
                     </div>
-                    <p className="text-xs text-gray-400 select-none">{p.desc}</p>
+                    <p className="text-[16px] text-gray-400 select-none">{p.desc}</p>
                   </div>
                   {/* Expand: Role / Team / Timeframe */}
                   <div className={`overflow-hidden transition-all duration-300 ease-in-out ${hoveredCard === p.num ? 'max-h-28 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className="border-t border-dashed border-gray-200 mx-3 mt-1 mb-2" />
-                    <div className="px-3 pb-3 flex flex-col gap-1">
+                    <div className="border-t border-dashed border-gray-200 mx-4 my-4" />
+                    <div className="px-4 pb-4 flex flex-col gap-4">
                       {[
                         { label: 'Role',      value: p.role      },
                         { label: 'Team',      value: p.team      },
                         { label: 'Timeframe', value: p.timeframe },
                       ].map(row => (
-                        <div key={row.label} className={`flex gap-3 ${row.label === 'Timeframe' ? 'text-[14px]' : 'text-xs'}`}>
-                          <span className="text-gray-400 uppercase tracking-wider font-medium w-20 shrink-0 select-none">{row.label}</span>
-                          <span className="text-gray-600 select-none">{row.value}</span>
+                        <div key={row.label} className="flex items-start gap-2 text-[16px]">
+                          <span className="text-gray-400 uppercase tracking-wider font-medium w-28 shrink-0 text-left select-none">{row.label}</span>
+                          <span className="text-gray-600 text-left select-none">{row.value}</span>
                         </div>
                       ))}
                     </div>
