@@ -60,7 +60,7 @@ const txt = (
 };
 
 // ─── Node Card Overlay ───────────────────────────────────────────────────────
-function NodeCard({ node, onClose }: { node: NodeDef; onClose: () => void }) {
+function NodeCard({ node: _node, onClose }: { node: NodeDef; onClose: () => void }) {
   return (
     <div
       className="absolute inset-0 flex items-center justify-center z-20"
@@ -75,8 +75,24 @@ function NodeCard({ node, onClose }: { node: NodeDef; onClose: () => void }) {
         onClick={e => e.stopPropagation()}
       >
         {/* Window chrome */}
-        <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100">
-          <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+        <div className="group/chrome flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100">
+          {/* Red dot — closes the card */}
+          <button
+            onClick={onClose}
+            title="Close"
+            className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90
+              transition-all duration-100 flex items-center justify-center
+              focus:outline-none group/dot"
+            aria-label="Close"
+          >
+            <svg
+              className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+              viewBox="0 0 8 8" fill="none" stroke="#7A0000" strokeWidth="1.5" strokeLinecap="round"
+            >
+              <line x1="1" y1="1" x2="7" y2="7" />
+              <line x1="7" y1="1" x2="1" y2="7" />
+            </svg>
+          </button>
           <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
           <span className="w-3 h-3 rounded-full bg-[#28C840]" />
           <span className="ml-2 text-sm font-medium text-gray-800 select-none">Title</span>
@@ -92,9 +108,11 @@ function NodeCard({ node, onClose }: { node: NodeDef; onClose: () => void }) {
         <div className="flex justify-end px-4 pb-4">
           <button
             onClick={onClose}
-            className="text-xs text-gray-400 hover:text-gray-600 transition-colors select-none px-3 py-1.5 rounded-lg border border-gray-200 hover:border-gray-300"
+            className="select-none px-5 py-2 rounded-lg text-sm font-medium text-white
+              bg-[#E73AA4] hover:bg-[#d42e93] active:scale-95 active:bg-[#c0287f]
+              transition-all duration-150 ease-in-out shadow-sm hover:shadow-md"
           >
-            Close
+            Button
           </button>
         </div>
       </div>
