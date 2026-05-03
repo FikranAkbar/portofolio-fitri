@@ -147,11 +147,11 @@ export default function ForceGraph() {
     // ── Links ─────────────────────────────────────────────────────────────────
     const linkEls = simLinks.map(() => {
       const line = el('line');
-      line.setAttribute('stroke', '#D1D5DB');
-      line.setAttribute('stroke-width', '1');
-      line.setAttribute('stroke-dasharray', '5 4');
+      line.setAttribute('stroke', '#6B6B6B');
+      line.setAttribute('stroke-width', '1.5');
+      line.setAttribute('stroke-dasharray', '6 4');
       line.setAttribute('stroke-linecap', 'round');
-      line.setAttribute('opacity', '0.6');
+      line.setAttribute('opacity', '0.85');
       linkG.appendChild(line);
       return line;
     });
