@@ -6,14 +6,6 @@ import {
   forceManyBody,
   forceCollide,
 } from 'd3-force';
-import { icons as mageIcons } from '@iconify-json/mage';
-
-// ─── Extract Mage icon path ───────────────────────────────────────────────────
-function getMagePath(name: string): string {
-  const body = (mageIcons.icons as Record<string, { body: string }>)[name]?.body ?? '';
-  return body.match(/d="([^"]+)"/)?.[1] ?? '';
-}
-const MAGE_LOCATION_PIN_D = getMagePath('location-pin');
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 type NodeDef = {
@@ -76,6 +68,11 @@ const txt = (
   return t;
 };
 
+const LOCATION_ICON_PATHS = [
+  'M12 12.7998C13.8502 12.7998 15.3499 11.3001 15.3499 9.4499C15.3499 7.59978 13.8502 6.09995 12 6.09995C10.1498 6.09995 8.65004 7.59978 8.65004 9.4499C8.65004 11.3001 10.1498 12.7998 12 12.7998Z',
+  'M12 2.75C5.3001 2.75 4.18345 8.33325 5.3001 12.5654C6.28275 16.2726 9.23071 18.8074 11.1737 20.8844C11.2783 20.9995 11.4059 21.0915 11.5482 21.1545C11.6905 21.2175 11.8444 21.25 12 21.25C12.1556 21.25 12.3095 21.2175 12.4518 21.1545C12.594 21.0915 12.7217 20.9995 12.8263 20.8844C14.7693 18.8074 17.7172 16.2726 18.6999 12.5654C19.8165 8.33325 18.6999 2.75 12 2.75Z',
+];
+
 // ─── Project Page Overlay ────────────────────────────────────────────────────
 const PROJECT_ITEMS = [
   { num: '01', title: 'Title', desc: 'Desc', tags: ['Tag 1', 'Tag 2', 'Tag 3'], role: 'Placeholder Role', team: 'Placeholder Team', timeframe: 'Jan 2025 - Present' },
@@ -84,7 +81,7 @@ const PROJECT_ITEMS = [
   { num: '04', title: 'Title', desc: 'Desc', tags: ['Tag 1', 'Tag 2', 'Tag 3'], role: 'Placeholder Role', team: 'Placeholder Team', timeframe: 'Aug 2023 - Feb 2024' },
 ];
 
-function ProjectPage({ onClose, origin }: { onClose: () => void; origin: { x: number; y: number } | null }) {
+function ProjectPage({ onClose, origin, forceClose }: { onClose: () => void; origin: { x: number; y: number } | null; forceClose?: boolean }) {
   const [closing, setClosing] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
@@ -93,11 +90,12 @@ function ProjectPage({ onClose, origin }: { onClose: () => void; origin: { x: nu
     setTimeout(onClose, 200);
   }
 
+  const isClosing = closing || forceClose;
   const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
 
   return (
     <div
-      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${closing ? 'mac-close' : 'mac-open'}`}
+      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${isClosing ? 'mac-close' : 'mac-open'}`}
       style={{ transformOrigin }}
     >
       {/* Window chrome */}
@@ -114,8 +112,8 @@ function ProjectPage({ onClose, origin }: { onClose: () => void; origin: { x: nu
             <line x1="1" y1="1" x2="7" y2="7" /><line x1="7" y1="1" x2="1" y2="7" />
           </svg>
         </button>
-        <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-        <span className="w-3 h-3 rounded-full bg-[#28C840]" />
+        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
+        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
         <span className="ml-2 text-sm font-medium text-gray-800 select-none">Project</span>
         <span className="ml-2 text-sm text-gray-400 select-none">My works</span>
       </div>
@@ -165,7 +163,7 @@ function ProjectPage({ onClose, origin }: { onClose: () => void; origin: { x: nu
                         { label: 'Team',      value: p.team      },
                         { label: 'Timeframe', value: p.timeframe },
                       ].map(row => (
-                        <div key={row.label} className="flex gap-3 text-xs">
+                        <div key={row.label} className={`flex gap-3 ${row.label === 'Timeframe' ? 'text-[14px]' : 'text-xs'}`}>
                           <span className="text-gray-400 uppercase tracking-wider font-medium w-20 shrink-0 select-none">{row.label}</span>
                           <span className="text-gray-600 select-none">{row.value}</span>
                         </div>
@@ -187,10 +185,12 @@ function NodeCard({
   node: _node,
   onClose,
   origin,
+  forceClose,
 }: {
   node: NodeDef;
   onClose: () => void;
   origin: { x: number; y: number } | null;
+  forceClose?: boolean;
 }) {
   const [closing, setClosing] = useState(false);
 
@@ -199,11 +199,12 @@ function NodeCard({
     setTimeout(onClose, 200);
   }
 
+  const isClosing = closing || forceClose;
   const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
 
   return (
     <div
-      className={`absolute inset-0 flex items-center justify-center z-20 ${closing ? 'backdrop-out' : 'backdrop-in'}`}
+      className={`absolute inset-0 flex items-center justify-center z-20 ${isClosing ? 'backdrop-out' : 'backdrop-in'}`}
       onClick={handleClose}
     >
       {/* Backdrop */}
@@ -211,7 +212,7 @@ function NodeCard({
 
       {/* Card */}
       <div
-        className={`relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90%] overflow-hidden ${closing ? 'mac-close' : 'mac-open'}`}
+        className={`relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90%] overflow-hidden ${isClosing ? 'mac-close' : 'mac-open'}`}
         style={{ transformOrigin }}
         onClick={e => e.stopPropagation()}
       >
@@ -233,8 +234,8 @@ function NodeCard({
               <line x1="7" y1="1" x2="1" y2="7" />
             </svg>
           </button>
-          <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-          <span className="w-3 h-3 rounded-full bg-[#28C840]" />
+          <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
+          <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
           <span className="ml-2 text-sm font-medium text-gray-800 select-none">Title</span>
           <span className="ml-2 text-sm text-gray-400 select-none">Description</span>
         </div>
@@ -266,7 +267,23 @@ export default function ForceGraph() {
   const svgRef  = useRef<SVGSVGElement>(null);
   const [activeNode, setActiveNode] = useState<NodeDef | null>(null);
   const [nodeOrigin, setNodeOrigin] = useState<{ x: number; y: number } | null>(null);
+  const [isOverlayClosing, setIsOverlayClosing] = useState(false);
 
+  // ── Navigate home → animate close then unmount ────────────────────────────
+  useEffect(() => {
+    function handleNavigateHome() {
+      if (!activeNode) return;
+      setIsOverlayClosing(true);
+      setTimeout(() => {
+        setActiveNode(null);
+        setIsOverlayClosing(false);
+      }, 200);
+    }
+    window.addEventListener('navigate-home', handleNavigateHome);
+    return () => window.removeEventListener('navigate-home', handleNavigateHome);
+  }, [activeNode]);
+
+  // ── Main simulation ───────────────────────────────────────────────────────
   useEffect(() => {
     const wrap = wrapRef.current;
     const svg  = svgRef.current;
@@ -305,7 +322,7 @@ export default function ForceGraph() {
       if (d.type === 'branch') orbitSpeed[d.id] = 0.75 + Math.random() * 0.5;
     });
 
-    const ORBIT_FORCE = 0.28; // tangential acceleration per tick
+    const ORBIT_FORCE = 0.14; // tangential acceleration per tick (halved for slower orbit)
 
     // ── Orbital force (applied every tick by d3) ──────────────────────────────
     simulation.force('orbital', () => {
@@ -358,7 +375,7 @@ export default function ForceGraph() {
         circ.setAttribute('stroke', '#000000');
         circ.setAttribute('stroke-width', '1');
 
-        const name = txt(d.label, { size: 16, weight: 500, fill: '#000000', dy: 48 });
+        const name = txt(d.label, { size: 18, weight: 700, fill: '#000000', dy: 50 });
 
         // Location row: mage location-pin icon + country text
         const locGroup = el('g') as SVGGElement;
@@ -366,25 +383,27 @@ export default function ForceGraph() {
 
         // Mage location-pin icon (24×24 viewbox) scaled to ~12px
         const pinWrap = el('g') as SVGGElement;
-        pinWrap.setAttribute('transform', 'translate(-38, 57) scale(0.5)');
-        const pinPath = el('path');
-        pinPath.setAttribute('fill', 'none');
-        pinPath.setAttribute('stroke', '#6D6D6D');
-        pinPath.setAttribute('stroke-linecap', 'round');
-        pinPath.setAttribute('stroke-linejoin', 'round');
-        pinPath.setAttribute('stroke-width', '1.5');
-        pinPath.setAttribute('d', MAGE_LOCATION_PIN_D);
-        pinWrap.appendChild(pinPath);
+        pinWrap.setAttribute('transform', 'translate(-44, 64) scale(0.62)');
+        LOCATION_ICON_PATHS.forEach((dPath) => {
+          const pinPath = el('path');
+          pinPath.setAttribute('fill', 'none');
+          pinPath.setAttribute('stroke', '#6D6D6D');
+          pinPath.setAttribute('stroke-width', '1.5');
+          pinPath.setAttribute('stroke-miterlimit', '10');
+          pinPath.setAttribute('stroke-linecap', 'round');
+          pinPath.setAttribute('d', dPath);
+          pinWrap.appendChild(pinPath);
+        });
 
         const locText = el('text') as SVGTextElement;
         locText.setAttribute('font-family', 'Inter, system-ui, sans-serif');
-        locText.setAttribute('font-size', '16');
-        locText.setAttribute('font-weight', '500');
+        locText.setAttribute('font-size', '18');
+        locText.setAttribute('font-weight', '600');
         locText.setAttribute('fill', '#6D6D6D');
         locText.setAttribute('text-anchor', 'start');
         locText.setAttribute('dominant-baseline', 'middle');
         locText.setAttribute('x', '-26');
-        locText.setAttribute('y', '64');
+        locText.setAttribute('y', '72');
         locText.setAttribute('pointer-events', 'none');
         locText.textContent = d.sublabel ?? '';
 
@@ -468,8 +487,15 @@ export default function ForceGraph() {
           const cardLeft = wb.left + (wb.width  - CARD_W) / 2;
           const cardTop  = wb.top  + (wb.height - CARD_H) / 2;
 
-          setNodeOrigin({ x: screen.x - cardLeft, y: screen.y - cardTop });
-          setActiveNode(d);
+          const origin = { x: screen.x - cardLeft, y: screen.y - cardTop };
+
+          if (d.id === 'project') {
+            // Dispatch event so NavMenu updates its active state too
+            window.dispatchEvent(new CustomEvent('open-project-page', { detail: { origin } }));
+          } else {
+            setNodeOrigin(origin);
+            setActiveNode(d);
+          }
         });
       }
 
@@ -560,8 +586,9 @@ export default function ForceGraph() {
     ro.observe(wrap);
 
     // ── Sidebar "Project" trigger ─────────────────────────────────────────────
-    function handleOpenProject() {
-      setNodeOrigin(null); // animate from center
+    function handleOpenProject(e: Event) {
+      const origin = (e as CustomEvent).detail?.origin ?? null;
+      setNodeOrigin(origin);
       setActiveNode(NODES.find(n => n.id === 'project') ?? null);
     }
     window.addEventListener('open-project-page', handleOpenProject);
@@ -586,11 +613,14 @@ export default function ForceGraph() {
       </p>
       <svg ref={svgRef} className="w-full h-full block" aria-label="Force graph" />
       {activeNode && activeNode.id === 'project' && createPortal(
-        <ProjectPage onClose={() => setActiveNode(null)} origin={nodeOrigin} />,
+        <ProjectPage onClose={() => {
+          setActiveNode(null);
+          window.dispatchEvent(new CustomEvent('project-page-closed'));
+        }} origin={nodeOrigin} forceClose={isOverlayClosing} />,
         document.getElementById('canvas-overlay')!
       )}
       {activeNode && activeNode.id !== 'project' && createPortal(
-        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} origin={nodeOrigin} />,
+        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} origin={nodeOrigin} forceClose={isOverlayClosing} />,
         document.getElementById('canvas-overlay')!
       )}
       <CursorDot />
