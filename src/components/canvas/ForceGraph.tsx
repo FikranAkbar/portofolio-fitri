@@ -61,24 +61,30 @@ const txt = (
 
 // ─── Node Card Overlay ───────────────────────────────────────────────────────
 function NodeCard({ node: _node, onClose }: { node: NodeDef; onClose: () => void }) {
+  const [closing, setClosing] = useState(false);
+
+  function handleClose() {
+    setClosing(true);
+    setTimeout(onClose, 200);
+  }
+
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center z-20"
-      onClick={onClose}
+      className={`absolute inset-0 flex items-center justify-center z-20 ${closing ? 'backdrop-out' : 'backdrop-in'}`}
+      onClick={handleClose}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]" />
 
       {/* Card */}
       <div
-        className="relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90%] overflow-hidden"
+        className={`relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90%] overflow-hidden ${closing ? 'mac-close' : 'mac-open'}`}
         onClick={e => e.stopPropagation()}
       >
         {/* Window chrome */}
         <div className="group/chrome flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100">
-          {/* Red dot — closes the card */}
           <button
-            onClick={onClose}
+            onClick={handleClose}
             title="Close"
             className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90
               transition-all duration-100 flex items-center justify-center
@@ -107,7 +113,7 @@ function NodeCard({ node: _node, onClose }: { node: NodeDef; onClose: () => void
         {/* Footer */}
         <div className="flex justify-end px-4 pb-4">
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="select-none px-5 py-2 rounded-lg text-sm font-medium text-white
               bg-[#E73AA4] hover:bg-[#d42e93] active:scale-95 active:bg-[#c0287f]
               transition-all duration-150 ease-in-out shadow-sm hover:shadow-md"
