@@ -60,13 +60,23 @@ const txt = (
 };
 
 // ─── Node Card Overlay ───────────────────────────────────────────────────────
-function NodeCard({ node: _node, onClose }: { node: NodeDef; onClose: () => void }) {
+function NodeCard({
+  node: _node,
+  onClose,
+  origin,
+}: {
+  node: NodeDef;
+  onClose: () => void;
+  origin: { x: number; y: number } | null;
+}) {
   const [closing, setClosing] = useState(false);
 
   function handleClose() {
     setClosing(true);
     setTimeout(onClose, 200);
   }
+
+  const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
 
   return (
     <div
@@ -79,6 +89,7 @@ function NodeCard({ node: _node, onClose }: { node: NodeDef; onClose: () => void
       {/* Card */}
       <div
         className={`relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90%] overflow-hidden ${closing ? 'mac-close' : 'mac-open'}`}
+        style={{ transformOrigin }}
         onClick={e => e.stopPropagation()}
       >
         {/* Window chrome */}
@@ -131,6 +142,7 @@ export default function ForceGraph() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef  = useRef<SVGSVGElement>(null);
   const [activeNode, setActiveNode] = useState<NodeDef | null>(null);
+  const [nodeOrigin, setNodeOrigin] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -267,6 +279,23 @@ export default function ForceGraph() {
 
         // ── Click → open card ──────────────────────────────────────────────
         g.addEventListener('click', () => {
+          const svgEl = svgRef.current!;
+          const wrapEl = wrapRef.current!;
+
+          // Convert SVG node coords → screen coords
+          const pt = (svgEl as any).createSVGPoint() as SVGPoint;
+          pt.x = d.x ?? 0;
+          pt.y = d.y ?? 0;
+          const screen = pt.matrixTransform((svgEl as any).getScreenCTM()!);
+
+          // Estimate card position (centered in wrap)
+          const wb = wrapEl.getBoundingClientRect();
+          const CARD_W = Math.min(420, wb.width * 0.9);
+          const CARD_H = 320; // approximate rendered height
+          const cardLeft = wb.left + (wb.width  - CARD_W) / 2;
+          const cardTop  = wb.top  + (wb.height - CARD_H) / 2;
+
+          setNodeOrigin({ x: screen.x - cardLeft, y: screen.y - cardTop });
           setActiveNode(d);
         });
       }
@@ -375,7 +404,7 @@ export default function ForceGraph() {
       </p>
       <svg ref={svgRef} className="w-full h-full block" aria-label="Force graph" />
       {activeNode && (
-        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} />
+        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} origin={nodeOrigin} />
       )}
       <CursorDot />
     </div>
