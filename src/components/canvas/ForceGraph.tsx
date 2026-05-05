@@ -134,13 +134,13 @@ function ProjectPage({ onClose, origin, forceClose }: { onClose: () => void; ori
                     window.dispatchEvent(new CustomEvent('project-cursor', { detail: { active: false } }));
                   }}
                 >
-                  <div className="flex justify-end px-4 pt-4">
+                  <div className="flex justify-end px-4 pt-1">
                     <span className="text-[12px] font-mono text-gray-300 tracking-widest">NO. {p.num}</span>
                   </div>
-                  <div className="mx-4 mb-4 bg-gray-100 rounded-lg h-36 flex items-center justify-center">
+                  <div className="mx-4 mb-4 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center" style={{ aspectRatio: '16/9' }}>
                     <span className="text-xs text-gray-300 tracking-wide select-none">Cover Image</span>
                   </div>
-                  <div className="px-4 pb-4 flex flex-col gap-4">
+                  <div className="px-4 pb-3 flex flex-col gap-3">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-[18px] font-medium text-gray-800 select-none">{p.title}</p>
                       <div className="flex gap-1 shrink-0">
@@ -153,14 +153,14 @@ function ProjectPage({ onClose, origin, forceClose }: { onClose: () => void; ori
                   </div>
                   {/* Expand: Role / Team / Timeframe */}
                   <div className={`overflow-hidden transition-all duration-300 ease-in-out ${hoveredCard === p.num ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className="border-t border-dashed border-gray-200 mx-4 my-4" />
+                    <div className="border-t border-dashed border-gray-200 mx-4 mt-3 mb-4" />
                     <div className="px-4 pb-4 flex flex-col gap-4">
                       {[
                         { label: 'Role',      value: p.role      },
                         { label: 'Team',      value: p.team      },
                         { label: 'Timeframe', value: p.timeframe },
                       ].map(row => (
-                        <div key={row.label} className="flex items-start gap-2 text-[16px]">
+                        <div key={row.label} className="flex items-start gap-6 text-[16px]">
                           <span className="text-gray-400 uppercase tracking-wider font-medium w-28 shrink-0 text-left select-none">{row.label}</span>
                           <span className="text-gray-600 text-left select-none">{row.value}</span>
                         </div>
