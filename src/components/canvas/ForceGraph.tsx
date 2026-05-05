@@ -664,15 +664,22 @@ function CursorDot() {
           background: '#E73AA4',
           borderRadius: '9999px',
           mixBlendMode: hovering ? 'normal' : 'multiply',
-          width:  hovering ? '136px' : '16px',
-          height: hovering ? '32px'  : '16px',
+          width:  hovering ? '196px' : '16px',
+          height: hovering ? '48px'  : '16px',
         }}
       >
         <span
-          className="text-white text-[11px] font-semibold tracking-wide select-none whitespace-nowrap transition-opacity duration-150"
-          style={{ opacity: hovering ? 1 : 0, transitionDelay: hovering ? '80ms' : '0ms' }}
+          className="text-white select-none whitespace-nowrap transition-opacity duration-150"
+          style={{
+            opacity: hovering ? 1 : 0,
+            transitionDelay: hovering ? '80ms' : '0ms',
+            fontFamily: "'Inconsolata', 'Courier New', monospace",
+            fontSize: '16px',
+            fontWeight: 500,
+            letterSpacing: '0.01em',
+          }}
         >
-          View Case Study
+          View case study ↗
         </span>
       </div>
     </div>
