@@ -1,24 +1,550 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Sidebar from '../components/sidebar/Sidebar.astro';
-import CanvasPanel from '../components/canvas/CanvasPanel.astro';
+import '../styles/global.css';
 ---
 
-<BaseLayout
-  title="Fitri Zahwa — Portfolio"
-  description="UI/UX Designer, Illustrator & Pixel Artist based in Indonesia"
->
-  <!--
-    Full-viewport two-column layout:
-      left  → fixed-width sidebar (300px)
-      right → flexible canvas panel
-  -->
-  <div class="flex h-screen w-full overflow-hidden bg-[#F5F5F5]">
-    <!-- 24px spacing on left / top / bottom for the floating card -->
-    <div class="pl-6 pt-6 pb-6 shrink-0 flex h-full">
-      <Sidebar />
-    </div>
-    <CanvasPanel />
-  </div>
-</BaseLayout>
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome — Fitri Zahwa</title>
+    <meta name="description" content="UI/UX Designer, Illustrator & Pixel Artist based in Indonesia" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,700&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        cursor: none !important;
+      }
 
+      html, body {
+        height: 100%;
+        font-family: 'Inter', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+        /* Bright, airy background */
+        background: #F7F4FF;
+      }
+
+      /* ── Cursor: ring (dark) + dot ── */
+      #cursor-ring {
+        width: 28px;
+        height: 28px;
+        border: 1.5px solid rgba(90, 50, 160, 0.55);
+        border-radius: 50%;
+        pointer-events: none;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+      }
+
+      #cursor-dot {
+        width: 5px;
+        height: 5px;
+        background: #7c3aed;
+        border-radius: 50%;
+        pointer-events: none;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        box-shadow: 0 0 6px 2px rgba(231, 58, 164, 0.5);
+      }
+
+      body:has(a:hover) #cursor-ring,
+      body:has(button:hover) #cursor-ring {
+        width: 42px;
+        height: 42px;
+        border-color: rgba(231, 58, 164, 0.85);
+      }
+
+      #starfield {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* ── Soft pastel blobs in background ── */
+      .blob {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── Enter animations ── */
+      @keyframes fade-up {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      @keyframes line-draw {
+        from { transform: scaleX(0); }
+        to   { transform: scaleX(1); }
+      }
+      @keyframes shimmer {
+        0%   { background-position: -200% center; }
+        100% { background-position: 200% center; }
+      }
+      @keyframes page-out {
+        from { opacity: 1; transform: scale(1); }
+        to   { opacity: 0; transform: scale(1.04); }
+      }
+      @keyframes orbit-pulse {
+        0%, 100% { opacity: 0.25; }
+        50%       { opacity: 0.5; }
+      }
+
+      .anim-welcome  { opacity: 0; animation: fade-up 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s  forwards; }
+      .anim-title    { opacity: 0; animation: fade-up 1.0s cubic-bezier(0.22,1,0.36,1) 0.7s  forwards; }
+      .anim-divider  { opacity: 0; transform-origin: center; animation: line-draw 0.9s cubic-bezier(0.22,1,0.36,1) 1.15s forwards, fade-in 0.1s 1.15s forwards; }
+      .anim-subtitle { opacity: 0; animation: fade-up 0.9s cubic-bezier(0.22,1,0.36,1) 1.4s  forwards; }
+      .anim-btn      { opacity: 0; animation: fade-up 0.9s cubic-bezier(0.22,1,0.36,1) 1.75s forwards; }
+      .anim-skip     { opacity: 0; animation: fade-in 0.8s ease 2.1s forwards; }
+      .anim-footer   { opacity: 0; animation: fade-in 0.8s ease 2.2s forwards; }
+
+      /* Dark-toned gradient for title against light bg */
+      .title-gradient {
+        background: linear-gradient(120deg, #4c1d95 0%, #7c3aed 25%, #db2777 55%, #9333ea 80%, #3730a3 100%);
+        background-size: 220% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 6s linear 1.5s infinite;
+      }
+
+      /* ── Journey button (dark outlined) ── */
+      .btn-journey {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 34px;
+        border: 1.5px solid rgba(124, 58, 237, 0.45);
+        border-radius: 100px;
+        background: rgba(124, 58, 237, 0.06);
+        color: #2e0a52;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+        backdrop-filter: blur(8px);
+        text-decoration: none;
+        overflow: hidden;
+      }
+
+      .btn-journey::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(219,39,119,0.08));
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        border-radius: inherit;
+      }
+
+      .btn-journey:hover {
+        border-color: rgba(219, 39, 119, 0.7);
+        color: #5b1a8a;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 28px rgba(124,58,237,0.18), 0 0 40px rgba(219,39,119,0.1);
+      }
+
+      .btn-journey:hover::after { opacity: 1; }
+
+      .btn-journey .arrow {
+        transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+        display: inline-block;
+        position: relative; z-index: 1;
+      }
+      .btn-journey span { position: relative; z-index: 1; }
+      .btn-journey:hover .arrow { transform: translateX(5px); }
+
+      /* ── Skip button ── */
+      .btn-skip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        color: rgba(15,5,40,0.4);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: color 0.25s ease;
+        background: transparent;
+        border: none;
+        font-family: 'Source Code Pro', monospace;
+      }
+      .btn-skip:hover { color: rgba(15,5,40,0.85); }
+
+      /* ── Orbit rings styled for light bg ── */
+      .orbit-ring {
+        position: fixed;
+        border-radius: 50%;
+        border: 1px solid rgba(124,58,237,0.1);
+        pointer-events: none;
+        animation: orbit-pulse 6s ease-in-out infinite;
+      }
+
+      .page-exit { animation: page-out 0.55s cubic-bezier(0.4,0,1,1) forwards; }
+    </style>
+  </head>
+
+  <body class="h-full">
+
+    <!-- Cursor -->
+    <div id="cursor-ring"></div>
+    <div id="cursor-dot"></div>
+
+    <!-- Star/particle canvas -->
+    <canvas id="starfield"></canvas>
+
+    <!-- Soft light blobs for background depth -->
+    <div class="blob" style="width:900px;height:900px;background:radial-gradient(circle,rgba(196,181,253,0.6) 0%,transparent 65%);filter:blur(80px);bottom:-300px;left:-250px;"></div>
+    <div class="blob" style="width:700px;height:700px;background:radial-gradient(circle,rgba(251,207,232,0.6) 0%,transparent 65%);filter:blur(80px);top:-200px;right:-150px;"></div>
+    <div class="blob" style="width:500px;height:500px;background:radial-gradient(circle,rgba(165,180,252,0.5) 0%,transparent 65%);filter:blur(70px);top:35%;right:10%;"></div>
+    <div class="blob" style="width:400px;height:400px;background:radial-gradient(circle,rgba(233,213,255,0.65) 0%,transparent 65%);filter:blur(60px);bottom:5%;left:30%;"></div>
+
+    <!-- Decorative orbit rings -->
+    <div class="orbit-ring" style="width:500px;height:500px;top:50%;left:50%;margin-top:-250px;margin-left:-250px;animation-delay:0s;"></div>
+    <div class="orbit-ring" style="width:760px;height:760px;top:50%;left:50%;margin-top:-380px;margin-left:-380px;animation-delay:2.5s;border-color:rgba(219,39,119,0.07);"></div>
+
+    <!-- SKIP INTRO -->
+    <div style="position:fixed;top:28px;right:32px;z-index:100;" class="anim-skip">
+      <button class="btn-skip" id="btn-skip">
+        SKIP INTRO
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Wordmark -->
+    <div style="position:fixed;top:30px;left:36px;z-index:100;" class="anim-skip">
+      <span style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:0.14em;color:rgba(15,5,40,0.3);text-transform:uppercase;">fitri.world</span>
+    </div>
+
+    <!-- Main content — centered -->
+    <main style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10vw;text-align:center;">
+      <div style="max-width:800px;width:100%;display:flex;flex-direction:column;align-items:center;">
+
+        <!-- WELCOME TO label -->
+        <div class="anim-welcome" style="margin-bottom:14px;display:flex;align-items:center;gap:12px;">
+          <div style="width:28px;height:1px;background:rgba(219,39,119,0.6);"></div>
+          <span style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:0.26em;color:rgba(219,39,119,0.85);text-transform:uppercase;font-weight:500;">Welcome to</span>
+          <div style="width:28px;height:1px;background:rgba(219,39,119,0.6);"></div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="anim-title" style="font-family:'DM Sans',Inter,sans-serif;font-size:clamp(54px,8.5vw,100px);font-weight:700;line-height:1.0;letter-spacing:-0.025em;margin-bottom:32px;">
+          <span style="display:block;color:#0d0520;">Fitri's</span>
+          <span class="title-gradient" style="display:block;font-style:italic;">World</span>
+        </h1>
+
+        <!-- Divider -->
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:32px;width:100%;max-width:460px;justify-content:center;">
+          <div class="anim-divider" style="height:1px;flex:1;background:linear-gradient(to right,rgba(255,255,255,0),rgba(124,58,237,0.5));transform-origin:right;"></div>
+          <div class="anim-welcome" style="width:5px;height:5px;border-radius:50%;background:#9333ea;flex-shrink:0;box-shadow:0 0 8px rgba(147,51,234,0.6);"></div>
+          <div class="anim-divider" style="height:1px;flex:1;background:linear-gradient(to left,rgba(255,255,255,0),rgba(219,39,119,0.4));transform-origin:left;"></div>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="anim-subtitle" style="font-family:'Inter',sans-serif;font-size:clamp(14px,1.35vw,17px);font-weight:400;line-height:1.85;color:rgba(15,5,40,0.58);max-width:480px;margin-bottom:60px;letter-spacing:0.01em;">
+          There are stories waiting to be shaped,<br />
+          why not begin with mine and build something together?
+        </p>
+
+        <!-- CTA -->
+        <div class="anim-btn">
+          <a href="/home" class="btn-journey" id="btn-journey">
+            <span>Start the Journey</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <div class="anim-footer" style="position:fixed;bottom:28px;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:0 36px;">
+      <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(15,5,40,0.3);text-transform:uppercase;">© 2025 Fitri Zahwa</span>
+      <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(15,5,40,0.3);text-transform:uppercase;">UI/UX · Illustration · Pixel Art</span>
+    </div>
+
+    <script>
+      // ── Cursor
+      const ring = document.getElementById('cursor-ring') as HTMLElement;
+      const dot  = document.getElementById('cursor-dot')  as HTMLElement;
+      let mx = -100, my = -100, rx = -100, ry = -100;
+
+      document.addEventListener('mousemove', (e) => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+      });
+
+      (function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animRing);
+      })();
+
+      // ── Canvas: Milky Way + dark particles
+      const canvas = document.getElementById('starfield') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d')!;
+
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // aurora redraws dynamically each frame — nothing to reset here
+      }
+
+      // ─── Aurora orbs — animated soft nebula glows
+      interface AuroraOrb {
+        x: number; y: number;
+        rx: number; ry: number;
+        color: string;
+        baseAlpha: number;
+        phase: number; speed: number;
+        driftX: number; driftY: number;
+      }
+
+      const auroraOrbs: AuroraOrb[] = [
+        { x: 0.18, y: 0.28, rx: 0.38, ry: 0.25, color: '180,130,255', baseAlpha: 0.10, phase: 0,    speed: 0.0007, driftX: 0.00008, driftY: 0.00004 },
+        { x: 0.75, y: 0.18, rx: 0.32, ry: 0.20, color: '240,150,200', baseAlpha: 0.09, phase: 1.8,  speed: 0.0009, driftX:-0.00006, driftY: 0.00005 },
+        { x: 0.55, y: 0.72, rx: 0.36, ry: 0.22, color: '150,100,240', baseAlpha: 0.08, phase: 3.5,  speed: 0.0006, driftX: 0.00005, driftY:-0.00003 },
+        { x: 0.88, y: 0.60, rx: 0.28, ry: 0.18, color: '220,120,255', baseAlpha: 0.08, phase: 0.9,  speed: 0.0011, driftX:-0.00007, driftY:-0.00004 },
+        { x: 0.08, y: 0.70, rx: 0.30, ry: 0.20, color: '170,100,220', baseAlpha: 0.07, phase: 2.4,  speed: 0.0008, driftX: 0.00006, driftY: 0.00006 },
+        { x: 0.45, y: 0.10, rx: 0.30, ry: 0.16, color: '210,160,255', baseAlpha: 0.07, phase: 4.2,  speed: 0.0010, driftX:-0.00005, driftY: 0.00005 },
+      ];
+
+      // Track accumulated drift
+      const orbOffsets = auroraOrbs.map(() => ({ ox: 0, oy: 0 }));
+
+      function drawAurora(t: number) {
+        for (let i = 0; i < auroraOrbs.length; i++) {
+          const o = auroraOrbs[i];
+          const off = orbOffsets[i];
+
+          // Slow drift
+          off.ox += o.driftX;
+          off.oy += o.driftY;
+          // Gentle sine wander
+          const wx = Math.sin(t * o.speed * 0.7 + o.phase) * 0.04;
+          const wy = Math.cos(t * o.speed * 0.5 + o.phase + 1) * 0.03;
+
+          const cx = (o.x + off.ox + wx) * canvas.width;
+          const cy = (o.y + off.oy + wy) * canvas.height;
+          const rw = o.rx * canvas.width;
+          const rh = o.ry * canvas.height;
+
+          // Breathe alpha
+          const breathe = Math.sin(t * o.speed + o.phase) * 0.35 + 0.65;
+          const alpha = o.baseAlpha * breathe;
+
+          // Elliptical radial gradient using scale trick
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.scale(1, rh / rw);
+          const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, rw);
+          grad.addColorStop(0,    `rgba(${o.color},${alpha})`);
+          grad.addColorStop(0.45, `rgba(${o.color},${alpha * 0.55})`);
+          grad.addColorStop(1,    `rgba(${o.color},0)`);
+          ctx.beginPath();
+          ctx.arc(0, 0, rw, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      // ─── Floating dark particles
+      interface Particle {
+        x: number; y: number;
+        vx: number; vy: number;
+        r: number;
+        alpha: number; targetAlpha: number;
+        color: string;
+        twinkleSpeed: number; twinkleOffset: number;
+      }
+
+      const PARTICLE_COLORS = [
+        '60,20,100',   // deep violet
+        '90,30,130',   // purple
+        '130,30,80',   // dark rose
+        '50,40,120',   // indigo
+        '100,20,60',   // dark pink
+        '70,50,150',   // periwinkle dark
+        '160,60,100',  // mauve
+      ];
+
+      const PARTICLE_COUNT = 220;
+
+      function mkParticle(): Particle {
+        const col = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          r:  Math.random() * 1.6 + 0.3,
+          alpha: 0,
+          targetAlpha: Math.random() * 0.55 + 0.15,
+          color: col,
+          twinkleSpeed:  Math.random() * 0.015 + 0.004,
+          twinkleOffset: Math.random() * Math.PI * 2,
+        };
+      }
+
+      let particles: Particle[] = Array.from({ length: PARTICLE_COUNT }, mkParticle);
+      let t = 0;
+
+      // ─── Shooting stars (dark streaks)
+      interface Shoot {
+        x: number; y: number;
+        vx: number; vy: number;
+        len: number; life: number; maxLife: number;
+        color: string;
+      }
+      let shoots: Shoot[] = [];
+
+      function spawnShoot() {
+        const angle = (Math.random() * 35 + 10) * (Math.PI / 180);
+        const speed = Math.random() * 6 + 8;
+        const shootColors = ['60,20,100', '90,30,130', '130,30,80', '70,50,150'];
+        const c = shootColors[Math.floor(Math.random() * shootColors.length)];
+        shoots.push({
+          x: Math.random() * canvas.width * 0.75,
+          y: Math.random() * canvas.height * 0.5,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          len: Math.random() * 100 + 70,
+          life: 0,
+          maxLife: Math.random() * 35 + 25,
+          color: c,
+        });
+      }
+
+      setInterval(spawnShoot, 3500);
+      setTimeout(spawnShoot, 2000);
+
+      function drawFrame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        t++;
+
+        // Draw aurora nebula orbs
+        drawAurora(t);
+
+        // Draw + update particles
+        for (const p of particles) {
+          // fade in
+          p.alpha += (p.targetAlpha - p.alpha) * 0.02;
+
+          // twinkle
+          const tw = Math.sin(t * p.twinkleSpeed + p.twinkleOffset) * 0.25 + 0.75;
+          const a  = p.alpha * tw;
+
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // wrap around
+          if (p.x < -5) p.x = canvas.width + 5;
+          if (p.x > canvas.width + 5) p.x = -5;
+          if (p.y < -5) p.y = canvas.height + 5;
+          if (p.y > canvas.height + 5) p.y = -5;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${p.color},${a})`;
+          ctx.fill();
+
+          // subtle glow for larger particles
+          if (p.r > 1.0 && a > 0.3) {
+            const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3.5);
+            grd.addColorStop(0, `rgba(${p.color},${a * 0.25})`);
+            grd.addColorStop(1, `rgba(${p.color},0)`);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
+            ctx.fillStyle = grd;
+            ctx.fill();
+          }
+        }
+
+        // Draw shooting stars
+        for (let i = shoots.length - 1; i >= 0; i--) {
+          const s = shoots[i];
+          s.life++;
+          const prog  = s.life / s.maxLife;
+          const alpha = prog < 0.25 ? prog / 0.25 : prog > 0.65 ? 1 - (prog - 0.65) / 0.35 : 1;
+
+          const mag  = Math.hypot(s.vx, s.vy);
+          const tailX = s.x - (s.vx / mag) * s.len;
+          const tailY = s.y - (s.vy / mag) * s.len;
+
+          const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+          grad.addColorStop(0, `rgba(${s.color},0)`);
+          grad.addColorStop(1, `rgba(${s.color},${alpha * 0.75})`);
+
+          ctx.beginPath();
+          ctx.moveTo(tailX, tailY);
+          ctx.lineTo(s.x, s.y);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1.2;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+
+          // head
+          const hg = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 5);
+          hg.addColorStop(0, `rgba(${s.color},${alpha * 0.85})`);
+          hg.addColorStop(1, `rgba(${s.color},0)`);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = hg;
+          ctx.fill();
+
+          s.x += s.vx;
+          s.y += s.vy;
+          if (s.life >= s.maxLife) shoots.splice(i, 1);
+        }
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      drawFrame();
+
+      // ── Navigate
+      function navigateTo(href: string) {
+        sessionStorage.setItem('introSeen', '1');
+        document.body.style.pointerEvents = 'none';
+        document.body.classList.add('page-exit');
+        setTimeout(() => { window.location.href = href; }, 520);
+      }
+
+      document.getElementById('btn-journey')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateTo('/home');
+      });
+
+      document.getElementById('btn-skip')?.addEventListener('click', () => {
+        navigateTo('/home');
+      });
+    </script>
+
+  </body>
+</html>
