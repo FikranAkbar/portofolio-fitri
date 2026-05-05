@@ -178,16 +178,102 @@ function ProjectPage({ onClose, origin, isClosing: forcedClosing }: { onClose: (
 }
 
 // ─── About Me Page ────────────────────────────────────────────────────────────
+const ABOUT_EXPERIENCE = [
+  {
+    period: 'May 2020 – Present',
+    company: 'Fiverr Platform',
+    role: 'Freelance Illustrator and Animator',
+    desc: 'Completed 150+ illustration and animation projects for international clients, specializing in hand-drawn and pixel art. Built strong client relationships through reliable delivery, clear communication, and consistent quality across diverse project scopes.',
+    highlight: null,
+  },
+  {
+    period: 'Jun 2022 – Nov 2022',
+    company: 'Cuatrodia Creative',
+    role: 'Intern 2D Motion Artist',
+    desc: 'Assisted in developing 2D animations for short films, event visuals, and promotional materials. Contributed to the opening animation showcased at the',
+    highlight: '2022 G20 Summit in Bali',
+    highlightSuffix: ', supporting the branding of a high-profile international event.',
+  },
+  {
+    period: 'Aug 2021 – Dec 2021',
+    company: 'Zenius Education',
+    role: 'Intern Storyboard Artist',
+    desc: "Created storyboards and thumbnails for Zenius Education's original educational series, ensuring engaging and effective visual storytelling. Translated complex academic topics into accessible narratives for primary and secondary school audiences, while also mentoring fellow interns by providing feedback and suggestions to improve overall team quality.",
+    highlight: null,
+  },
+  {
+    period: 'Sep 2020 – Dec 2021',
+    company: 'MSV Studio',
+    role: 'Junior 2D Animator',
+    desc: 'Completed a 9-month internship specializing in 2D animation techniques, cut-out workflows, and production pipelines. Continued as a contract 2D animator for 3 months, delivering high-quality animation assets for client projects under tight deadlines.',
+    highlight: null,
+  },
+];
+
+const ABOUT_ORGS = [
+  {
+    period: 'Sep 2020 – Dec 2021',
+    company: 'Amikom Computer Club',
+    role: '',
+    desc: 'Collaborated with a team of five to maintain design consistency across Instagram, Twitter, and LinkedIn. Conducted workshops for new members, introducing fundamental front-end development concepts and design tools. Also managed public relations and documented campus events to boost organizational visibility.',
+  },
+];
+
+const ABOUT_COURSES = [
+  {
+    period: 'Feb 2025 – Aug 2025',
+    company: 'Harisenin.com',
+    role: 'UX Design Bootcamp',
+    desc: 'Completed a comprehensive UX design bootcamp focused on UX research and product management. As the final project, conducted UX research and design for a Finance Tracking App for Young Adults, covering the full process from research methods and persona building to UI design, wireframing, prototyping, and Figma.',
+  },
+  {
+    period: 'Jan 2025 – Jun 2025',
+    company: 'Uxcel',
+    role: 'UI/UX Design Courses',
+    desc: 'Completed multiple UI/UX design courses to build a strong foundation in design principles and practical skills. Topics included UX foundations, UI components, accessibility, common design patterns, wireframing, design terminology, composition, color psychology, and typography.',
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    name: 'Akraal',
+    country: 'Sweden',
+    text: '"Really great experience working with Fitri Zahwa. The delivery took a bit longer, but it was absolutely worth the wait. She was professional, friendly, and handled the whole process in a very smooth and respectful way. What I appreciated most was her willingness to step outside her comfort zone for this project, and she still delivered with real quality and care. Very happy with the final result, and I\'d gladly work with her again."',
+  },
+  {
+    name: 'aubinrauffet671',
+    country: 'France',
+    text: '"I had the pleasure of working with Fitri, and I\'m beyond impressed! From start to finish, Fitri was an excellent communicator, always engaging with me to ensure every detail was perfect. They went above and beyond to make sure the final result exceeded my expectations. Truly a dedicated and talented professional who is committed to delivering the best work possible. Highly recommend! Thank you for the great work!"',
+  },
+  {
+    name: 'Aleynatuna',
+    country: 'Turkey',
+    text: '"It was very easy to communicate with her. Although we did not agree on exactly what I wanted at first, when I explained it again, she understood what I was expecting from the work very well and made the drawing I wanted extremely good. She was very polite and understanding in every conversation we had. I am also pleased with how detailed the drawing is. I am happy to work with her, I am sure that our work will continue."',
+  },
+];
+
+function TimelineItem({ period, company, role, desc }: { period: string; company: string; role: string; desc: string }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="text-[13px] text-gray-400">{period}</span>
+      <p className="text-[16px] font-semibold text-gray-800">{company}{role ? `, ${role}` : ''}</p>
+      <p className="text-[15px] text-gray-500 leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
 function AboutPage({ onClose, origin, isClosing: forcedClosing }: { onClose: () => void; origin: { x: number; y: number } | null; isClosing?: boolean }) {
   const [closing, setClosing] = useState(false);
   function handleClose() { setClosing(true); setTimeout(onClose, 200); }
   const isClosing = closing || forcedClosing;
   const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
+
   return (
     <div
       className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${isClosing ? 'mac-close' : 'mac-open'}`}
       style={{ transformOrigin }}
     >
+      {/* Window chrome */}
       <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 shrink-0">
         <button onClick={handleClose} title="Close"
           className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90 transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
@@ -202,8 +288,128 @@ function AboutPage({ onClose, origin, isClosing: forcedClosing }: { onClose: () 
         <span className="ml-2 text-sm font-medium text-gray-800 select-none">About Me</span>
         <span className="ml-2 text-sm text-gray-400 select-none">Who I am</span>
       </div>
-      <div className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
-        <p className="text-gray-400 text-sm tracking-wide select-none">Content coming soon</p>
+
+      {/* Scrollable body — Medium-style reading column */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <div className="max-w-[640px] mx-auto px-8 py-12 flex flex-col gap-10">
+
+          {/* ── Quote ──────────────────────────────────────────────────── */}
+          <div className="flex flex-col gap-4">
+            <p className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Steve Jobs once said...</p>
+            <blockquote className="border-l-2 border-[#E73AA4] pl-5">
+              <p className="text-[18px] italic text-gray-700 leading-relaxed font-medium">
+                "Design is not just what it looks like and feels like. Design is how it works."
+              </p>
+            </blockquote>
+            <p className="text-[16px] text-gray-500 leading-relaxed">
+              They remind me that design lives in how people experience it, and that's what eventually led me to UI/UX.
+            </p>
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* ── Bio ────────────────────────────────────────────────────── */}
+          <div className="flex flex-col gap-4">
+            <p className="text-[16px] text-gray-700 leading-relaxed">
+              <strong className="font-semibold text-gray-900">Hi, I'm Fitri Zahwa Januarita, a former illustrator and animator who found a new purpose in UI/UX design.</strong>
+            </p>
+            <p className="text-[16px] text-gray-600 leading-relaxed">
+              I've been drawing since I was a kid and even earned from it in high school. But over time, something felt missing — the joy of creating started to fade. I wanted my work to matter again. That's when I discovered UI/UX. It changed how I see design — not just as aesthetics, but as clarity, connection, and impact.
+            </p>
+            <p className="text-[16px] text-gray-600 leading-relaxed">
+              My attention to detail, which once slowed me down, now helps me craft thoughtful and meaningful experiences. I design from real-life struggles. My projects, <strong className="font-semibold text-gray-800">Nabu</strong> (a finance tracker) and <strong className="font-semibold text-gray-800">Fishdoro</strong> (a cozy focus timer), are built to help people facing challenges similar to mine.
+            </p>
+            <p className="text-[16px] text-gray-600 leading-relaxed">
+              I still tell stories, only now they're about users, their needs, and how design can make their lives better.
+            </p>
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* ── Experience ─────────────────────────────────────────────── */}
+          <div className="flex flex-col gap-6">
+            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Experience</h2>
+            <div className="flex flex-col gap-7">
+              {ABOUT_EXPERIENCE.map(item => (
+                <TimelineItem key={item.company + item.period}
+                  period={item.period} company={item.company}
+                  role={item.role} desc={item.desc}
+                />
+              ))}
+            </div>
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* ── Organization ───────────────────────────────────────────── */}
+          <div className="flex flex-col gap-6">
+            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Organization</h2>
+            <div className="flex flex-col gap-7">
+              {ABOUT_ORGS.map(item => (
+                <TimelineItem key={item.company} period={item.period}
+                  company={item.company} role={item.role} desc={item.desc} />
+              ))}
+            </div>
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* ── Courses & Certifications ────────────────────────────────── */}
+          <div className="flex flex-col gap-6">
+            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Courses, Training & Certifications</h2>
+            <div className="flex flex-col gap-7">
+              {ABOUT_COURSES.map(item => (
+                <TimelineItem key={item.company} period={item.period}
+                  company={item.company} role={item.role} desc={item.desc} />
+              ))}
+            </div>
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* ── Testimonials ────────────────────────────────────────────── */}
+          <div className="flex flex-col gap-6">
+            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">That's what they said 🩷</h2>
+            <div className="flex flex-col gap-4">
+              {TESTIMONIALS.map(t => (
+                <div key={t.name} className="flex flex-col gap-2 bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <p className="text-[15px] text-gray-600 leading-relaxed italic">{t.text}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-[14px] font-semibold text-gray-800">{t.name}</span>
+                    <span className="text-[13px] text-gray-400">{t.country}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* ── Read ────────────────────────────────────────────────────── */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Read</h2>
+            <a
+              href="https://fitrizahwa-garden.framer.website/reading"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-between px-5 py-4 rounded-xl border border-gray-200 bg-white overflow-hidden transition-all duration-300 hover:border-[#E73AA4] hover:shadow-md"
+            >
+              {/* Shimmer sweep on hover */}
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-[#E73AA4]/8 to-transparent pointer-events-none" />
+              <div className="flex items-center gap-3">
+                <span className="text-[20px]">📚</span>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[15px] font-medium text-gray-800 group-hover:text-[#E73AA4] transition-colors duration-200">Fitri's Garden</span>
+                  <span className="text-[13px] text-gray-400">Reading list & notes</span>
+                </div>
+              </div>
+              <span className="text-gray-300 group-hover:text-[#E73AA4] transition-colors duration-200 text-[18px]">↗</span>
+            </a>
+          </div>
+
+          {/* Bottom spacer */}
+          <div className="h-4" />
+        </div>
       </div>
     </div>
   );
@@ -759,9 +965,9 @@ export default function ForceGraph() {
 
       {/* ── Closing page animates out (mac-close) ── */}
       {closingPage && createPortal(
-        closingPage === 'project' ? <ProjectPage      onClose={() => {}} origin={null}       isClosing={true} /> :
-        closingPage === 'about'   ? <AboutPage         onClose={() => {}} origin={null}       isClosing={true} /> :
-                                    <VisitorGalleryPage onClose={() => {}}                    isClosing={true} />,
+        closingPage === 'project' ? <ProjectPage      onClose={() => {}} origin={null} isClosing={true} /> :
+        closingPage === 'about'   ? <AboutPage         onClose={() => {}} origin={null} isClosing={true} /> :
+                                    <VisitorGalleryPage onClose={() => {}}              isClosing={true} />,
         document.getElementById('canvas-overlay')!,
         `closing-${closingPage}`
       )}
