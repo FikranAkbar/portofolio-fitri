@@ -2,11 +2,11 @@
 import { Icon } from 'astro-icon/components';
 
 const navItems = [
-  { id: 'home',    href: '#',           label: 'Home',            external: false, projectTrigger: false },
-  { id: 'project', href: '#',           label: 'Project',         external: false, projectTrigger: true  },
-  { id: 'about',   href: '#about',      label: 'About Me',        external: false, projectTrigger: false },
-  { id: 'resume',  href: 'https://drive.google.com/file/d/1yl1f_f7vKW7DkzlGuwHA6h3F2KycF2JM/view?usp=drive_link', label: 'Resume', external: true, projectTrigger: false },
-  { id: 'gallery', href: '#gallery',    label: 'Visitor Gallery', external: false, projectTrigger: false },
+  { id: 'home',    href: '#',           label: 'Home',            external: false, pageTrigger: null      },
+  { id: 'project', href: '#',           label: 'Project',         external: false, pageTrigger: 'project' },
+  { id: 'about',   href: '#',           label: 'About Me',        external: false, pageTrigger: 'about'   },
+  { id: 'resume',  href: 'https://drive.google.com/file/d/1yl1f_f7vKW7DkzlGuwHA6h3F2KycF2JM/view?usp=drive_link', label: 'Resume', external: true, pageTrigger: null },
+  { id: 'gallery', href: '#',           label: 'Visitor Gallery', external: false, pageTrigger: 'gallery' },
 ];
 ---
 
@@ -18,11 +18,11 @@ const navItems = [
     <div class="flex flex-col gap-1">
       {navItems.map(item => (
         <a
-          href={item.projectTrigger ? 'javascript:void(0)' : item.href}
+          href={item.pageTrigger ? 'javascript:void(0)' : item.href}
           target={item.external ? '_blank' : undefined}
           rel={item.external ? 'noopener noreferrer' : undefined}
           data-nav-id={item.id}
-          data-project-trigger={item.projectTrigger ? 'true' : undefined}
+          data-page-trigger={item.pageTrigger ?? undefined}
           class="nav-link group flex items-center justify-between px-2 py-1.5 rounded-lg text-base transition-all duration-200 hover:bg-white hover:shadow-sm"
           style="color:#6D6D6D"
         >
@@ -45,8 +45,8 @@ const navItems = [
     document.querySelectorAll('.nav-link').forEach(link => {
       const el = link as HTMLElement;
       const isActive = el.dataset.navId === id;
-      el.classList.toggle('bg-white',   isActive);
-      el.classList.toggle('shadow-sm',  isActive);
+      el.classList.toggle('bg-white',    isActive);
+      el.classList.toggle('shadow-sm',   isActive);
       el.classList.toggle('font-medium', isActive);
       el.style.color = isActive ? '#000000' : '#6D6D6D';
       const arrow = el.querySelector('.nav-arrow') as HTMLElement | null;
@@ -54,25 +54,43 @@ const navItems = [
     });
   }
 
+  // Map page id → nav id
+  const PAGE_TO_NAV: Record<string, string> = {
+    project: 'project',
+    about:   'about',
+    gallery: 'gallery',
+  };
+
   // Home is active on load
   setActive('home');
 
-  // Project nav item click
-  document.querySelector('[data-project-trigger]')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.dispatchEvent(new CustomEvent('open-project-page'));
+  // Page trigger clicks (project, about, gallery)
+  document.querySelectorAll('[data-page-trigger]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const page = (el as HTMLElement).dataset.pageTrigger!;
+      window.dispatchEvent(new CustomEvent('open-page', { detail: { page } }));
+    });
   });
 
-  // Home nav item click → close project page if open
+  // Home → close any open page
   document.querySelector('[data-nav-id="home"]')?.addEventListener('click', (e) => {
     e.preventDefault();
     setActive('home');
     window.dispatchEvent(new CustomEvent('navigate-home'));
   });
 
-  // When project page opens (from any source: nav or force graph node)
-  window.addEventListener('open-project-page', () => setActive('project'));
+  // Sync nav active state when any page opens (from nav or force graph node)
+  window.addEventListener('page-nav-update', (e) => {
+    const page = (e as CustomEvent<{ page: string }>).detail.page;
+    const navId = PAGE_TO_NAV[page];
+    if (navId) setActive(navId);
+  });
 
-  // When project page is closed (via its own close button)
+  // When any page closes via its X button
+  window.addEventListener('page-closed', () => setActive('home'));
+
+  // Backward compat
+  window.addEventListener('open-project-page', () => setActive('project'));
   window.addEventListener('project-page-closed', () => setActive('home'));
 </script>

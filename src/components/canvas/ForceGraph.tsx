@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   forceSimulation,
@@ -78,7 +78,7 @@ const PROJECT_ITEMS = [
   { num: '04', title: 'Title', desc: 'Desc', tags: ['Tag 1', 'Tag 2', 'Tag 3'], role: 'Placeholder Role', team: 'Placeholder Team', timeframe: 'Aug 2023 - Feb 2024' },
 ];
 
-function ProjectPage({ onClose, origin, forceClose }: { onClose: () => void; origin: { x: number; y: number } | null; forceClose?: boolean }) {
+function ProjectPage({ onClose, origin, isClosing: forcedClosing }: { onClose: () => void; origin: { x: number; y: number } | null; isClosing?: boolean }) {
   const [closing, setClosing] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
@@ -87,7 +87,7 @@ function ProjectPage({ onClose, origin, forceClose }: { onClose: () => void; ori
     setTimeout(onClose, 200);
   }
 
-  const isClosing = closing || forceClose;
+  const isClosing = closing || forcedClosing;
   const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
 
   return (
@@ -172,6 +172,69 @@ function ProjectPage({ onClose, origin, forceClose }: { onClose: () => void; ori
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── About Me Page ────────────────────────────────────────────────────────────
+function AboutPage({ onClose, origin, isClosing: forcedClosing }: { onClose: () => void; origin: { x: number; y: number } | null; isClosing?: boolean }) {
+  const [closing, setClosing] = useState(false);
+  function handleClose() { setClosing(true); setTimeout(onClose, 200); }
+  const isClosing = closing || forcedClosing;
+  const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
+  return (
+    <div
+      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${isClosing ? 'mac-close' : 'mac-open'}`}
+      style={{ transformOrigin }}
+    >
+      <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 shrink-0">
+        <button onClick={handleClose} title="Close"
+          className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90 transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
+          aria-label="Close">
+          <svg className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+            viewBox="0 0 8 8" fill="none" stroke="#7A0000" strokeWidth="1.5" strokeLinecap="round">
+            <line x1="1" y1="1" x2="7" y2="7" /><line x1="7" y1="1" x2="1" y2="7" />
+          </svg>
+        </button>
+        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
+        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
+        <span className="ml-2 text-sm font-medium text-gray-800 select-none">About Me</span>
+        <span className="ml-2 text-sm text-gray-400 select-none">Who I am</span>
+      </div>
+      <div className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
+        <p className="text-gray-400 text-sm tracking-wide select-none">Content coming soon</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Visitor Gallery Page ─────────────────────────────────────────────────────
+function VisitorGalleryPage({ onClose, isClosing: forcedClosing }: { onClose: () => void; isClosing?: boolean }) {
+  const [closing, setClosing] = useState(false);
+  function handleClose() { setClosing(true); setTimeout(onClose, 200); }
+  const isClosing = closing || forcedClosing;
+  return (
+    <div
+      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${isClosing ? 'mac-close' : 'mac-open'}`}
+      style={{ transformOrigin: 'center center' }}
+    >
+      <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 shrink-0">
+        <button onClick={handleClose} title="Close"
+          className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90 transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
+          aria-label="Close">
+          <svg className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+            viewBox="0 0 8 8" fill="none" stroke="#7A0000" strokeWidth="1.5" strokeLinecap="round">
+            <line x1="1" y1="1" x2="7" y2="7" /><line x1="7" y1="1" x2="1" y2="7" />
+          </svg>
+        </button>
+        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
+        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
+        <span className="ml-2 text-sm font-medium text-gray-800 select-none">Visitor Gallery</span>
+        <span className="ml-2 text-sm text-gray-400 select-none">Leave your mark</span>
+      </div>
+      <div className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
+        <p className="text-gray-400 text-sm tracking-wide select-none">Content coming soon</p>
       </div>
     </div>
   );
@@ -262,23 +325,73 @@ function NodeCard({
 export default function ForceGraph() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef  = useRef<SVGSVGElement>(null);
-  const [activeNode, setActiveNode] = useState<NodeDef | null>(null);
-  const [nodeOrigin, setNodeOrigin] = useState<{ x: number; y: number } | null>(null);
-  const [isOverlayClosing, setIsOverlayClosing] = useState(false);
 
-  // ── Navigate home → animate close then unmount ────────────────────────────
-  useEffect(() => {
-    function handleNavigateHome() {
-      if (!activeNode) return;
-      setIsOverlayClosing(true);
-      setTimeout(() => {
-        setActiveNode(null);
-        setIsOverlayClosing(false);
-      }, 200);
+  // ── Page Panel state ──────────────────────────────────────────────────────
+  const [activePage, setActivePage]   = useState<string | null>(null);
+  const [closingPage, setClosingPage] = useState<string | null>(null);
+  const [pageOrigin, setPageOrigin]   = useState<{ x: number; y: number } | null>(null);
+  // Ref to track current active page without stale-closure issues in effects
+  const pageRef = useRef<{ active: string | null; timer: ReturnType<typeof setTimeout> | null }>({ active: null, timer: null });
+
+  // ── Node Card state ───────────────────────────────────────────────────────
+  const [activeNode, setActiveNode]   = useState<NodeDef | null>(null);
+  const [nodeOrigin, setNodeOrigin]   = useState<{ x: number; y: number } | null>(null);
+  const [isNodeClosing, setIsNodeClosing] = useState(false);
+
+  // ── Page helpers (stable: only call stable setters + pageRef) ─────────────
+  function openPage(id: string, origin: { x: number; y: number } | null = null) {
+    if (pageRef.current.timer) clearTimeout(pageRef.current.timer);
+    const prev = pageRef.current.active;
+    pageRef.current.active = id;
+    if (prev && prev !== id) {
+      setClosingPage(prev);
+      pageRef.current.timer = setTimeout(() => setClosingPage(null), 200);
     }
-    window.addEventListener('navigate-home', handleNavigateHome);
-    return () => window.removeEventListener('navigate-home', handleNavigateHome);
-  }, [activeNode]);
+    setActivePage(id);
+    setPageOrigin(origin);
+  }
+
+  function closeCurrentPage() {
+    const curr = pageRef.current.active;
+    if (!curr) return;
+    if (pageRef.current.timer) clearTimeout(pageRef.current.timer);
+    pageRef.current.active = null;
+    setClosingPage(curr);
+    pageRef.current.timer = setTimeout(() => {
+      setClosingPage(null);
+      setActivePage(null);
+      setPageOrigin(null);
+      window.dispatchEvent(new CustomEvent('page-closed'));
+    }, 200);
+  }
+
+  // ── Page & navigation event listeners ────────────────────────────────────
+  useEffect(() => {
+    function handleOpenPage(e: Event) {
+      const { page, origin } = (e as CustomEvent<{ page: string; origin?: { x: number; y: number } | null }>).detail;
+      openPage(page, origin ?? null);
+      window.dispatchEvent(new CustomEvent('page-nav-update', { detail: { page } }));
+    }
+    // Backward compat: old 'open-project-page' event
+    function handleOpenProjectLegacy(e: Event) {
+      const origin = (e as CustomEvent).detail?.origin ?? null;
+      openPage('project', origin);
+      window.dispatchEvent(new CustomEvent('page-nav-update', { detail: { page: 'project' } }));
+    }
+    function handleNavigateHome() {
+      closeCurrentPage();
+      setIsNodeClosing(true);
+      setTimeout(() => { setActiveNode(null); setIsNodeClosing(false); }, 200);
+    }
+    window.addEventListener('open-page',         handleOpenPage);
+    window.addEventListener('open-project-page', handleOpenProjectLegacy);
+    window.addEventListener('navigate-home',     handleNavigateHome);
+    return () => {
+      window.removeEventListener('open-page',         handleOpenPage);
+      window.removeEventListener('open-project-page', handleOpenProjectLegacy);
+      window.removeEventListener('navigate-home',     handleNavigateHome);
+    };
+  }, []);
 
   // ── Main simulation ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -480,9 +593,9 @@ export default function ForceGraph() {
 
           const origin = { x: screen.x - cardLeft, y: screen.y - cardTop };
 
-          if (d.id === 'project') {
-            // Dispatch event so NavMenu updates its active state too
-            window.dispatchEvent(new CustomEvent('open-project-page', { detail: { origin } }));
+          if (d.id === 'project' || d.id === 'about') {
+            // Dispatch unified open-page event so NavMenu & page system both update
+            window.dispatchEvent(new CustomEvent('open-page', { detail: { page: d.id, origin } }));
           } else {
             setNodeOrigin(origin);
             setActiveNode(d);
@@ -576,18 +689,9 @@ export default function ForceGraph() {
     });
     ro.observe(wrap);
 
-    // ── Sidebar "Project" trigger ─────────────────────────────────────────────
-    function handleOpenProject(e: Event) {
-      const origin = (e as CustomEvent).detail?.origin ?? null;
-      setNodeOrigin(origin);
-      setActiveNode(NODES.find(n => n.id === 'project') ?? null);
-    }
-    window.addEventListener('open-project-page', handleOpenProject);
-
     return () => {
       simulation.stop();
       ro.disconnect();
-      window.removeEventListener('open-project-page', handleOpenProject);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup',   onUp);
     };
@@ -603,15 +707,28 @@ export default function ForceGraph() {
         drag the center node
       </p>
       <svg ref={svgRef} className="w-full h-full block" aria-label="Force graph" />
-      {activeNode && activeNode.id === 'project' && createPortal(
-        <ProjectPage onClose={() => {
-          setActiveNode(null);
-          window.dispatchEvent(new CustomEvent('project-page-closed'));
-        }} origin={nodeOrigin} forceClose={isOverlayClosing} />,
-        document.getElementById('canvas-overlay')!
+
+      {/* ── Closing page animates out (mac-close) ── */}
+      {closingPage && createPortal(
+        closingPage === 'project' ? <ProjectPage      onClose={() => {}} origin={null}       isClosing={true} /> :
+        closingPage === 'about'   ? <AboutPage         onClose={() => {}} origin={null}       isClosing={true} /> :
+                                    <VisitorGalleryPage onClose={() => {}}                    isClosing={true} />,
+        document.getElementById('canvas-overlay')!,
+        `closing-${closingPage}`
       )}
-      {activeNode && activeNode.id !== 'project' && createPortal(
-        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} origin={nodeOrigin} forceClose={isOverlayClosing} />,
+
+      {/* ── Active page animates in (mac-open) ── */}
+      {activePage && activePage !== closingPage && createPortal(
+        activePage === 'project' ? <ProjectPage      onClose={closeCurrentPage} origin={pageOrigin} isClosing={false} /> :
+        activePage === 'about'   ? <AboutPage         onClose={closeCurrentPage} origin={pageOrigin} isClosing={false} /> :
+                                   <VisitorGalleryPage onClose={closeCurrentPage}                    isClosing={false} />,
+        document.getElementById('canvas-overlay')!,
+        `active-${activePage}`
+      )}
+
+      {/* ── Node card modal (non-page nodes) ── */}
+      {activeNode && createPortal(
+        <NodeCard node={activeNode} onClose={() => setActiveNode(null)} origin={nodeOrigin} forceClose={isNodeClosing} />,
         document.getElementById('canvas-overlay')!
       )}
       <CursorDot />
