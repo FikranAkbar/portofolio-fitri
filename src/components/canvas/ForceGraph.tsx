@@ -252,7 +252,12 @@ function NodeCard({
   origin: { x: number; y: number } | null;
   forceClose?: boolean;
 }) {
-  const [closing, setClosing] = useState(false);
+  const [closing, setClosing]       = useState(false);
+  const [pos, setPos]               = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const cardRef        = useRef<HTMLDivElement>(null);
+  const offsetRef      = useRef({ x: 0, y: 0 });
+  const justDraggedRef = useRef(false);
 
   function handleClose() {
     setClosing(true);
@@ -262,59 +267,103 @@ function NodeCard({
   const isClosing = closing || forceClose;
   const transformOrigin = origin ? `${origin.x}px ${origin.y}px` : 'center center';
 
+  // ── Drag from chrome bar ────────────────────────────────────────────────
+  function onChromeMouseDown(e: React.MouseEvent) {
+    if (e.button !== 0) return;
+    const card = cardRef.current;
+    if (!card) return;
+
+    const cardRect = card.getBoundingClientRect();
+    const container = card.closest('[data-card-container]') as HTMLElement | null;
+    const cRect = container?.getBoundingClientRect() ?? { left: 0, top: 0 };
+
+    // Snap to absolute coordinates within canvas-overlay on first drag
+    setPos({ x: cardRect.left - cRect.left, y: cardRect.top - cRect.top });
+    offsetRef.current = { x: e.clientX - cardRect.left, y: e.clientY - cardRect.top };
+    setIsDragging(true);
+
+    function onMove(ev: MouseEvent) {
+      const c = (card!.closest('[data-card-container]') as HTMLElement | null)?.getBoundingClientRect() ?? { left: 0, top: 0 };
+      setPos({ x: ev.clientX - c.left - offsetRef.current.x, y: ev.clientY - c.top - offsetRef.current.y });
+    }
+    function onUp() {
+      setIsDragging(false);
+      justDraggedRef.current = true;
+      setTimeout(() => { justDraggedRef.current = false; }, 100);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup',   onUp);
+    }
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup',   onUp);
+  }
+
   return (
     <div
-      className={`absolute inset-0 flex items-center justify-center z-20 ${isClosing ? 'backdrop-out' : 'backdrop-in'}`}
-      onClick={handleClose}
+      data-card-container=""
+      className={`absolute inset-0 z-20 ${isClosing ? 'backdrop-out' : 'backdrop-in'}`}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]" />
-
-      {/* Card */}
+      {/* Backdrop – click to close */}
       <div
-        className={`relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90%] overflow-hidden ${isClosing ? 'mac-close' : 'mac-open'}`}
-        style={{ transformOrigin }}
-        onClick={e => e.stopPropagation()}
+        className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"
+        onClick={() => { if (!justDraggedRef.current) handleClose(); }}
+      />
+
+      {/* Card wrapper – centered initially, freely positioned after first drag */}
+      <div
+        className={pos ? 'absolute' : 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'}
+        style={pos ? { left: pos.x, top: pos.y } : {}}
       >
-        {/* Window chrome */}
-        <div className="group/chrome flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100">
-          <button
-            onClick={handleClose}
-            title="Close"
-            className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90
-              transition-all duration-100 flex items-center justify-center
-              focus:outline-none group/dot"
-            aria-label="Close"
+        <div
+          ref={cardRef}
+          className={`relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90vw] overflow-hidden ${isClosing ? 'mac-close' : 'mac-open'}`}
+          style={{ transformOrigin: pos ? 'center center' : transformOrigin }}
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Window chrome — drag handle */}
+          <div
+            className="group/chrome flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 select-none"
+            style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+            onMouseDown={onChromeMouseDown}
           >
-            <svg
-              className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
-              viewBox="0 0 8 8" fill="none" stroke="#7A0000" strokeWidth="1.5" strokeLinecap="round"
+            <button
+              onClick={e => { e.stopPropagation(); handleClose(); }}
+              onMouseDown={e => e.stopPropagation()}
+              title="Close"
+              className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90
+                transition-all duration-100 flex items-center justify-center
+                focus:outline-none group/dot"
+              aria-label="Close"
             >
-              <line x1="1" y1="1" x2="7" y2="7" />
-              <line x1="7" y1="1" x2="1" y2="7" />
-            </svg>
-          </button>
-          <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
-          <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
-          <span className="ml-2 text-sm font-medium text-gray-800 select-none">Title</span>
-          <span className="ml-2 text-sm text-gray-400 select-none">Description</span>
-        </div>
+              <svg
+                className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+                viewBox="0 0 8 8" fill="none" stroke="#7A0000" strokeWidth="1.5" strokeLinecap="round"
+              >
+                <line x1="1" y1="1" x2="7" y2="7" />
+                <line x1="7" y1="1" x2="1" y2="7" />
+              </svg>
+            </button>
+            <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
+            <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
+            <span className="ml-2 text-sm font-medium text-gray-800">Title</span>
+            <span className="ml-2 text-sm text-gray-400">Description</span>
+          </div>
 
-        {/* Body */}
-        <div className="px-6 py-8 flex flex-col items-center gap-3 min-h-[200px] justify-center">
-          <p className="text-gray-400 text-sm tracking-wide select-none">Content coming soon</p>
-        </div>
+          {/* Body */}
+          <div className="px-6 py-8 flex flex-col items-center gap-3 min-h-[200px] justify-center">
+            <p className="text-gray-400 text-sm tracking-wide select-none">Content coming soon</p>
+          </div>
 
-        {/* Footer */}
-        <div className="flex justify-end px-4 pb-4">
-          <button
-            onClick={handleClose}
-            className="select-none px-5 py-2 rounded-lg text-sm font-medium text-white
-              bg-[#E73AA4] hover:bg-[#d42e93] active:scale-95 active:bg-[#c0287f]
-              transition-all duration-150 ease-in-out shadow-sm hover:shadow-md"
-          >
-            Button
-          </button>
+          {/* Footer */}
+          <div className="flex justify-end px-4 pb-4">
+            <button
+              onClick={handleClose}
+              className="select-none px-5 py-2 rounded-lg text-sm font-medium text-white
+                bg-[#E73AA4] hover:bg-[#d42e93] active:scale-95 active:bg-[#c0287f]
+                transition-all duration-150 ease-in-out shadow-sm hover:shadow-md"
+            >
+              Button
+            </button>
+          </div>
         </div>
       </div>
     </div>
