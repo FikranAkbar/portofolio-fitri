@@ -254,9 +254,15 @@ const TESTIMONIALS = [
 
 function TimelineItem({ period, company, role, desc }: { period: string; company: string; role: string; desc: string }) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-[13px] text-gray-400">{period}</span>
-      <p className="text-[16px] font-semibold text-gray-800">{company}{role ? `, ${role}` : ''}</p>
+    <div className="flex flex-col gap-2">
+      {/* Company + Date on same row */}
+      <div className="flex items-baseline justify-between gap-4">
+        <p className="text-[16px] font-semibold text-gray-800">{company}</p>
+        <span className="text-[14px] text-gray-400 shrink-0">{period}</span>
+      </div>
+      {/* Role */}
+      {role && <p className="text-[15px] text-gray-500">{role}</p>}
+      {/* Description */}
       <p className="text-[15px] text-gray-500 leading-relaxed">{desc}</p>
     </div>
   );
@@ -327,9 +333,13 @@ function AboutPage({ onClose, origin, isClosing: forcedClosing }: { onClose: () 
           <hr className="border-gray-100" />
 
           {/* ── Experience ─────────────────────────────────────────────── */}
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Experience</h2>
-            <div className="flex flex-col gap-7">
+          <div className="flex flex-col gap-7">
+            <div className="flex justify-center">
+              <span className="px-5 py-1.5 rounded-full border border-gray-200 text-[14px] font-medium text-gray-600 bg-white select-none">
+                Experience
+              </span>
+            </div>
+            <div className="flex flex-col gap-8">
               {ABOUT_EXPERIENCE.map(item => (
                 <TimelineItem key={item.company + item.period}
                   period={item.period} company={item.company}
@@ -342,9 +352,13 @@ function AboutPage({ onClose, origin, isClosing: forcedClosing }: { onClose: () 
           <hr className="border-gray-100" />
 
           {/* ── Organization ───────────────────────────────────────────── */}
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Organization</h2>
-            <div className="flex flex-col gap-7">
+          <div className="flex flex-col gap-7">
+            <div className="flex justify-center">
+              <span className="px-5 py-1.5 rounded-full border border-gray-200 text-[14px] font-medium text-gray-600 bg-white select-none">
+                Organization
+              </span>
+            </div>
+            <div className="flex flex-col gap-8">
               {ABOUT_ORGS.map(item => (
                 <TimelineItem key={item.company} period={item.period}
                   company={item.company} role={item.role} desc={item.desc} />
@@ -355,9 +369,13 @@ function AboutPage({ onClose, origin, isClosing: forcedClosing }: { onClose: () 
           <hr className="border-gray-100" />
 
           {/* ── Courses & Certifications ────────────────────────────────── */}
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">Courses, Training & Certifications</h2>
-            <div className="flex flex-col gap-7">
+          <div className="flex flex-col gap-7">
+            <div className="flex justify-center">
+              <span className="px-5 py-1.5 rounded-full border border-gray-200 text-[14px] font-medium text-gray-600 bg-white select-none">
+                Courses, Training & Certifications
+              </span>
+            </div>
+            <div className="flex flex-col gap-8">
               {ABOUT_COURSES.map(item => (
                 <TimelineItem key={item.company} period={item.period}
                   company={item.company} role={item.role} desc={item.desc} />
