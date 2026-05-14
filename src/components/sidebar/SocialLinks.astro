@@ -1,58 +1,68 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
 const links = [
   {
-    label: 'Email',
-    href: 'mailto:fitri@example.com',
+    label: "Email",
+    href: "mailto:fitri@example.com",
     ionicon: null,
     customIcon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0"><rect width="18.5" height="17" x="2.682" y="3.5" rx="4"/><path stroke-linecap="round" stroke-linejoin="round" d="m2.729 7.59l7.205 4.13a3.96 3.96 0 0 0 3.975 0l7.225-4.13"/></svg>`,
   },
   {
-    label: 'LinkedIn',
-    href: 'https://linkedin.com',
-    ionicon: 'ion:logo-linkedin',
+    label: "LinkedIn",
+    href: "https://linkedin.com",
+    ionicon: "ion:logo-linkedin",
     customIcon: null,
   },
   {
-    label: 'GitHub',
-    href: 'https://github.com',
-    ionicon: 'ion:logo-github',
+    label: "GitHub",
+    href: "https://github.com",
+    ionicon: "ion:logo-github",
     customIcon: null,
   },
   {
-    label: 'Instagram',
-    href: 'https://instagram.com',
-    ionicon: 'ion:logo-instagram',
+    label: "Instagram",
+    href: "https://instagram.com",
+    ionicon: "ion:logo-instagram",
     customIcon: null,
   },
 ];
 ---
 
 <div>
-  <p class="text-[14px] font-semibold tracking-widest uppercase mb-2" style="color:#6D6D6D">
+  <p
+    class="text-[14px] font-semibold tracking-widest uppercase mb-2"
+    style="color:#6D6D6D"
+  >
     Find Me At
   </p>
   <div class="flex flex-col gap-1.5">
-    {links.map(link => (
-      <a
-        href={link.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group inline-flex items-center gap-2 text-[16px] transition-colors duration-200"
-        style="color:#6D6D6D"
-      >
-        {link.ionicon ? (
-          <Icon
-            name={link.ionicon}
-            class="shrink-0 w-4 h-4 transition-colors duration-200 group-hover:text-[#E73AA4]"
-          />
-        ) : (
-          <span class="transition-colors duration-200 [&>svg]:w-4 [&>svg]:h-4 group-hover:[&>svg]:stroke-[#E73AA4]" style="color:#6D6D6D" set:html={link.customIcon} />
-        )}
-        <span class="group-hover:text-[#000000] transition-colors duration-200">{link.label}</span>
-      </a>
-    ))}
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-2 text-[14px] transition-colors duration-200"
+          style="color:#6D6D6D"
+        >
+          {link.ionicon ? (
+            <Icon
+              name={link.ionicon}
+              class="shrink-0 w-4 h-4 transition-colors duration-200 group-hover:text-[#7A9E72]"
+            />
+          ) : (
+            <span
+              class="transition-colors duration-200 [&>svg]:w-4 [&>svg]:h-4 group-hover:[&>svg]:stroke-[#7A9E72]"
+              style="color:#6D6D6D"
+              set:html={link.customIcon}
+            />
+          )}
+          <span class="group-hover:text-[#3D3128] transition-colors duration-200">
+            {link.label}
+          </span>
+        </a>
+      ))
+    }
   </div>
 </div>
-

@@ -1,24 +1,23 @@
 ---
-import ForceGraph from './ForceGraph.tsx';
+import ForceGraph from "./ForceGraph.tsx";
 ---
 
 <!-- Canvas padding: 24px all sides (p-6) -->
 <section
   id="canvas-overlay"
-  class="flex-1 h-full relative bg-[#F5F5F5] p-6"
+  class="flex-1 h-full relative p-6"
+  style="background-color: #F8F4EE;"
   aria-label="Interactive canvas"
 >
   <div
-    class="w-full h-full relative overflow-hidden rounded-2xl border border-gray-100/60"
+    class="w-full h-full relative overflow-hidden rounded-2xl"
     style="
-      background-color: #F5F5F5;
+      background-color: #F8F4EE;
       background-image:
-        linear-gradient(45deg, #E8E8E8 25%, transparent 25%),
-        linear-gradient(-45deg, #E8E8E8 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #E8E8E8 75%),
-        linear-gradient(-45deg, transparent 75%, #E8E8E8 75%);
-      background-size: 200px 200px;
-      background-position: 0 0, 0 100px, 100px -100px, -100px 0px;
+        linear-gradient(#EBE6DC 1px, transparent 1px),
+        linear-gradient(90deg, #EBE6DC 1px, transparent 1px);
+      background-size: 40px 40px;
+      box-shadow: inset 0 0 0 1px rgba(197,180,154,0.15);
     "
   >
     <ForceGraph client:load />

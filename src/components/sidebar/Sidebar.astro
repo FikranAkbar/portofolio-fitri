@@ -1,8 +1,8 @@
 ---
-import Avatar from './Avatar.astro';
-import NavMenu from './NavMenu.astro';
-import SocialLinks from './SocialLinks.astro';
-import StatusWidget from './StatusWidget.tsx';
+import Avatar from "./Avatar.astro";
+import NavMenu from "./NavMenu.astro";
+import SocialLinks from "./SocialLinks.astro";
+import StatusWidget from "./StatusWidget.tsx";
 ---
 
 <!--
@@ -14,10 +14,10 @@ import StatusWidget from './StatusWidget.tsx';
   - bottom group:  mt-auto shrink-0        → always sticks to bottom
 -->
 <aside
-  class="w-[288px] shrink-0 bg-white h-full flex flex-col overflow-hidden rounded-2xl shadow-sm"
+  class="w-[288px] shrink-0 h-full flex flex-col overflow-hidden rounded-2xl"
+  style="background:#FFFDF9; box-shadow: 0 2px 16px rgba(139,110,74,0.08), 0 1px 4px rgba(139,110,74,0.06);"
 >
   <div class="flex flex-col flex-1 min-h-0 px-6 py-7 gap-5">
-
     <!-- ① Logo — fixed size -->
     <div class="shrink-0">
       <Avatar />
@@ -26,16 +26,26 @@ import StatusWidget from './StatusWidget.tsx';
     <!-- ② Introduction — fixed size -->
     <div class="flex flex-col gap-2 shrink-0">
       <div>
-        <h1 class="text-[32px] font-bold leading-tight font-display tracking-tight" style="color:#000000">
+        <h1
+          class="text-[32px] font-bold leading-tight font-display tracking-tight"
+          style="color:#000000"
+        >
           Fitri Zahwa
         </h1>
         <!-- Subtitle: 16px Source Code Pro, secondary color -->
-        <p class="text-base font-normal mt-2 leading-snug font-mono" style="color:#6D6D6D">
+        <p
+          class="text-base font-normal mt-2 leading-snug font-mono"
+          style="color:#6D6D6D"
+        >
           UI/UX Designer,<br />Illustrator, Pixel Artist
         </p>
       </div>
-      <p class="text-base leading-relaxed font-normal mt-1" style="color:#6D6D6D">
-        I am a designer who loves building delightful software that solves real&nbsp;problems.
+      <p
+        class="text-base leading-relaxed font-normal mt-1"
+        style="color:#6D6D6D"
+      >
+        I am a designer who loves building delightful software that solves
+        real&nbsp;problems.
       </p>
     </div>
 
@@ -52,6 +62,5 @@ import StatusWidget from './StatusWidget.tsx';
         <StatusWidget client:load />
       </div>
     </div>
-
   </div>
 </aside>
