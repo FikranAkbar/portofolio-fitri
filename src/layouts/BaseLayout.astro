@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
 
 export interface Props {
   title?: string;
@@ -7,8 +7,8 @@ export interface Props {
 }
 
 const {
-  title = 'Fitri Zahwa — Portfolio',
-  description = 'UI/UX Designer, Illustrator & Pixel Artist based in Indonesia',
+  title = "Fitri Zahwa — Portfolio",
+  description = "UI/UX Designer, Illustrator & Pixel Artist based in Indonesia",
 } = Astro.props;
 ---
 
@@ -26,8 +26,10 @@ const {
       rel="stylesheet"
     />
   </head>
-  <body class="h-full bg-[#F5F5F5] text-gray-900 font-sans antialiased">
+  <body
+    class="h-full text-gray-900 font-sans antialiased"
+    style="background-color:#F8F4EE"
+  >
     <slot />
   </body>
 </html>
-

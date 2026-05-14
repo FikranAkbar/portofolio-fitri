@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Sidebar from '../components/sidebar/Sidebar.astro';
-import CanvasPanel from '../components/canvas/CanvasPanel.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Sidebar from "../components/sidebar/Sidebar.astro";
+import CanvasPanel from "../components/canvas/CanvasPanel.astro";
 ---
 
 <BaseLayout
@@ -10,8 +10,11 @@ import CanvasPanel from '../components/canvas/CanvasPanel.astro';
 >
   <!-- Guard: redirect to intro if not yet seen in this session -->
   <script>
-    if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem('introSeen')) {
-      window.location.replace('/');
+    if (
+      typeof sessionStorage !== "undefined" &&
+      !sessionStorage.getItem("introSeen")
+    ) {
+      window.location.replace("/");
     }
   </script>
   <!--
@@ -19,7 +22,10 @@ import CanvasPanel from '../components/canvas/CanvasPanel.astro';
       left  → fixed-width sidebar (300px)
       right → flexible canvas panel
   -->
-  <div class="flex h-screen w-full overflow-hidden bg-[#F5F5F5]">
+  <div
+    class="flex h-screen w-full overflow-hidden"
+    style="background-color:#F8F4EE"
+  >
     <!-- 24px spacing on left / top / bottom for the floating card -->
     <div class="pl-6 pt-6 pb-6 shrink-0 flex h-full">
       <Sidebar />
@@ -27,4 +33,3 @@ import CanvasPanel from '../components/canvas/CanvasPanel.astro';
     <CanvasPanel />
   </div>
 </BaseLayout>
-

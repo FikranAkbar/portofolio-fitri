@@ -1,0 +1,1927 @@
+---
+
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leave Your Bloom — Fitri's Garden</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&family=DM+Sans:ital,wght@0,400;0,500;1,400&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style is:global>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        /* restore normal cursor — overrides global.css cursor:none */
+        cursor: auto !important;
+      }
+      button,
+      a,
+      [role="button"] {
+        cursor: pointer !important;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+        font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background: url("/images/bloom-bg.jpg") center center / cover no-repeat
+          fixed;
+      }
+
+      /* ─── Transition curtain (crossfades from garden-bg to bloom-bg) ─── */
+      #transition-curtain {
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        background: url("/images/garden-bg.jpg") center center / cover no-repeat;
+        pointer-events: none;
+        animation: curtain-fade-out 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.05s
+          forwards;
+      }
+      @keyframes curtain-fade-out {
+        0% {
+          opacity: 1;
+        }
+        20% {
+          opacity: 0.92;
+        }
+        100% {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      /* ─── Page fade-in ─── */
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes bloom-pop {
+        0% {
+          transform: scale(0) rotate(-15deg);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.18) rotate(4deg);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+      @keyframes sparkle-burst {
+        0% {
+          transform: scale(0);
+          opacity: 1;
+        }
+        70% {
+          transform: scale(1.4);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+      @keyframes gentle-float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+      @keyframes page-exit {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      .page-fade-in {
+        animation: fade-in 0.55s ease both;
+      }
+      .anim-1 {
+        animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+      }
+      .anim-2 {
+        animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+      }
+      .anim-3 {
+        /* opacity-only — NO translateY so getBoundingClientRect() is accurate during animation */
+        animation: fade-in 0.7s ease 0.2s both;
+      }
+      .anim-4 {
+        animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.38s both;
+      }
+      .anim-5 {
+        animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+      }
+
+      /* ─── Layout shell ─── */
+      .page-wrapper {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: transparent;
+        position: relative;
+      }
+
+      /* Soft warm background blobs */
+      .bg-blob {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ─── Top bar ─── */
+      .top-bar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 16px 28px 0;
+        position: relative;
+        z-index: 10;
+        flex-shrink: 0;
+      }
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(30, 58, 28, 0.5);
+        background: transparent;
+        border: none;
+        transition: color 0.2s ease;
+        text-decoration: none;
+        padding: 4px 0;
+      }
+      .btn-back:hover {
+        color: rgba(30, 58, 28, 0.88);
+      }
+
+      .skip-block {
+        text-align: right;
+      }
+      .btn-skip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18px;
+        border: 1.5px solid rgba(60, 90, 55, 0.3);
+        border-radius: 100px;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(8px);
+        color: rgba(30, 58, 28, 0.72);
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .btn-skip:hover {
+        border-color: rgba(60, 90, 55, 0.55);
+        color: rgba(30, 58, 28, 1);
+        background: rgba(255, 255, 255, 0.8);
+      }
+      .skip-hint {
+        margin-top: 4px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
+        font-style: italic;
+        color: rgba(30, 58, 28, 0.38);
+        line-height: 1.4;
+      }
+
+      /* ─── Hero ─── */
+      .hero {
+        text-align: center;
+        padding: 8px 24px 6px;
+        position: relative;
+        z-index: 10;
+        flex-shrink: 0;
+      }
+      .hero-welcome {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: rgba(30, 58, 28, 0.45);
+        margin-bottom: 4px;
+      }
+      .hero-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: clamp(26px, 3.2vw, 40px);
+        font-weight: 700;
+        color: #1a3518;
+        line-height: 1.08;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+      .hero-title .deco {
+        font-size: clamp(14px, 1.6vw, 20px);
+        opacity: 0.62;
+        display: inline-block;
+      }
+      .hero-subtitle {
+        font-family: "Inter", sans-serif;
+        font-size: clamp(11px, 1vw, 13px);
+        font-weight: 400;
+        color: rgba(30, 58, 28, 0.55);
+        line-height: 1.5;
+      }
+
+      /* ─── Main content area ─── */
+      .main-area {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 14px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 10;
+        overflow: hidden;
+      }
+
+      /* ─── Garden Field ─── */
+      .garden-field {
+        background:
+          radial-gradient(
+            circle at 1px 1px,
+            rgba(100, 80, 50, 0.045) 1px,
+            transparent 0
+          ),
+          linear-gradient(160deg, #f7f2e6 0%, #ede7d5 50%, #e8e0cc 100%);
+        background-size:
+          22px 22px,
+          auto;
+        border: 1.5px solid rgba(130, 110, 70, 0.15);
+        border-radius: 16px;
+        box-shadow:
+          0 4px 24px rgba(80, 60, 30, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        position: relative;
+        overflow: hidden;
+        cursor: crosshair;
+        height: 100%;
+      }
+      /* Parchment inner border */
+      .garden-field::before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border: 1px solid rgba(130, 110, 70, 0.09);
+        border-radius: 12px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Garden info card (top-left) */
+      .garden-info-card {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        background: rgba(255, 252, 244, 0.88);
+        border: 1px solid rgba(130, 110, 70, 0.14);
+        border-radius: 12px;
+        padding: 11px 14px;
+        font-family: "Inter", sans-serif;
+        font-size: 11.5px;
+        color: rgba(60, 45, 20, 0.65);
+        line-height: 1.6;
+        max-width: 180px;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 2px 10px rgba(80, 60, 30, 0.07);
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      /* Click hint (center-right) */
+      .garden-click-hint {
+        position: absolute;
+        right: 24px;
+        bottom: 60px;
+        background: rgba(255, 252, 244, 0.9);
+        border: 1px solid rgba(130, 110, 70, 0.16);
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        color: rgba(60, 45, 20, 0.6);
+        line-height: 1.55;
+        text-align: center;
+        pointer-events: none;
+        z-index: 5;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 2px 8px rgba(80, 60, 30, 0.06);
+        display: none; /* shown after flower selection */
+      }
+
+      /* Drag hint (bottom-left) */
+      .garden-drag-hint {
+        position: absolute;
+        left: 18px;
+        bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        color: rgba(60, 45, 20, 0.45);
+        z-index: 5;
+        pointer-events: none;
+      }
+      .garden-drag-hint svg {
+        opacity: 0.5;
+        flex-shrink: 0;
+      }
+
+      /* ─── Flowers in garden ─── */
+      .garden-flower {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        cursor: default;
+      }
+      .garden-flower .flower-svg-wrap {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+        animation: gentle-float 4s ease-in-out infinite;
+      }
+      .garden-flower .flower-svg-wrap svg {
+        width: 40px !important;
+        height: 40px !important;
+        flex-shrink: 0;
+      }
+      .garden-flower:hover .flower-svg-wrap {
+        transform: scale(1.12);
+      }
+      .garden-flower.new-flower .flower-svg-wrap {
+        animation:
+          bloom-pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both,
+          gentle-float 4s ease-in-out 0.55s infinite;
+      }
+
+      /* visitor label under flower */
+      .garden-flower .flower-label {
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
+        font-weight: 500;
+        color: rgba(50, 35, 15, 0.65);
+        text-align: center;
+        line-height: 1.4;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+
+      /* Tooltip on hover */
+      .garden-flower .flower-tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 252, 244, 0.97);
+        border: 1px solid rgba(130, 110, 70, 0.18);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        color: rgba(50, 35, 15, 0.75);
+        white-space: nowrap;
+        box-shadow: 0 4px 14px rgba(80, 60, 30, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s ease;
+        z-index: 20;
+      }
+      .garden-flower:hover .flower-tooltip {
+        opacity: 1;
+      }
+
+      /* Cursor preview flower */
+      #cursor-flower {
+        position: fixed;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        opacity: 0.55;
+        width: 44px;
+        height: 44px;
+        display: none;
+      }
+
+      /* sparkle element */
+      .sparkle-ring {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(180, 140, 80, 0.5);
+        transform: translate(-50%, -50%);
+        animation: sparkle-burst 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      /* ─── Form Panel ─── */
+      .form-panel {
+        background: linear-gradient(160deg, #d4e0cf 0%, #c9d9c3 100%);
+        border: 1.5px solid rgba(100, 130, 90, 0.22);
+        border-radius: 16px;
+        padding: 16px 16px 14px;
+        box-shadow:
+          0 4px 24px rgba(60, 90, 50, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow-y: auto;
+        height: 100%;
+      }
+
+      .form-panel-title {
+        text-align: center;
+        font-family: "Source Code Pro", monospace;
+        font-size: 10.5px;
+        font-weight: 500;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: rgba(30, 55, 25, 0.65);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .form-panel-title .deco-arrow {
+        font-size: 12px;
+        opacity: 0.5;
+      }
+
+      .form-divider {
+        height: 1px;
+        background: rgba(80, 115, 65, 0.14);
+        margin: -4px 0;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .form-label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 9.5px;
+        font-weight: 500;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(30, 55, 25, 0.55);
+      }
+      .form-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1.5px solid rgba(100, 130, 90, 0.2);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        color: #1e3a1c;
+        outline: none;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+        -webkit-appearance: none;
+      }
+      .form-input:focus {
+        border-color: rgba(80, 120, 65, 0.55);
+        box-shadow: 0 0 0 3px rgba(80, 120, 65, 0.1);
+      }
+      .form-input::placeholder {
+        color: rgba(50, 80, 40, 0.35);
+        font-style: italic;
+      }
+      .form-input[readonly] {
+        background: rgba(255, 255, 255, 0.5);
+        cursor: default;
+        color: rgba(30, 58, 28, 0.75);
+      }
+
+      .date-input-wrap {
+        position: relative;
+      }
+      .date-input-wrap .date-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(80, 120, 65, 0.45);
+        pointer-events: none;
+      }
+
+      .form-textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1.5px solid rgba(100, 130, 90, 0.2);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-style: italic;
+        color: #1e3a1c;
+        outline: none;
+        resize: none;
+        min-height: 64px;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+        line-height: 1.5;
+      }
+      .form-textarea:focus {
+        border-color: rgba(80, 120, 65, 0.55);
+        box-shadow: 0 0 0 3px rgba(80, 120, 65, 0.1);
+      }
+      .form-textarea::placeholder {
+        color: rgba(50, 80, 40, 0.35);
+      }
+      .char-count {
+        text-align: right;
+        font-family: "Source Code Pro", monospace;
+        font-size: 9px;
+        color: rgba(50, 80, 40, 0.4);
+        letter-spacing: 0.08em;
+        margin-top: -10px;
+      }
+
+      /* Visitor number */
+      .visitor-block {
+        text-align: center;
+        padding: 8px 8px 6px;
+        border-top: 1px solid rgba(80, 115, 65, 0.14);
+        margin-top: auto;
+      }
+      .visitor-label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: rgba(30, 55, 25, 0.48);
+        margin-bottom: 2px;
+      }
+      .visitor-number {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a3518;
+        line-height: 1.1;
+        margin-bottom: 3px;
+      }
+      .visitor-thanks {
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
+        font-style: italic;
+        color: rgba(30, 55, 25, 0.45);
+      }
+      .visitor-dot {
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: rgba(80, 120, 65, 0.45);
+        margin: 4px auto 0;
+      }
+
+      /* ─── Flower Picker ─── */
+      .picker-section {
+        padding: 8px 20px 6px;
+        position: relative;
+        z-index: 10;
+        flex-shrink: 0;
+      }
+      .picker-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: rgba(30, 58, 28, 0.42);
+        margin-bottom: 7px;
+      }
+      .picker-label::before,
+      .picker-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(80, 100, 65, 0.14);
+        max-width: 80px;
+      }
+
+      .picker-row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 7px;
+        flex-wrap: nowrap;
+      }
+
+      .flower-pick-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255, 252, 244, 0.72);
+        border: 1.5px solid rgba(130, 110, 70, 0.18);
+        border-radius: 14px;
+        padding: 8px 8px 6px;
+        width: 70px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        backdrop-filter: blur(4px);
+        flex-shrink: 0;
+      }
+      .flower-pick-btn:hover {
+        background: rgba(255, 252, 244, 0.95);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(80, 60, 30, 0.1);
+      }
+      .flower-pick-btn.active {
+        border-color: var(--flower-color, rgba(180, 100, 120, 0.6));
+        background: rgba(255, 252, 244, 0.97);
+        box-shadow: 0 0 0 3px rgba(var(--flower-color-rgb, 180, 100, 120), 0.15);
+        transform: translateY(-3px);
+      }
+      .flower-pick-btn .pick-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .flower-pick-btn .pick-icon svg {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+      }
+      .flower-pick-btn .pick-name {
+        font-family: "Inter", sans-serif;
+        font-size: 9px;
+        font-weight: 500;
+        color: rgba(50, 35, 15, 0.6);
+        text-align: center;
+        transition: color 0.2s ease;
+      }
+      .flower-pick-btn.active .pick-name {
+        color: var(--flower-color, rgba(180, 100, 120, 0.9));
+        font-weight: 600;
+      }
+
+      /* ─── Bottom CTA ─── */
+      .cta-section {
+        padding: 6px 28px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        position: relative;
+        z-index: 10;
+        flex-shrink: 0;
+      }
+      .btn-plant {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 44px;
+        background: #1a3518;
+        color: #f5f0e8;
+        border: none;
+        border-radius: 100px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 6px 22px rgba(20, 45, 15, 0.22);
+      }
+      .btn-plant:hover {
+        background: #254d22;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(20, 45, 15, 0.3);
+      }
+      .btn-plant:active {
+        transform: translateY(0);
+      }
+      .btn-plant:disabled {
+        opacity: 0.45;
+        cursor: default;
+        transform: none;
+        box-shadow: none;
+      }
+      .cta-fine-print {
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-style: italic;
+        color: rgba(30, 58, 28, 0.35);
+      }
+
+      /* ─── Responsive ─── */
+      @media (max-width: 820px) {
+        .main-area {
+          grid-template-columns: 1fr;
+          padding: 0 12px;
+          overflow-y: auto;
+        }
+        .form-panel {
+          order: 2;
+          height: auto;
+        }
+        .garden-field {
+          height: 260px;
+          order: 1;
+        }
+        .page-wrapper {
+          height: auto;
+          min-height: 100vh;
+          overflow-y: auto;
+        }
+        html,
+        body {
+          overflow: auto;
+        }
+        .top-bar {
+          padding: 14px 16px 0;
+        }
+        .picker-section {
+          padding: 8px 12px 6px;
+        }
+        .cta-section {
+          padding: 6px 16px 20px;
+        }
+        .picker-row {
+          gap: 5px;
+          flex-wrap: wrap;
+        }
+        .flower-pick-btn {
+          width: 62px;
+          padding: 7px 6px 5px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Crossfade curtain: overlays garden-bg and fades out to reveal bloom-bg -->
+    <div id="transition-curtain" aria-hidden="true"></div>
+
+    <!-- Cursor flower preview -->
+    <div id="cursor-flower"></div>
+
+    <div class="page-wrapper page-fade-in">
+      <!-- ── Top bar ── -->
+      <div class="top-bar">
+        <a href="/" class="btn-back anim-1">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M9 7H3M5 4l-3 3 3 3"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+          Back
+        </a>
+        <div class="skip-block anim-1">
+          <button class="btn-skip" id="btn-skip">
+            Skip This Step
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path
+                d="M4 6.5h6M7.5 4l3 2.5-3 2.5"
+                stroke="currentColor"
+                stroke-width="1.3"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <p class="skip-hint">
+            You can explore first<br />and come back anytime!
+          </p>
+        </div>
+      </div>
+
+      <!-- ── Hero ── -->
+      <div class="hero anim-2">
+        <p class="hero-welcome">Welcome, Visitor.</p>
+        <h1 class="hero-title">
+          <span class="deco">❧</span>
+          Leave Your Bloom
+          <span class="deco">❧</span>
+        </h1>
+        <p class="hero-subtitle">
+          Plant a flower anywhere in the garden<br />and leave a little piece of
+          you here.
+        </p>
+      </div>
+
+      <!-- ── Main: garden + form ── -->
+      <div class="main-area anim-3">
+        <!-- Garden Field -->
+        <div class="garden-field" id="garden-field">
+          <!-- Info card -->
+          <div class="garden-info-card">
+            This is our growing garden.<br />
+            Every bloom here was planted<br />
+            by someone who visited.
+          </div>
+
+          <!-- Click hint (shown after flower selected) -->
+          <div class="garden-click-hint" id="click-hint">
+            Click anywhere<br />to plant your<br />flower ♡
+          </div>
+
+          <!-- Drag hint -->
+          <div class="garden-drag-hint">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M9 4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v5h3a2 2 0 0 1 2 2v2l-4 6H8l-4-6v-2a2 2 0 0 1 2-2h3V4Z"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linejoin="round"></path>
+            </svg>
+            Drag to explore the garden ♡
+          </div>
+
+          <!-- Demo visitor flowers will be injected by JS -->
+          <div id="flowers-container" style="pointer-events:none;"></div>
+        </div>
+
+        <!-- Form Panel -->
+        <div class="form-panel anim-4">
+          <p class="form-panel-title">
+            <span class="deco-arrow">→</span>
+            Your Bloom Story
+            <span class="deco-arrow">←</span>
+          </p>
+          <div class="form-divider"></div>
+
+          <!-- Name -->
+          <div class="form-group">
+            <label class="form-label" for="input-name">Name</label>
+            <input
+              id="input-name"
+              class="form-input"
+              type="text"
+              placeholder="Your name here"
+              maxlength="40"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+
+          <!-- Date -->
+          <div class="form-group">
+            <label class="form-label">Today's Date</label>
+            <div class="date-input-wrap">
+              <input id="input-date" class="form-input" type="text" readonly />
+              <svg
+                class="date-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <rect
+                  x="2"
+                  y="4"
+                  width="16"
+                  height="14"
+                  rx="3"
+                  stroke="currentColor"
+                  stroke-width="1.4"></rect>
+                <path
+                  d="M6 2v4M14 2v4M2 9h16"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"></path>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="form-group">
+            <label class="form-label" for="input-message"
+              >How are you today?</label
+            >
+            <textarea
+              id="input-message"
+              class="form-textarea"
+              placeholder="Share a mood, a thought,
+or a little message..."
+              maxlength="120"></textarea>
+            <p class="char-count"><span id="char-left">0</span>/120</p>
+          </div>
+
+          <!-- Visitor number -->
+          <div class="visitor-block">
+            <p class="visitor-label">You are visitor</p>
+            <p class="visitor-number" id="visitor-num">No. —</p>
+            <p class="visitor-thanks">Thank you for being here ♡</p>
+            <span class="visitor-dot"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Flower Picker ── -->
+      <div class="picker-section anim-5">
+        <p class="picker-label">❧ Choose a flower to plant ❧</p>
+        <div class="picker-row" id="flower-picker">
+          <!-- Sakura -->
+          <button
+            class="flower-pick-btn"
+            data-flower="sakura"
+            style="--flower-color: #c97a9a; --flower-color-rgb: 201,122,154;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <g transform="translate(24,24)">
+                  <path
+                    d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z"
+                    fill="#e8a0bc"
+                    opacity="0.85"
+                    transform="rotate(0)"></path>
+                  <path
+                    d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z"
+                    fill="#e8a0bc"
+                    opacity="0.85"
+                    transform="rotate(72)"></path>
+                  <path
+                    d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z"
+                    fill="#e8a0bc"
+                    opacity="0.85"
+                    transform="rotate(144)"></path>
+                  <path
+                    d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z"
+                    fill="#e8a0bc"
+                    opacity="0.85"
+                    transform="rotate(216)"></path>
+                  <path
+                    d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z"
+                    fill="#e8a0bc"
+                    opacity="0.85"
+                    transform="rotate(288)"></path>
+                  <circle cx="0" cy="0" r="3.5" fill="#f9d0e0" opacity="0.95"
+                  ></circle>
+                  <circle cx="0" cy="0" r="1.5" fill="#e8a0bc" opacity="0.5"
+                  ></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="0.8"
+                    fill="#c97a9a"
+                    transform="rotate(0)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="0.8"
+                    fill="#c97a9a"
+                    transform="rotate(45)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="0.8"
+                    fill="#c97a9a"
+                    transform="rotate(90)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="0.8"
+                    fill="#c97a9a"
+                    transform="rotate(135)"></circle>
+                </g>
+              </svg>
+            </div>
+            <span class="pick-name">Sakura</span>
+          </button>
+
+          <!-- Lavender -->
+          <button
+            class="flower-pick-btn"
+            data-flower="lavender"
+            style="--flower-color: #7b68c4; --flower-color-rgb: 123,104,196;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <line
+                  x1="24"
+                  y1="44"
+                  x2="24"
+                  y2="12"
+                  stroke="#6a8f45"
+                  stroke-width="2"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="24"
+                  y1="30"
+                  x2="18"
+                  y2="24"
+                  stroke="#6a8f45"
+                  stroke-width="1.4"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="24"
+                  y1="30"
+                  x2="30"
+                  y2="24"
+                  stroke="#6a8f45"
+                  stroke-width="1.4"
+                  stroke-linecap="round"></line>
+                <ellipse
+                  cx="24"
+                  cy="20"
+                  rx="3.5"
+                  ry="5"
+                  fill="#9b86d4"
+                  opacity="0.8"></ellipse>
+                <ellipse
+                  cx="24"
+                  cy="15"
+                  rx="3"
+                  ry="4.5"
+                  fill="#8b76c8"
+                  opacity="0.85"></ellipse>
+                <ellipse
+                  cx="24"
+                  cy="11"
+                  rx="2.5"
+                  ry="3.5"
+                  fill="#7b68c4"
+                  opacity="0.9"></ellipse>
+                <ellipse cx="24" cy="8" rx="2" ry="2.5" fill="#6b58b8"
+                ></ellipse>
+              </svg>
+            </div>
+            <span class="pick-name">Lavender</span>
+          </button>
+
+          <!-- Daisy -->
+          <button
+            class="flower-pick-btn"
+            data-flower="daisy"
+            style="--flower-color: #bfab62; --flower-color-rgb: 191,171,98;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <g transform="translate(24,22)">
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(0)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(40)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(80)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(120)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(160)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(200)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(240)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(280)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-9"
+                    rx="3.5"
+                    ry="7"
+                    fill="white"
+                    opacity="0.9"
+                    transform="rotate(320)"></ellipse>
+                  <circle cx="0" cy="0" r="5.5" fill="#f0c030" opacity="0.95"
+                  ></circle>
+                  <circle cx="0" cy="0" r="3.5" fill="#e6a820"></circle>
+                </g>
+                <line
+                  x1="24"
+                  y1="38"
+                  x2="24"
+                  y2="28"
+                  stroke="#6a8f45"
+                  stroke-width="2"
+                  stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <span class="pick-name">Daisy</span>
+          </button>
+
+          <!-- Sunflower -->
+          <button
+            class="flower-pick-btn"
+            data-flower="sunflower"
+            style="--flower-color: #d4960a; --flower-color-rgb: 212,150,10;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <g transform="translate(24,20)">
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(0)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(45)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(90)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(135)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(180)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(225)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(270)"></ellipse>
+                  <ellipse
+                    cx="0"
+                    cy="-11"
+                    rx="4"
+                    ry="8"
+                    fill="#f0c030"
+                    opacity="0.88"
+                    transform="rotate(315)"></ellipse>
+                  <circle cx="0" cy="0" r="7" fill="#7a4a10"></circle>
+                  <circle cx="0" cy="0" r="5" fill="#5a3008"></circle>
+                  <circle cx="-2" cy="-2" r="1" fill="#9a6020" opacity="0.6"
+                  ></circle>
+                  <circle cx="2" cy="-1" r="0.8" fill="#9a6020" opacity="0.6"
+                  ></circle>
+                  <circle cx="0" cy="2" r="0.9" fill="#9a6020" opacity="0.6"
+                  ></circle>
+                </g>
+                <line
+                  x1="24"
+                  y1="40"
+                  x2="24"
+                  y2="26"
+                  stroke="#6a8f45"
+                  stroke-width="2.2"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="24"
+                  y1="34"
+                  x2="20"
+                  y2="30"
+                  stroke="#6a8f45"
+                  stroke-width="1.4"
+                  stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <span class="pick-name">Sunflower</span>
+          </button>
+
+          <!-- Baby's Breath -->
+          <button
+            class="flower-pick-btn"
+            data-flower="babysbreath"
+            style="--flower-color: #8da882; --flower-color-rgb: 141,168,130;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <line
+                  x1="24"
+                  y1="42"
+                  x2="24"
+                  y2="28"
+                  stroke="#7a9a55"
+                  stroke-width="1.8"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="24"
+                  y1="32"
+                  x2="16"
+                  y2="24"
+                  stroke="#7a9a55"
+                  stroke-width="1.4"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="24"
+                  y1="30"
+                  x2="32"
+                  y2="22"
+                  stroke="#7a9a55"
+                  stroke-width="1.4"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="24"
+                  y1="28"
+                  x2="20"
+                  y2="18"
+                  stroke="#7a9a55"
+                  stroke-width="1.2"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="24"
+                  y1="28"
+                  x2="28"
+                  y2="16"
+                  stroke="#7a9a55"
+                  stroke-width="1.2"
+                  stroke-linecap="round"></line>
+                <circle
+                  cx="16"
+                  cy="23"
+                  r="2.5"
+                  fill="white"
+                  stroke="#d0c8d8"
+                  stroke-width="0.8"></circle>
+                <circle
+                  cx="32"
+                  cy="21"
+                  r="2.5"
+                  fill="white"
+                  stroke="#d0c8d8"
+                  stroke-width="0.8"></circle>
+                <circle
+                  cx="20"
+                  cy="17"
+                  r="2"
+                  fill="white"
+                  stroke="#d0c8d8"
+                  stroke-width="0.8"></circle>
+                <circle
+                  cx="28"
+                  cy="15"
+                  r="2.2"
+                  fill="white"
+                  stroke="#d0c8d8"
+                  stroke-width="0.8"></circle>
+                <circle
+                  cx="24"
+                  cy="12"
+                  r="2"
+                  fill="white"
+                  stroke="#d0c8d8"
+                  stroke-width="0.8"></circle>
+                <circle
+                  cx="12"
+                  cy="18"
+                  r="1.8"
+                  fill="white"
+                  stroke="#d0c8d8"
+                  stroke-width="0.8"></circle>
+                <circle
+                  cx="36"
+                  cy="17"
+                  r="1.8"
+                  fill="white"
+                  stroke="#d0c8d8"
+                  stroke-width="0.8"></circle>
+              </svg>
+            </div>
+            <span class="pick-name">Baby's Breath</span>
+          </button>
+
+          <!-- Forget-me-not -->
+          <button
+            class="flower-pick-btn"
+            data-flower="forgetmenot"
+            style="--flower-color: #5b8fd4; --flower-color-rgb: 91,143,212;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <g transform="translate(16,20)">
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="3.8"
+                    fill="#80aee0"
+                    opacity="0.85"
+                    transform="rotate(0)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="3.8"
+                    fill="#80aee0"
+                    opacity="0.85"
+                    transform="rotate(72)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="3.8"
+                    fill="#80aee0"
+                    opacity="0.85"
+                    transform="rotate(144)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="3.8"
+                    fill="#80aee0"
+                    opacity="0.85"
+                    transform="rotate(216)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-6"
+                    r="3.8"
+                    fill="#80aee0"
+                    opacity="0.85"
+                    transform="rotate(288)"></circle>
+                  <circle cx="0" cy="0" r="2.5" fill="#fff7c0"></circle>
+                </g>
+                <g transform="translate(30,26)">
+                  <circle
+                    cx="0"
+                    cy="-5"
+                    r="3"
+                    fill="#6898d0"
+                    opacity="0.8"
+                    transform="rotate(0)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-5"
+                    r="3"
+                    fill="#6898d0"
+                    opacity="0.8"
+                    transform="rotate(72)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-5"
+                    r="3"
+                    fill="#6898d0"
+                    opacity="0.8"
+                    transform="rotate(144)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-5"
+                    r="3"
+                    fill="#6898d0"
+                    opacity="0.8"
+                    transform="rotate(216)"></circle>
+                  <circle
+                    cx="0"
+                    cy="-5"
+                    r="3"
+                    fill="#6898d0"
+                    opacity="0.8"
+                    transform="rotate(288)"></circle>
+                  <circle cx="0" cy="0" r="2" fill="#fff7c0"></circle>
+                </g>
+                <line
+                  x1="24"
+                  y1="42"
+                  x2="18"
+                  y2="32"
+                  stroke="#6a8f45"
+                  stroke-width="1.6"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="18"
+                  y1="32"
+                  x2="16"
+                  y2="22"
+                  stroke="#6a8f45"
+                  stroke-width="1.4"
+                  stroke-linecap="round"></line>
+                <line
+                  x1="18"
+                  y1="30"
+                  x2="28"
+                  y2="24"
+                  stroke="#6a8f45"
+                  stroke-width="1.3"
+                  stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <span class="pick-name">Forget-me-not</span>
+          </button>
+
+          <!-- Cosmos -->
+          <button
+            class="flower-pick-btn"
+            data-flower="cosmos"
+            style="--flower-color: #c47890; --flower-color-rgb: 196,120,144;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <g transform="translate(24,20)">
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(0)"></path>
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(45)"></path>
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(90)"></path>
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(135)"></path>
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(180)"></path>
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(225)"></path>
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(270)"></path>
+                  <path
+                    d="M0,2 C-6,1 -12,-6 -6,-13 C-3,-16 3,-16 6,-13 C12,-6 6,1 0,2 Z"
+                    fill="#e090a8"
+                    opacity="0.8"
+                    transform="rotate(315)"></path>
+                  <circle cx="0" cy="0" r="4.5" fill="#f0c038"></circle>
+                  <circle cx="0" cy="0" r="2.8" fill="#e6a820"></circle>
+                </g>
+                <line
+                  x1="24"
+                  y1="40"
+                  x2="24"
+                  y2="26"
+                  stroke="#6a8f45"
+                  stroke-width="1.8"
+                  stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <span class="pick-name">Cosmos</span>
+          </button>
+
+          <!-- Rose -->
+          <button
+            class="flower-pick-btn"
+            data-flower="rose"
+            style="--flower-color: #c04060; --flower-color-rgb: 192,64,96;"
+          >
+            <div class="pick-icon">
+              <svg viewBox="0 0 48 48" width="44" height="44" fill="none">
+                <g transform="translate(24,22)">
+                  <path
+                    d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z"
+                    fill="#e06080"
+                    opacity="0.55"
+                    transform="rotate(0)"></path>
+                  <path
+                    d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z"
+                    fill="#e06080"
+                    opacity="0.55"
+                    transform="rotate(72)"></path>
+                  <path
+                    d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z"
+                    fill="#e06080"
+                    opacity="0.55"
+                    transform="rotate(144)"></path>
+                  <path
+                    d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z"
+                    fill="#e06080"
+                    opacity="0.55"
+                    transform="rotate(216)"></path>
+                  <path
+                    d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z"
+                    fill="#e06080"
+                    opacity="0.55"
+                    transform="rotate(288)"></path>
+                  <!-- Inner spiral petals -->
+                  <path
+                    d="M0,1 C-4,0 -6,-6 -2,-9 C0,-10 2,-10 2,-9 C6,-6 4,0 0,1 Z"
+                    fill="#d04868"
+                    opacity="0.9"
+                    transform="rotate(20)"></path>
+                  <path
+                    d="M0,1 C-4,0 -6,-6 -2,-9 C0,-10 2,-10 2,-9 C6,-6 4,0 0,1 Z"
+                    fill="#d04868"
+                    opacity="0.9"
+                    transform="rotate(140)"></path>
+                  <path
+                    d="M0,1 C-4,0 -6,-6 -2,-9 C0,-10 2,-10 2,-9 C6,-6 4,0 0,1 Z"
+                    fill="#d04868"
+                    opacity="0.9"
+                    transform="rotate(260)"></path>
+                  <circle cx="0" cy="0" r="3.5" fill="#c03055"></circle>
+                </g>
+                <line
+                  x1="24"
+                  y1="40"
+                  x2="24"
+                  y2="28"
+                  stroke="#4a7a30"
+                  stroke-width="2"
+                  stroke-linecap="round"></line>
+                <path
+                  d="M24 36 Q21 33 18 34"
+                  stroke="#4a7a30"
+                  stroke-width="1.3"
+                  fill="none"
+                  stroke-linecap="round"></path>
+              </svg>
+            </div>
+            <span class="pick-name">Rose</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Plant button ── -->
+      <div class="cta-section anim-5">
+        <button class="btn-plant" id="btn-plant" disabled>
+          Plant My Bloom
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M4 7h7M8 4.5l3 2.5-3 2.5"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <p class="cta-fine-print">
+          Your bloom will be part of this garden forever.
+        </p>
+      </div>
+    </div><!-- end page-wrapper -->
+
+    <script>
+      // ── Helpers ──────────────────────────────────────────────────
+      function navigateTo(href: string) {
+        sessionStorage.setItem("introSeen", "1");
+        document.body.style.pointerEvents = "none";
+        document.body.style.transition = "opacity 0.4s ease";
+        document.body.style.opacity = "0";
+        setTimeout(() => {
+          window.location.href = href;
+        }, 380);
+      }
+
+      // ── Date ─────────────────────────────────────────────────────
+      const today = new Date();
+      const dateStr = today.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      (document.getElementById("input-date") as HTMLInputElement).value =
+        dateStr;
+
+      // ── Visitor number (simulated) ────────────────────────────────
+      const baseCount = 1793;
+      const sessionKey = "bloomVisitorNum";
+      let visitorNum = parseInt(sessionStorage.getItem(sessionKey) || "0");
+      if (!visitorNum) {
+        visitorNum = baseCount + Math.floor(Math.random() * 20);
+        sessionStorage.setItem(sessionKey, String(visitorNum));
+      }
+      document.getElementById("visitor-num")!.textContent = "No. " + visitorNum;
+
+      // ── Char counter ─────────────────────────────────────────────
+      const msgEl = document.getElementById(
+        "input-message",
+      ) as HTMLTextAreaElement;
+      const cntEl = document.getElementById("char-left") as HTMLElement;
+      msgEl.addEventListener("input", () => {
+        cntEl.textContent = String(msgEl.value.length);
+      });
+
+      // ── Flower picker logic ───────────────────────────────────────
+      let selectedFlower = "";
+
+      // SVG source map for garden-field rendering
+      const flowerSVGs: Record<string, string> = {
+        sakura: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><g transform="translate(24,24)"><path d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z" fill="#e8a0bc" opacity="0.85" transform="rotate(0)"/><path d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z" fill="#e8a0bc" opacity="0.85" transform="rotate(72)"/><path d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z" fill="#e8a0bc" opacity="0.85" transform="rotate(144)"/><path d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z" fill="#e8a0bc" opacity="0.85" transform="rotate(216)"/><path d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z" fill="#e8a0bc" opacity="0.85" transform="rotate(288)"/><circle cx="0" cy="0" r="3.5" fill="#f9d0e0" opacity="0.95"/><circle cx="0" cy="0" r="1.5" fill="#e8a0bc" opacity="0.5"/></g></svg>`,
+        lavender: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><line x1="24" y1="44" x2="24" y2="12" stroke="#6a8f45" stroke-width="2" stroke-linecap="round"/><ellipse cx="24" cy="20" rx="3.5" ry="5" fill="#9b86d4" opacity="0.8"/><ellipse cx="24" cy="14" rx="3" ry="4.5" fill="#8b76c8" opacity="0.85"/><ellipse cx="24" cy="9" rx="2.5" ry="3.5" fill="#7b68c4" opacity="0.9"/></svg>`,
+        daisy: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><g transform="translate(24,20)"><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(0)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(40)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(80)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(120)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(160)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(200)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(240)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(280)"/><ellipse cx="0" cy="-9" rx="3" ry="6.5" fill="white" opacity="0.9" transform="rotate(320)"/><circle cx="0" cy="0" r="5" fill="#f0c030" opacity="0.95"/><circle cx="0" cy="0" r="3" fill="#e6a820"/></g><line x1="24" y1="40" x2="24" y2="28" stroke="#6a8f45" stroke-width="2" stroke-linecap="round"/></svg>`,
+        sunflower: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><g transform="translate(24,18)"><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(0)"/><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(45)"/><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(90)"/><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(135)"/><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(180)"/><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(225)"/><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(270)"/><ellipse cx="0" cy="-10" rx="3.5" ry="7" fill="#f0c030" opacity="0.88" transform="rotate(315)"/><circle cx="0" cy="0" r="6.5" fill="#7a4a10"/><circle cx="0" cy="0" r="4.5" fill="#5a3008"/></g><line x1="24" y1="42" x2="24" y2="24" stroke="#6a8f45" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+        babysbreath: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><line x1="24" y1="42" x2="24" y2="28" stroke="#7a9a55" stroke-width="1.8" stroke-linecap="round"/><line x1="24" y1="32" x2="15" y2="22" stroke="#7a9a55" stroke-width="1.4" stroke-linecap="round"/><line x1="24" y1="30" x2="33" y2="20" stroke="#7a9a55" stroke-width="1.4" stroke-linecap="round"/><line x1="24" y1="28" x2="19" y2="16" stroke="#7a9a55" stroke-width="1.2" stroke-linecap="round"/><line x1="24" y1="28" x2="29" y2="14" stroke="#7a9a55" stroke-width="1.2" stroke-linecap="round"/><circle cx="15" cy="21" r="2.5" fill="white" stroke="#d0c8d8" stroke-width="0.8"/><circle cx="33" cy="19" r="2.5" fill="white" stroke="#d0c8d8" stroke-width="0.8"/><circle cx="19" cy="15" r="2" fill="white" stroke="#d0c8d8" stroke-width="0.8"/><circle cx="29" cy="13" r="2" fill="white" stroke="#d0c8d8" stroke-width="0.8"/><circle cx="24" cy="11" r="1.8" fill="white" stroke="#d0c8d8" stroke-width="0.8"/></svg>`,
+        forgetmenot: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><g transform="translate(16,22)"><circle cx="0" cy="-6" r="3.5" fill="#80aee0" opacity="0.85" transform="rotate(0)"/><circle cx="0" cy="-6" r="3.5" fill="#80aee0" opacity="0.85" transform="rotate(72)"/><circle cx="0" cy="-6" r="3.5" fill="#80aee0" opacity="0.85" transform="rotate(144)"/><circle cx="0" cy="-6" r="3.5" fill="#80aee0" opacity="0.85" transform="rotate(216)"/><circle cx="0" cy="-6" r="3.5" fill="#80aee0" opacity="0.85" transform="rotate(288)"/><circle cx="0" cy="0" r="2.2" fill="#fff7c0"/></g><g transform="translate(32,28)"><circle cx="0" cy="-5" r="2.8" fill="#6898d0" opacity="0.8" transform="rotate(0)"/><circle cx="0" cy="-5" r="2.8" fill="#6898d0" opacity="0.8" transform="rotate(72)"/><circle cx="0" cy="-5" r="2.8" fill="#6898d0" opacity="0.8" transform="rotate(144)"/><circle cx="0" cy="-5" r="2.8" fill="#6898d0" opacity="0.8" transform="rotate(216)"/><circle cx="0" cy="-5" r="2.8" fill="#6898d0" opacity="0.8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.8" fill="#fff7c0"/></g><line x1="24" y1="42" x2="16" y2="32" stroke="#6a8f45" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="16" y2="24" stroke="#6a8f45" stroke-width="1.4" stroke-linecap="round"/><line x1="16" y1="30" x2="30" y2="26" stroke="#6a8f45" stroke-width="1.3" stroke-linecap="round"/></svg>`,
+        cosmos: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><g transform="translate(24,20)"><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(0)"/><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(45)"/><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(90)"/><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(135)"/><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(180)"/><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(225)"/><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(270)"/><path d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z" fill="#e090a8" opacity="0.8" transform="rotate(315)"/><circle cx="0" cy="0" r="4" fill="#f0c038"/><circle cx="0" cy="0" r="2.5" fill="#e6a820"/></g><line x1="24" y1="40" x2="24" y2="26" stroke="#6a8f45" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        rose: `<svg viewBox="0 0 48 48" width="40" height="40" fill="none"><g transform="translate(24,22)"><path d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z" fill="#e06080" opacity="0.55" transform="rotate(0)"/><path d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z" fill="#e06080" opacity="0.55" transform="rotate(72)"/><path d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z" fill="#e06080" opacity="0.55" transform="rotate(144)"/><path d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z" fill="#e06080" opacity="0.55" transform="rotate(216)"/><path d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z" fill="#e06080" opacity="0.55" transform="rotate(288)"/><path d="M0,1 C-4,0 -6,-6 -2,-9 C0,-10 2,-10 2,-9 C6,-6 4,0 0,1 Z" fill="#d04868" opacity="0.9" transform="rotate(20)"/><path d="M0,1 C-4,0 -6,-6 -2,-9 C0,-10 2,-10 2,-9 C6,-6 4,0 0,1 Z" fill="#d04868" opacity="0.9" transform="rotate(140)"/><path d="M0,1 C-4,0 -6,-6 -2,-9 C0,-10 2,-10 2,-9 C6,-6 4,0 0,1 Z" fill="#d04868" opacity="0.9" transform="rotate(260)"/><circle cx="0" cy="0" r="3.5" fill="#c03055"/></g><line x1="24" y1="40" x2="24" y2="28" stroke="#4a7a30" stroke-width="2" stroke-linecap="round"/></svg>`,
+      };
+
+      function createFlowerEl(
+        svg: string,
+        x: number,
+        y: number,
+        name: string,
+        date: string,
+        isNew = false,
+      ): HTMLElement {
+        const el = document.createElement("div");
+        el.className = "garden-flower" + (isNew ? " new-flower" : "");
+        el.style.left = x + "%";
+        el.style.top = y + "%";
+        const wrap = document.createElement("div");
+        wrap.className = "flower-svg-wrap";
+        // stagger float animation only for pre-existing flowers, not newly planted ones
+        if (!isNew) {
+          wrap.style.animationDelay = (Math.random() * 3).toFixed(2) + "s";
+        }
+        wrap.innerHTML = svg;
+        el.appendChild(wrap);
+        if (name) {
+          const lbl = document.createElement("div");
+          lbl.className = "flower-label";
+          lbl.innerHTML = name + "<br/>" + date;
+          el.appendChild(lbl);
+          const tip = document.createElement("div");
+          tip.className = "flower-tooltip";
+          tip.innerHTML = "<strong>" + name + "</strong><br/>" + date;
+          el.appendChild(tip);
+        }
+        return el;
+      }
+
+      // Garden starts empty — flowers are added when user plants one
+      const container = document.getElementById("flowers-container")!;
+
+      // ── Flower picker ──────────────────────────────────────────────
+      const pickBtns =
+        document.querySelectorAll<HTMLButtonElement>(".flower-pick-btn");
+      const cursorFlower = document.getElementById("cursor-flower")!;
+      const clickHint = document.getElementById("click-hint")!;
+      const btnPlant = document.getElementById(
+        "btn-plant",
+      ) as HTMLButtonElement;
+      const gardenField = document.getElementById(
+        "garden-field",
+      ) as HTMLElement;
+
+      pickBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const f = btn.dataset.flower ?? "";
+          if (selectedFlower === f) {
+            // deselect
+            selectedFlower = "";
+            btn.classList.remove("active");
+            cursorFlower.style.display = "none";
+            clickHint.style.display = "none";
+            gardenField.style.cursor = "crosshair";
+            btnPlant.disabled = true;
+          } else {
+            pickBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedFlower = f;
+            cursorFlower.innerHTML = flowerSVGs[f] ?? "";
+            cursorFlower.style.display = "block";
+            clickHint.style.display = "block";
+            gardenField.style.cursor = "none";
+            // enable plant button only when name is also filled
+            updatePlantBtn();
+          }
+        });
+      });
+
+      // ── Name change → update button ──────────────────────────────
+      const nameEl = document.getElementById("input-name") as HTMLInputElement;
+      nameEl.addEventListener("input", updatePlantBtn);
+
+      function updatePlantBtn() {
+        btnPlant.disabled = !(selectedFlower && nameEl.value.trim().length > 0);
+      }
+
+      // ── Cursor follow inside garden ────────────────────────────────
+      gardenField.addEventListener("mousemove", (e) => {
+        if (!selectedFlower) return;
+        cursorFlower.style.left = e.clientX + "px";
+        cursorFlower.style.top = e.clientY + "px";
+      });
+      gardenField.addEventListener("mouseleave", () => {
+        cursorFlower.style.display = "none";
+      });
+      gardenField.addEventListener("mouseenter", () => {
+        if (selectedFlower) cursorFlower.style.display = "block";
+      });
+
+      // ── Click in garden → plant preview ──────────────────────────
+      let pendingPosition: { x: number; y: number } | null = null;
+
+      gardenField.addEventListener("click", (e) => {
+        if (!selectedFlower) return;
+        const rect = gardenField.getBoundingClientRect();
+        const px = ((e.clientX - rect.left) / rect.width) * 100;
+        const py = ((e.clientY - rect.top) / rect.height) * 100;
+
+        // Remove previous preview
+        document.querySelector(".garden-flower.preview")?.remove();
+
+        // Add sparkle
+        const spark = document.createElement("div");
+        spark.className = "sparkle-ring";
+        spark.style.left = px + "%";
+        spark.style.top = py + "%";
+        gardenField.appendChild(spark);
+        setTimeout(() => spark.remove(), 700);
+
+        // Add flower preview
+        const svg = flowerSVGs[selectedFlower] ?? "";
+        const el = createFlowerEl(svg, px, py, "", "", true);
+        el.classList.add("preview");
+        gardenField.appendChild(el);
+
+        pendingPosition = { x: px, y: py };
+
+        // Enable plant if name is filled
+        updatePlantBtn();
+      });
+
+      // ── Plant My Bloom ────────────────────────────────────────────
+      btnPlant.addEventListener("click", () => {
+        const name = nameEl.value.trim();
+        if (!name || !selectedFlower) return;
+
+        // If they didn't click the garden, plant at a random nice spot
+        if (!pendingPosition) {
+          pendingPosition = {
+            x: 20 + Math.random() * 60,
+            y: 20 + Math.random() * 60,
+          };
+          const svg = flowerSVGs[selectedFlower] ?? "";
+          const el = createFlowerEl(
+            svg,
+            pendingPosition.x,
+            pendingPosition.y,
+            "",
+            "",
+            true,
+          );
+          el.classList.add("preview");
+          gardenField.appendChild(el);
+        }
+
+        // Save to session
+        sessionStorage.setItem(
+          "bloomData",
+          JSON.stringify({
+            name,
+            message: (
+              document.getElementById("input-message") as HTMLTextAreaElement
+            ).value.trim(),
+            flower: selectedFlower,
+            date: dateStr,
+            visitorNum,
+            x: pendingPosition.x,
+            y: pendingPosition.y,
+          }),
+        );
+
+        navigateTo("/home");
+      });
+
+      // ── Skip ─────────────────────────────────────────────────────
+      document.getElementById("btn-skip")?.addEventListener("click", () => {
+        navigateTo("/home");
+      });
+    </script>
+  </body>
+</html>
