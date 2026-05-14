@@ -6,18 +6,17 @@ import ForceGraph from "./ForceGraph.tsx";
 <section
   id="canvas-overlay"
   class="flex-1 h-full relative p-6"
-  style="background-color: #F8F4EE;"
+  style="background: transparent;"
   aria-label="Interactive canvas"
 >
   <div
     class="w-full h-full relative overflow-hidden rounded-2xl"
     style="
-      background-color: #F8F4EE;
+      background-color: transparent;
       background-image:
-        linear-gradient(#EBE6DC 1px, transparent 1px),
-        linear-gradient(90deg, #EBE6DC 1px, transparent 1px);
+        linear-gradient(rgba(180,168,148,0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180,168,148,0.18) 1px, transparent 1px);
       background-size: 40px 40px;
-      box-shadow: inset 0 0 0 1px rgba(197,180,154,0.15);
     "
   >
     <ForceGraph client:load />

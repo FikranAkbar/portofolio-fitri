@@ -6,6 +6,7 @@ import {
   forceManyBody,
   forceCollide,
 } from "d3-force";
+import { supabase, type BloomRow } from "../../lib/supabase";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 type NodeDef = {
@@ -199,11 +200,11 @@ function ProjectPage({
 
   return (
     <div
-      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${isClosing ? "mac-close" : "mac-open"}`}
-      style={{ transformOrigin }}
+      className={`absolute inset-6 z-20 rounded-2xl flex flex-col overflow-hidden shadow-xl ${isClosing ? "mac-close" : "mac-open"}`}
+      style={{ transformOrigin, background: "#FAF6EE" }}
     >
       {/* Window chrome */}
-      <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 shrink-0">
+      <div className="flex items-center gap-1.5 px-4 pt-3.5 pb-3 border-b border-[#EDE5D6] shrink-0">
         <button
           onClick={handleClose}
           title="Close"
@@ -225,7 +226,7 @@ function ProjectPage({
         </button>
         <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
         <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
-        <span className="ml-2 text-sm font-medium text-gray-800 select-none">
+        <span className="ml-2 text-sm font-medium text-gray-700 select-none">
           Project
         </span>
         <span className="ml-2 text-sm text-gray-400 select-none">My works</span>
@@ -240,7 +241,7 @@ function ProjectPage({
               {PROJECT_ITEMS.filter((_, i) => i % 2 === col).map((p) => (
                 <div
                   key={p.num}
-                  className="border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-[#E73AA4] hover:shadow-md"
+                  className="border border-[#DDD3C0] bg-[#FFFDF8] rounded-xl overflow-hidden transition-all duration-200 hover:border-[#8FAF7E] hover:shadow-md"
                   onMouseEnter={() => {
                     setHoveredCard(p.num);
                     window.dispatchEvent(
@@ -259,15 +260,15 @@ function ProjectPage({
                   }}
                 >
                   <div className="flex justify-end px-4 pt-1">
-                    <span className="text-[12px] font-mono text-gray-300 tracking-widest">
+                    <span className="text-[12px] font-mono text-[#B8A898] tracking-widest">
                       NO. {p.num}
                     </span>
                   </div>
                   <div
-                    className="mx-4 mb-4 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center"
+                    className="mx-4 mb-4 bg-[#EDE5D4] rounded-lg overflow-hidden flex items-center justify-center"
                     style={{ aspectRatio: "16/9" }}
                   >
-                    <span className="text-xs text-gray-300 tracking-wide select-none">
+                    <span className="text-xs text-[#C4B49A] tracking-wide select-none">
                       Cover Image
                     </span>
                   </div>
@@ -280,14 +281,14 @@ function ProjectPage({
                         {p.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="text-[14px] bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full select-none"
+                            className="text-[13px] bg-[#EAF2E8] text-[#6B9962] border border-[#C5DEBA] px-2 py-0.5 rounded-full select-none"
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <p className="text-[16px] text-gray-400 select-none">
+                    <p className="text-[15px] text-[#9B8F83] select-none">
                       {p.desc}
                     </p>
                   </div>
@@ -295,7 +296,7 @@ function ProjectPage({
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${hoveredCard === p.num ? "max-h-52 opacity-100" : "max-h-0 opacity-0"}`}
                   >
-                    <div className="border-t border-dashed border-gray-200 mx-4 mt-3 mb-4" />
+                    <div className="border-t border-dashed border-[#DDD3C0] mx-4 mt-3 mb-4" />
                     <div className="px-4 pb-4 flex flex-col gap-4">
                       {[
                         { label: "Role", value: p.role },
@@ -304,9 +305,9 @@ function ProjectPage({
                       ].map((row) => (
                         <div
                           key={row.label}
-                          className="flex items-start gap-6 text-[16px]"
+                          className="flex items-start gap-6 text-[15px]"
                         >
-                          <span className="text-gray-400 uppercase tracking-wider font-medium w-28 shrink-0 text-left select-none">
+                          <span className="text-[#9B8F83] uppercase tracking-wider font-medium w-28 shrink-0 text-left select-none">
                             {row.label}
                           </span>
                           <span className="text-gray-600 text-left select-none">
@@ -455,11 +456,11 @@ function AboutPage({
 
   return (
     <div
-      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${isClosing ? "mac-close" : "mac-open"}`}
-      style={{ transformOrigin }}
+      className={`absolute inset-6 z-20 rounded-2xl flex flex-col overflow-hidden shadow-xl ${isClosing ? "mac-close" : "mac-open"}`}
+      style={{ transformOrigin, background: "#FAF6EE" }}
     >
       {/* Window chrome */}
-      <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 shrink-0">
+      <div className="flex items-center gap-1.5 px-4 pt-3.5 pb-3 border-b border-[#EDE5D6] shrink-0">
         <button
           onClick={handleClose}
           title="Close"
@@ -480,7 +481,7 @@ function AboutPage({
         </button>
         <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
         <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
-        <span className="ml-2 text-sm font-medium text-gray-800 select-none">
+        <span className="ml-2 text-sm font-medium text-gray-700 select-none">
           About Me
         </span>
         <span className="ml-2 text-sm text-gray-400 select-none">Who I am</span>
@@ -491,10 +492,10 @@ function AboutPage({
         <div className="max-w-[640px] mx-auto px-8 py-12 flex flex-col gap-10">
           {/* ── Quote ──────────────────────────────────────────────────── */}
           <div className="flex flex-col gap-4">
-            <p className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">
+            <p className="text-[13px] font-semibold text-[#9B8F83] uppercase tracking-widest">
               Steve Jobs once said...
             </p>
-            <blockquote className="border-l-2 border-[#E73AA4] pl-5">
+            <blockquote className="border-l-2 border-[#8FAF7E] pl-5">
               <p className="text-[18px] italic text-gray-700 leading-relaxed font-medium">
                 "Design is not just what it looks like and feels like. Design is
                 how it works."
@@ -506,7 +507,7 @@ function AboutPage({
             </p>
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-[#EDE5D6]" />
 
           {/* ── Bio ────────────────────────────────────────────────────── */}
           <div className="flex flex-col gap-4">
@@ -539,12 +540,12 @@ function AboutPage({
             </p>
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-[#EDE5D6]" />
 
           {/* ── Experience ─────────────────────────────────────────────── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
-              <span className="px-5 py-1.5 rounded-full border border-gray-200 text-[14px] font-medium text-gray-600 bg-white select-none">
+              <span className="px-5 py-1.5 rounded-full border border-[#C5DEBA] text-[14px] font-medium text-[#5A7E52] bg-[#EDF5E8] select-none">
                 Experience
               </span>
             </div>
@@ -561,12 +562,12 @@ function AboutPage({
             </div>
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-[#EDE5D6]" />
 
           {/* ── Organization ───────────────────────────────────────────── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
-              <span className="px-5 py-1.5 rounded-full border border-gray-200 text-[14px] font-medium text-gray-600 bg-white select-none">
+              <span className="px-5 py-1.5 rounded-full border border-[#C5DEBA] text-[14px] font-medium text-[#5A7E52] bg-[#EDF5E8] select-none">
                 Organization
               </span>
             </div>
@@ -583,12 +584,12 @@ function AboutPage({
             </div>
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-[#EDE5D6]" />
 
           {/* ── Courses & Certifications ────────────────────────────────── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
-              <span className="px-5 py-1.5 rounded-full border border-gray-200 text-[14px] font-medium text-gray-600 bg-white select-none">
+              <span className="px-5 py-1.5 rounded-full border border-[#C5DEBA] text-[14px] font-medium text-[#5A7E52] bg-[#EDF5E8] select-none">
                 Courses, Training & Certifications
               </span>
             </div>
@@ -605,11 +606,11 @@ function AboutPage({
             </div>
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-[#EDE5D6]" />
 
           {/* ── Testimonials ────────────────────────────────────────────── */}
           <div className="flex flex-col gap-5">
-            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">
+            <h2 className="text-[13px] font-semibold text-[#9B8F83] uppercase tracking-widest">
               That's what they said 🩷
             </h2>
 
@@ -620,13 +621,13 @@ function AboutPage({
                   href="https://www.fiverr.com/fitrizahwa"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col gap-4 p-5 rounded-2xl border border-gray-100 bg-white
+                  className="group relative flex flex-col gap-4 p-5 rounded-2xl border border-[#DDD3C0] bg-[#FFFDF8]
                     overflow-hidden cursor-pointer select-none
-                    transition-all duration-300
-                    hover:border-[#E73AA4]/30 hover:shadow-[0_4px_24px_rgba(231,58,164,0.08)] hover:-translate-y-0.5"
+                    transition-all duration-200
+                    hover:border-[#8FAF7E]/50 hover:shadow-[0_4px_24px_rgba(143,175,126,0.12)] hover:-translate-y-0.5"
                 >
-                  {/* Subtle pink gradient bg on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#E73AA4]/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
+                  {/* Subtle green gradient bg on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#8FAF7E]/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
 
                   {/* Top row: stars + quote mark */}
                   <div className="flex items-center justify-between">
@@ -643,7 +644,7 @@ function AboutPage({
                       ))}
                     </div>
                     {/* Decorative quote mark */}
-                    <span className="text-[32px] leading-none text-[#E73AA4]/20 font-serif group-hover:text-[#E73AA4]/40 transition-colors duration-300 -mt-1">
+                    <span className="text-[32px] leading-none text-[#8FAF7E]/30 font-serif group-hover:text-[#8FAF7E]/60 transition-colors duration-300 -mt-1">
                       "
                     </span>
                   </div>
@@ -654,13 +655,13 @@ function AboutPage({
                   </p>
 
                   {/* Divider */}
-                  <div className="border-t border-gray-100" />
+                  <div className="border-t border-[#EDE5D6]" />
 
                   {/* Author row */}
                   <div className="flex items-center gap-3">
                     {/* Avatar initial */}
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E73AA4]/20 to-[#E73AA4]/5 flex items-center justify-center shrink-0">
-                      <span className="text-[13px] font-semibold text-[#E73AA4]">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#8FAF7E]/20 to-[#8FAF7E]/5 flex items-center justify-center shrink-0">
+                      <span className="text-[13px] font-semibold text-[#5A7E52]">
                         {t.initial}
                       </span>
                     </div>
@@ -698,8 +699,8 @@ function AboutPage({
               href="https://www.fiverr.com/fitrizahwa"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-gray-200
-                text-[14px] text-gray-400 hover:text-[#E73AA4] hover:border-[#E73AA4]/40 hover:bg-[#E73AA4]/[0.03]
+              className="group flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-[#C5DEBA]
+                text-[14px] text-[#9B8F83] hover:text-[#5A7E52] hover:border-[#8FAF7E] hover:bg-[#EDF5E8]/50
                 transition-all duration-200"
             >
               <span>See all reviews on Fiverr</span>
@@ -716,25 +717,25 @@ function AboutPage({
             </a>
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-[#EDE5D6]" />
 
           {/* ── Read ────────────────────────────────────────────────────── */}
           <div className="flex flex-col gap-4">
-            <h2 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest">
+            <h2 className="text-[13px] font-semibold text-[#9B8F83] uppercase tracking-widest">
               Read
             </h2>
             <a
               href="https://fitrizahwa-garden.framer.website/reading"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center justify-between px-5 py-4 rounded-xl border border-gray-200 bg-white overflow-hidden transition-all duration-300 hover:border-[#E73AA4] hover:shadow-md"
+              className="group relative flex items-center justify-between px-5 py-4 rounded-xl border border-[#DDD3C0] bg-[#FFFDF8] overflow-hidden transition-all duration-200 hover:border-[#8FAF7E] hover:shadow-md"
             >
               {/* Shimmer sweep on hover */}
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-[#E73AA4]/8 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-[#8FAF7E]/8 to-transparent pointer-events-none" />
               <div className="flex items-center gap-3">
                 <span className="text-[20px]">📚</span>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[15px] font-medium text-gray-800 group-hover:text-[#E73AA4] transition-colors duration-200">
+                  <span className="text-[15px] font-medium text-gray-800 group-hover:text-[#5A7E52] transition-colors duration-200">
                     Fitri's Garden
                   </span>
                   <span className="text-[13px] text-gray-400">
@@ -742,7 +743,7 @@ function AboutPage({
                   </span>
                 </div>
               </div>
-              <span className="text-gray-300 group-hover:text-[#E73AA4] transition-colors duration-200 text-[18px]">
+              <span className="text-gray-300 group-hover:text-[#5A7E52] transition-colors duration-200 text-[18px]">
                 ↗
               </span>
             </a>
@@ -756,6 +757,336 @@ function AboutPage({
   );
 }
 
+// ─── Visitor Gallery Data ────────────────────────────────────────────────────
+type BloomEntry = {
+  id: number;
+  num: string;
+  name: string;
+  flower: string;
+  flowerName: string;
+  message: string;
+  date: string;
+  x: number;
+  y: number;
+};
+
+const BLOOM_DATA: BloomEntry[] = [
+  {
+    id: 1,
+    num: "1948",
+    name: "Fikri",
+    flower: "daisy",
+    flowerName: "Daisy Love",
+    message: "Keep going, keep growing. ✨",
+    date: "Apr 16, 2025",
+    x: 56,
+    y: 36,
+  },
+  {
+    id: 2,
+    num: "1947",
+    name: "Rania",
+    flower: "sakura",
+    flowerName: "Sakura Bloom",
+    message: "Thank you for creating such a lovely space 🌸",
+    date: "Apr 18, 2025",
+    x: 24,
+    y: 18,
+  },
+  {
+    id: 3,
+    num: "1946",
+    name: "Dinda",
+    flower: "lavender",
+    flowerName: "Lavender",
+    message: "Peace begins with a grateful heart 💜",
+    date: "Apr 17, 2025",
+    x: 62,
+    y: 14,
+  },
+  {
+    id: 4,
+    num: "1945",
+    name: "Arman",
+    flower: "sunflower",
+    flowerName: "Sunflower",
+    message: "Be like a sunflower, follow the light 🌻",
+    date: "Apr 15, 2025",
+    x: 76,
+    y: 50,
+  },
+  {
+    id: 5,
+    num: "1944",
+    name: "Nabila",
+    flower: "forgetmenot",
+    flowerName: "Forget-me-not",
+    message: "Small flowers, big memories 💙",
+    date: "Apr 15, 2025",
+    x: 16,
+    y: 58,
+  },
+  {
+    id: 6,
+    num: "1943",
+    name: "Alya",
+    flower: "rose",
+    flowerName: "Rose",
+    message: "Every petal tells a story 🌹",
+    date: "Apr 14, 2025",
+    x: 70,
+    y: 68,
+  },
+  {
+    id: 7,
+    num: "1942",
+    name: "Budi",
+    flower: "daisy",
+    flowerName: "Daisy Love",
+    message: "Keep blooming! 🌼",
+    date: "Apr 13, 2025",
+    x: 38,
+    y: 64,
+  },
+  {
+    id: 8,
+    num: "1941",
+    name: "Sari",
+    flower: "sakura",
+    flowerName: "Sakura Bloom",
+    message: "You inspire me always 🌸",
+    date: "Apr 12, 2025",
+    x: 10,
+    y: 30,
+  },
+  {
+    id: 9,
+    num: "1940",
+    name: "Yoga",
+    flower: "cosmos",
+    flowerName: "Cosmos",
+    message: "Dreaming in flowers 🌸",
+    date: "Apr 11, 2025",
+    x: 85,
+    y: 26,
+  },
+  {
+    id: 10,
+    num: "1939",
+    name: "Putri",
+    flower: "lavender",
+    flowerName: "Lavender",
+    message: "Serenity in every bloom 🌿",
+    date: "Apr 10, 2025",
+    x: 46,
+    y: 22,
+  },
+  {
+    id: 11,
+    num: "1938",
+    name: "Hana",
+    flower: "rose",
+    flowerName: "Rose",
+    message: "A garden of kindness 🌹",
+    date: "Apr 9, 2025",
+    x: 30,
+    y: 72,
+  },
+  {
+    id: 12,
+    num: "1937",
+    name: "Dito",
+    flower: "forgetmenot",
+    flowerName: "Forget-me-not",
+    message: "Always remember to smile 💙",
+    date: "Apr 8, 2025",
+    x: 84,
+    y: 60,
+  },
+];
+
+const FLOWER_NAMES: Record<string, string> = {
+  sakura: "Sakura Bloom",
+  lavender: "Lavender",
+  daisy: "Daisy Love",
+  sunflower: "Sunflower",
+  babysbreath: "Baby's Breath",
+  forgetmenot: "Forget-me-not",
+  cosmos: "Cosmos",
+  rose: "Rose",
+};
+
+function rowToBloomEntry(e: BloomRow, i = 0): BloomEntry {
+  return {
+    id: e.id,
+    num: e.visitor_num ?? "?",
+    name: e.name,
+    flower: e.flower,
+    flowerName: FLOWER_NAMES[e.flower] ?? e.flower,
+    message: e.message ?? "",
+    date: e.date ?? "",
+    x: typeof e.x === "number" ? e.x : 50,
+    y: typeof e.y === "number" ? e.y : 50,
+  };
+  void i;
+}
+
+const FLOWER_PAL: Record<
+  string,
+  { p: string; p2: string; c: string; bg: string; border: string }
+> = {
+  sakura: {
+    p: "#FBCFDF",
+    p2: "#F472B6",
+    c: "#FBBF24",
+    bg: "#FFF5F8",
+    border: "#F9C0D4",
+  },
+  lavender: {
+    p: "#DDD6FE",
+    p2: "#A78BFA",
+    c: "#7C3AED",
+    bg: "#F5F3FF",
+    border: "#C4BBFA",
+  },
+  daisy: {
+    p: "#FEF9C3",
+    p2: "#FDE047",
+    c: "#D97706",
+    bg: "#FEFCE8",
+    border: "#FDE68A",
+  },
+  sunflower: {
+    p: "#FDE68A",
+    p2: "#F59E0B",
+    c: "#92400E",
+    bg: "#FFFBEB",
+    border: "#FDE68A",
+  },
+  forgetmenot: {
+    p: "#BFDBFE",
+    p2: "#60A5FA",
+    c: "#FBBF24",
+    bg: "#EFF6FF",
+    border: "#93C5FD",
+  },
+  rose: {
+    p: "#FECDD3",
+    p2: "#FB7185",
+    c: "#BE123C",
+    bg: "#FFF1F2",
+    border: "#FECDD3",
+  },
+  cosmos: {
+    p: "#FBCFE8",
+    p2: "#F9A8D4",
+    c: "#FBBF24",
+    bg: "#FDF2F8",
+    border: "#F9C0E2",
+  },
+};
+
+function FlowerSvg({ type, size = 64 }: { type: string; size?: number }) {
+  const pal = FLOWER_PAL[type] ?? FLOWER_PAL.daisy;
+  const hw = size / 2;
+  const stemTop = size * 0.4;
+
+  if (type === "lavender") {
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        style={{ overflow: "visible" }}
+      >
+        <line
+          x1={hw}
+          y1={stemTop * 0.55}
+          x2={hw}
+          y2={size - 2}
+          stroke="#8FAF7E"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+        {[0.18, 0.26, 0.34, 0.42, 0.5].map((t, i) => (
+          <React.Fragment key={i}>
+            <ellipse
+              cx={hw - 6}
+              cy={size * t}
+              rx={4}
+              ry={2.5}
+              fill={pal.p}
+              transform={`rotate(-25,${hw - 6},${size * t})`}
+            />
+            <ellipse
+              cx={hw + 6}
+              cy={size * (t + 0.04)}
+              rx={4}
+              ry={2.5}
+              fill={pal.p2}
+              transform={`rotate(25,${hw + 6},${size * (t + 0.04)})`}
+            />
+          </React.Fragment>
+        ))}
+        <ellipse cx={hw} cy={size * 0.12} rx={3.5} ry={5.5} fill={pal.p2} />
+      </svg>
+    );
+  }
+
+  const configs: Record<
+    string,
+    { n: number; rx: number; ry: number; dist: number }
+  > = {
+    sakura: { n: 5, rx: 7, ry: 5, dist: 9 },
+    daisy: { n: 10, rx: 9, ry: 3.5, dist: 10 },
+    sunflower: { n: 14, rx: 8, ry: 3, dist: 11 },
+    forgetmenot: { n: 5, rx: 5, ry: 4, dist: 7 },
+    rose: { n: 6, rx: 8, ry: 6, dist: 8 },
+    cosmos: { n: 8, rx: 9, ry: 3.5, dist: 10 },
+  };
+  const { n, rx, ry, dist } = configs[type] ?? { n: 5, rx: 7, ry: 5, dist: 9 };
+  const centerR = type === "sunflower" ? 9 : 5;
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      style={{ overflow: "visible" }}
+    >
+      <line
+        x1={hw}
+        y1={stemTop + 4}
+        x2={hw}
+        y2={size - 2}
+        stroke="#8FAF7E"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      {Array.from({ length: n }, (_, i) => {
+        const angle = (360 / n) * i - 90;
+        const rad = (angle * Math.PI) / 180;
+        const cx = hw + Math.cos(rad) * dist;
+        const cy = stemTop + Math.sin(rad) * dist;
+        return (
+          <ellipse
+            key={i}
+            cx={cx}
+            cy={cy}
+            rx={rx}
+            ry={ry}
+            fill={i % 2 === 0 ? pal.p : pal.p2}
+            stroke={pal.p2}
+            strokeWidth="0.3"
+            transform={`rotate(${angle + 90},${cx},${cy})`}
+          />
+        );
+      })}
+      <circle cx={hw} cy={stemTop} r={centerR} fill={pal.c} />
+    </svg>
+  );
+}
+
 // ─── Visitor Gallery Page ─────────────────────────────────────────────────────
 function VisitorGalleryPage({
   onClose,
@@ -765,17 +1096,47 @@ function VisitorGalleryPage({
   isClosing?: boolean;
 }) {
   const [closing, setClosing] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [blooms, setBlooms] = useState<BloomEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState<number | null>(null);
+
+  // Fetch real visitor blooms from Supabase on mount (max 50 displayed, but count all)
+  useEffect(() => {
+    // Fetch total count
+    supabase
+      .from("blooms")
+      .select("*", { count: "exact", head: true })
+      .then(({ count }) => {
+        setTotalCount(count ?? 0);
+      });
+    // Fetch latest 50 to display
+    supabase
+      .from("blooms")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(50)
+      .then(({ data, error }) => {
+        if (!error && data) {
+          setBlooms((data as BloomRow[]).map(rowToBloomEntry));
+        }
+        setLoading(false);
+      });
+  }, []);
+
   function handleClose() {
     setClosing(true);
     setTimeout(onClose, 200);
   }
   const isClosing = closing || forcedClosing;
+
   return (
     <div
-      className={`absolute inset-6 z-20 bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg ${isClosing ? "mac-close" : "mac-open"}`}
-      style={{ transformOrigin: "center center" }}
+      className={`absolute inset-6 z-20 rounded-2xl flex flex-col overflow-hidden shadow-xl ${isClosing ? "mac-close" : "mac-open"}`}
+      style={{ transformOrigin: "center center", background: "#FAF6EE" }}
     >
-      <div className="flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 shrink-0">
+      {/* ── Window chrome ──────────────────────────────────────────────── */}
+      <div className="flex items-center gap-1.5 px-4 pt-3.5 pb-3 border-b border-[#EDE5D6] shrink-0">
         <button
           onClick={handleClose}
           title="Close"
@@ -796,17 +1157,267 @@ function VisitorGalleryPage({
         </button>
         <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
         <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
-        <span className="ml-2 text-sm font-medium text-gray-800 select-none">
+        <span className="ml-2 text-sm font-medium text-gray-700 select-none">
           Visitor Gallery
         </span>
         <span className="ml-2 text-sm text-gray-400 select-none">
-          Leave your mark
+          Bloomed with love 🌿
         </span>
+        <div className="ml-auto flex items-center gap-2">
+          <span className="text-[13px] text-gray-400 select-none">
+            My corner
+          </span>
+          <div className="w-7 h-7 rounded-full bg-[#E8DDD0] flex items-center justify-center text-[13px]">
+            🌿
+          </div>
+        </div>
       </div>
-      <div className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
-        <p className="text-gray-400 text-sm tracking-wide select-none">
-          Content coming soon
-        </p>
+
+      {/* ── Page header ────────────────────────────────────────────────── */}
+      <div className="flex items-center justify-between px-6 pt-4 pb-3 shrink-0">
+        <div className="flex items-center gap-3">
+          <h2 className="text-[22px] font-bold text-gray-800 select-none">
+            Visitor Gallery
+          </h2>
+          <span className="text-[10px] font-semibold tracking-widest uppercase text-[#8FAF7E] bg-[#EDF5E8] px-3 py-1 rounded-full border border-[#C5DEBA] select-none">
+            {loading
+              ? "Loading…"
+              : `${totalCount ?? blooms.length} bloom${(totalCount ?? blooms.length) !== 1 ? "s" : ""} planted`}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D6CCB8] bg-white text-[12px] text-gray-600 hover:bg-[#F5F0E6] transition-colors duration-150 select-none">
+            Edit my card <span>✏️</span>
+          </button>
+          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D6CCB8] bg-white text-[12px] text-gray-600 hover:bg-[#F5F0E6] transition-colors duration-150 select-none">
+            Shuffle <span>🔀</span>
+          </button>
+        </div>
+      </div>
+
+      {/* ── Main body ──────────────────────────────────────────────────── */}
+      <div className="flex flex-1 overflow-hidden gap-3 px-6 pb-0 min-h-0 relative">
+        {/* Loading overlay */}
+        {loading && (
+          <div
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-xl"
+            style={{
+              background: "rgba(250,246,238,0.88)",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            <div className="flex items-end gap-1.5">
+              {[0, 0.15, 0.3].map((delay, i) => (
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-[#8FAF7E]"
+                  style={{
+                    animation: `vg-bounce 0.9s ease-in-out ${delay}s infinite`,
+                  }}
+                />
+              ))}
+            </div>
+            <p
+              className="text-[11px] text-[#8FAF7E] tracking-widest uppercase font-medium select-none"
+              style={{ fontFamily: "'Source Code Pro', monospace" }}
+            >
+              Growing the garden…
+            </p>
+            <style>{`
+              @keyframes vg-bounce {
+                0%, 100% { transform: translateY(0); opacity: 0.5; }
+                50% { transform: translateY(-6px); opacity: 1; }
+              }
+            `}</style>
+          </div>
+        )}
+        {/* Garden canvas */}
+        <div
+          className="flex-1 relative rounded-xl overflow-hidden border border-[#DCCFB6]"
+          style={{
+            background:
+              "radial-gradient(ellipse at 60% 35%, #F7EED8 0%, #EAE0C6 100%)",
+          }}
+        >
+          {/* Grain texture overlay */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ opacity: 0.06 }}
+          >
+            <filter id="vg-grain">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.8"
+                numOctaves="4"
+                stitchTiles="stitch"
+              />
+              <feColorMatrix type="saturate" values="0" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#vg-grain)" />
+          </svg>
+
+          {/* Grass strip */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none rounded-b-xl"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(156,184,145,0.45), transparent)",
+            }}
+          />
+
+          {/* Sparkle dots */}
+          {[
+            [12, 18],
+            [44, 8],
+            [72, 13],
+            [87, 38],
+            [55, 56],
+            [19, 74],
+            [67, 79],
+            [33, 43],
+            [92, 52],
+            [6, 62],
+          ].map(([x, y], i) => (
+            <div
+              key={i}
+              className="absolute text-[7px] text-[#C4B49A] opacity-50 select-none pointer-events-none"
+              style={{ left: `${x}%`, top: `${y}%` }}
+            >
+              ✦
+            </div>
+          ))}
+
+          {/* Flower plants */}
+          {blooms.map((bloom) => {
+            const isHov = hovered === bloom.id;
+            const tipAbove = bloom.y > 52;
+            return (
+              <div
+                key={bloom.id}
+                className="absolute cursor-pointer"
+                style={{
+                  left: `${bloom.x}%`,
+                  top: `${bloom.y}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+                onMouseEnter={() => setHovered(bloom.id)}
+                onMouseLeave={() => setHovered(null)}
+              >
+                <div
+                  className={`transition-transform duration-200 drop-shadow-sm ${isHov ? "scale-110 -translate-y-1" : ""}`}
+                >
+                  <FlowerSvg type={bloom.flower} size={64} />
+                </div>
+                {isHov && (
+                  <div
+                    className="absolute z-20 bg-white/96 rounded-xl shadow-lg border border-[#EDE5D6] px-3 py-2.5 w-44 pointer-events-none"
+                    style={{
+                      [tipAbove ? "bottom" : "top"]: "calc(100% + 10px)",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                  >
+                    <p className="text-[13px] font-semibold text-gray-800 select-none leading-tight">
+                      {bloom.flowerName}
+                    </p>
+                    <p className="text-[12px] text-gray-500 select-none mt-0.5">
+                      {bloom.name} <span className="text-[10px]">✏️</span>
+                    </p>
+                    <p className="text-[11px] text-gray-400 select-none mt-0.5">
+                      {bloom.date}
+                    </p>
+                    <p className="text-[11px] text-gray-500 italic select-none mt-1.5 border-t border-gray-100 pt-1.5 leading-relaxed">
+                      {bloom.message}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Right: visitor card list */}
+        <div className="w-[252px] overflow-y-auto shrink-0 flex flex-col gap-2.5 pb-4 scrollbar-hide">
+          {blooms.map((bloom) => {
+            const pal = FLOWER_PAL[bloom.flower] ?? FLOWER_PAL.daisy;
+            return (
+              <div
+                key={bloom.id}
+                className="rounded-xl border px-3 pt-2.5 pb-2 flex flex-col gap-1.5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer select-none"
+                style={{ background: pal.bg, borderColor: pal.border }}
+              >
+                <div className="flex gap-2.5 items-start">
+                  <div className="shrink-0 w-11 flex items-end justify-center">
+                    <FlowerSvg type={bloom.flower} size={54} />
+                  </div>
+                  <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-gray-800 leading-tight">
+                      {bloom.flowerName}
+                    </p>
+                    <p className="text-[11px] text-gray-500">
+                      by {bloom.name}{" "}
+                      <span className="opacity-60 text-[10px]">✏️</span>
+                    </p>
+                    <p className="text-[12px] text-gray-600 leading-relaxed mt-0.5">
+                      {bloom.message}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-end justify-between pt-1.5 border-t border-black/5 mt-0.5">
+                  <div>
+                    <p className="text-[11px] text-gray-400">{bloom.date}</p>
+                    <p className="text-[10px] text-gray-300">No. {bloom.num}</p>
+                  </div>
+                  <p
+                    className="text-[14px] text-gray-400/70"
+                    style={{
+                      fontFamily: "Georgia, 'Times New Roman', serif",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {bloom.name}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Footer stats ───────────────────────────────────────────────── */}
+      <div
+        className="shrink-0 flex items-stretch border-t border-[#EDE5D6] mt-3"
+        style={{ background: "rgba(245,239,223,0.7)" }}
+      >
+        <div className="flex items-center gap-3 px-5 py-3 flex-1">
+          <span className="text-2xl opacity-70">🌿</span>
+          <div>
+            <p className="text-[17px] font-bold text-gray-700 leading-none select-none">
+              {totalCount ?? blooms.length}
+            </p>
+            <p className="text-[11px] text-gray-400 mt-0.5 select-none">
+              Blooms planted so far
+            </p>
+          </div>
+        </div>
+        <div className="w-px bg-[#EDE5D6]" />
+        <div className="flex items-center px-5 py-3 flex-1">
+          <p className="text-[12px] text-gray-500 leading-relaxed select-none">
+            Every flower here was planted
+            <br />
+            by a visitor with a kind heart.
+          </p>
+        </div>
+        <div className="w-px bg-[#EDE5D6]" />
+        <div className="flex items-center gap-2 px-5 py-3 flex-1">
+          <span className="text-lg">🦋</span>
+          <p className="text-[12px] text-gray-500 select-none">
+            Hover a bloom
+            <br />
+            to read its story
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -907,13 +1518,17 @@ function NodeCard({
       >
         <div
           ref={cardRef}
-          className={`relative bg-white border border-gray-200 rounded-2xl shadow-xl w-[420px] max-w-[90vw] overflow-hidden ${isClosing ? "mac-close" : "mac-open"}`}
-          style={{ transformOrigin: pos ? "center center" : transformOrigin }}
+          className={`relative rounded-2xl shadow-xl w-[420px] max-w-[90vw] overflow-hidden ${isClosing ? "mac-close" : "mac-open"}`}
+          style={{
+            transformOrigin: pos ? "center center" : transformOrigin,
+            background: "#FAF6EE",
+            border: "1px solid #DDD3C0",
+          }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Window chrome — drag handle */}
           <div
-            className="group/chrome flex items-center gap-1.5 px-4 pt-4 pb-3 border-b border-gray-100 select-none"
+            className="group/chrome flex items-center gap-1.5 px-4 pt-3.5 pb-3 border-b border-[#EDE5D6] select-none"
             style={{ cursor: isDragging ? "grabbing" : "grab" }}
             onMouseDown={onChromeMouseDown}
           >
@@ -949,16 +1564,38 @@ function NodeCard({
               className="w-3 h-3 rounded-full bg-[#D9D9D9]"
               title="Maximize"
             />
-            <span className="ml-2 text-sm font-medium text-gray-800">
-              Title
+            <span className="ml-2 text-sm font-medium text-gray-700 select-none">
+              {_node.label}
             </span>
-            <span className="ml-2 text-sm text-gray-400">Description</span>
+            {_node.desc && (
+              <span className="ml-2 text-sm text-[#9B8F83] select-none truncate">
+                {_node.desc}
+              </span>
+            )}
+            {_node.num && (
+              <span className="ml-auto text-[11px] font-mono tracking-widest text-[#B8A898] select-none shrink-0">
+                {_node.num}
+              </span>
+            )}
           </div>
 
           {/* Body */}
-          <div className="px-6 py-8 flex flex-col items-center gap-3 min-h-[200px] justify-center">
-            <p className="text-gray-400 text-sm tracking-wide select-none">
-              Content coming soon
+          <div className="px-6 py-10 flex flex-col items-center gap-4 min-h-[200px] justify-center">
+            <div className="w-14 h-14 rounded-full bg-[#EDF5E8] border border-[#C5DEBA] flex items-center justify-center">
+              <span className="text-2xl select-none">🌱</span>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <p className="text-[15px] font-medium text-gray-700 select-none">
+                {_node.label}
+              </p>
+              {_node.desc && (
+                <p className="text-[13px] text-[#9B8F83] select-none text-center leading-relaxed max-w-[260px]">
+                  {_node.desc}
+                </p>
+              )}
+            </div>
+            <p className="text-[12px] text-[#B8A898] tracking-wide select-none mt-2">
+              Content coming soon 🌿
             </p>
           </div>
 
@@ -966,11 +1603,12 @@ function NodeCard({
           <div className="flex justify-end px-4 pb-4">
             <button
               onClick={handleClose}
-              className="select-none px-5 py-2 rounded-lg text-sm font-medium text-white
-                bg-[#E73AA4] hover:bg-[#d42e93] active:scale-95 active:bg-[#c0287f]
-                transition-all duration-150 ease-in-out shadow-sm hover:shadow-md"
+              className="select-none px-5 py-2 rounded-lg text-sm font-medium
+                text-[#5A7E52] bg-[#EDF5E8] border border-[#C5DEBA]
+                hover:bg-[#DDEEDA] hover:border-[#8FAF7E]
+                active:scale-95 transition-all duration-150 ease-in-out"
             >
-              Button
+              Close
             </button>
           </div>
         </div>
@@ -1526,18 +2164,55 @@ export default function ForceGraph() {
     svg.appendChild(nodeG);
 
     // ── Links (botanical vine paths) ──────────────────────────────────────────
-    const linkEls = simLinks.map(() => {
-      const path = el("path") as SVGPathElement;
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#9CB891");
-      path.setAttribute("stroke-width", "1.3");
-      path.setAttribute("stroke-linecap", "round");
-      path.setAttribute("stroke-dasharray", "1 12");
-      path.setAttribute("opacity", "0.75");
-      (path as SVGPathElement).style.transition = "opacity 0.25s ease";
-      linkG.appendChild(path);
-      return path;
+    type VineEl = {
+      group: SVGGElement;
+      stem: SVGPathElement;
+      leafA: SVGPathElement;
+      leafB: SVGPathElement;
+    };
+    const LEAF_FILLS = [
+      "#AECA9E",
+      "#9CB891",
+      "#B5D1A5",
+      "#A8C898",
+      "#B2CF9E",
+      "#C4DDB8",
+      "#98C08E",
+      "#B0CA9A",
+    ];
+    const LEAF_D = "M0,-4.5 C3.2,-2 3.2,2 0,4.5 C-3.2,2 -3.2,-2 0,-4.5 Z";
+
+    const vineEls: VineEl[] = simLinks.map((_, i) => {
+      const group = el("g") as SVGGElement;
+      group.style.opacity = "0.82";
+      group.style.transition = "opacity 0.25s ease";
+
+      const stem = el("path") as SVGPathElement;
+      stem.setAttribute("fill", "none");
+      stem.setAttribute("stroke", "#8FAF7E");
+      stem.setAttribute("stroke-width", "1.4");
+      stem.setAttribute("stroke-linecap", "round");
+      stem.setAttribute("pointer-events", "none");
+
+      const leafA = el("path") as SVGPathElement;
+      leafA.setAttribute("d", LEAF_D);
+      leafA.setAttribute("fill", LEAF_FILLS[i % LEAF_FILLS.length]);
+      leafA.setAttribute("opacity", "0.72");
+      leafA.setAttribute("pointer-events", "none");
+
+      const leafB = el("path") as SVGPathElement;
+      leafB.setAttribute("d", LEAF_D);
+      leafB.setAttribute("fill", LEAF_FILLS[(i + 3) % LEAF_FILLS.length]);
+      leafB.setAttribute("opacity", "0.60");
+      leafB.setAttribute("pointer-events", "none");
+
+      group.append(stem, leafA, leafB);
+      linkG.appendChild(group);
+      return { group, stem, leafA, leafB };
     });
+
+    // Expose groups under old name for hover-opacity control
+    const linkEls = vineEls.map((v) => v.group);
 
     // ── Nodes ─────────────────────────────────────────────────────────────────
     const nodeElMap: Record<string, SVGGElement> = {};
@@ -1778,7 +2453,7 @@ export default function ForceGraph() {
           });
           // Restore all links
           linkEls.forEach((p) => {
-            p.style.opacity = "0.75";
+            p.style.opacity = "0.82";
           });
         });
 
@@ -1903,10 +2578,35 @@ export default function ForceGraph() {
         const dx = tx - sx,
           dy = ty - sy;
         const len = Math.sqrt(dx * dx + dy * dy) || 1;
-        const off = len * 0.07; // slight perpendicular curve for vine effect
+        const off = len * 0.14; // organic vine curve
         const qx = mx + (-dy / len) * off;
         const qy = my + (dx / len) * off;
-        linkEls[i].setAttribute("d", `M ${sx} ${sy} Q ${qx} ${qy} ${tx} ${ty}`);
+        vineEls[i].stem.setAttribute(
+          "d",
+          `M ${sx} ${sy} Q ${qx} ${qy} ${tx} ${ty}`,
+        );
+
+        // Position leaves along the bezier
+        const leafDefs: [SVGPathElement, number, number][] = [
+          [vineEls[i].leafA, 0.28, 1],
+          [vineEls[i].leafB, 0.63, -1],
+        ];
+        leafDefs.forEach(([leaf, bp, side]) => {
+          const bx =
+            (1 - bp) * (1 - bp) * sx + 2 * bp * (1 - bp) * qx + bp * bp * tx;
+          const by =
+            (1 - bp) * (1 - bp) * sy + 2 * bp * (1 - bp) * qy + bp * bp * ty;
+          const tdx = 2 * (1 - bp) * (qx - sx) + 2 * bp * (tx - qx);
+          const tdy = 2 * (1 - bp) * (qy - sy) + 2 * bp * (ty - qy);
+          const angle = (Math.atan2(tdy, tdx) * 180) / Math.PI;
+          const perpRad = ((angle + 90) * Math.PI) / 180;
+          const px = bx + Math.cos(perpRad) * 5 * side;
+          const py = by + Math.sin(perpRad) * 5 * side;
+          leaf.setAttribute(
+            "transform",
+            `translate(${px.toFixed(1)},${py.toFixed(1)}) rotate(${(angle + 55 * side).toFixed(1)})`,
+          );
+        });
       });
       simNodes.forEach((d) => {
         const g = nodeElMap[d.id];
@@ -2073,7 +2773,8 @@ function CursorDot() {
       <div
         className="flex items-center justify-center overflow-hidden transition-all duration-200 ease-out"
         style={{
-          background: "#E73AA4",
+          background: hovering ? "#5A7E52" : "#8FAF7E",
+          border: hovering ? "none" : "1.5px solid #8FAF7E",
           borderRadius: "9999px",
           mixBlendMode: hovering ? "normal" : "multiply",
           width: hovering ? "196px" : "16px",
@@ -2086,9 +2787,9 @@ function CursorDot() {
             opacity: hovering ? 1 : 0,
             transitionDelay: hovering ? "80ms" : "0ms",
             fontFamily: "'Inconsolata', 'Courier New', monospace",
-            fontSize: "16px",
+            fontSize: "15px",
             fontWeight: 500,
-            letterSpacing: "0.01em",
+            letterSpacing: "0.04em",
           }}
         >
           View case study ↗

@@ -35,7 +35,7 @@
         overflow: hidden;
         font-family: "Inter", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
-        background: url("/images/bloom-bg.jpg") center center / cover no-repeat
+        background: url("/images/bloom-bg.jpg") center 80% / cover no-repeat
           fixed;
       }
 
@@ -95,20 +95,7 @@
           opacity: 1;
         }
       }
-      @keyframes sparkle-burst {
-        0% {
-          transform: scale(0);
-          opacity: 1;
-        }
-        70% {
-          transform: scale(1.4);
-          opacity: 0.8;
-        }
-        100% {
-          transform: scale(2);
-          opacity: 0;
-        }
-      }
+
       @keyframes gentle-float {
         0%,
         100% {
@@ -389,10 +376,10 @@
         cursor: default;
       }
       .garden-flower .flower-svg-wrap {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        min-height: 40px;
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        min-height: 56px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -402,8 +389,8 @@
         animation: gentle-float 4s ease-in-out infinite;
       }
       .garden-flower .flower-svg-wrap svg {
-        width: 40px !important;
-        height: 40px !important;
+        width: 56px !important;
+        height: 56px !important;
         flex-shrink: 0;
       }
       .garden-flower:hover .flower-svg-wrap {
@@ -458,22 +445,9 @@
         transform: translate(-50%, -50%);
         z-index: 100;
         opacity: 0.55;
-        width: 44px;
-        height: 44px;
+        width: 56px;
+        height: 56px;
         display: none;
-      }
-
-      /* sparkle element */
-      .sparkle-ring {
-        position: absolute;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        border: 1.5px solid rgba(180, 140, 80, 0.5);
-        transform: translate(-50%, -50%);
-        animation: sparkle-burst 0.6s ease-out forwards;
-        pointer-events: none;
-        z-index: 10;
       }
 
       /* ─── Form Panel ─── */
@@ -782,6 +756,75 @@
         color: rgba(30, 58, 28, 0.35);
       }
 
+      /* ─── Already planted state ─── */
+      .planted-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        background: rgba(247, 243, 234, 0.97);
+        backdrop-filter: blur(6px);
+      }
+      .planted-card {
+        background: rgba(255, 252, 244, 0.98);
+        border: 1.5px solid rgba(130, 110, 70, 0.18);
+        border-radius: 20px;
+        padding: 36px 44px;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(80, 60, 30, 0.1);
+        max-width: 380px;
+      }
+      .planted-icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+      .planted-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a3518;
+        margin-bottom: 8px;
+      }
+      .planted-sub {
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        color: rgba(30, 58, 28, 0.6);
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+      .planted-name {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 15px;
+        font-style: italic;
+        color: rgba(30, 58, 28, 0.55);
+        margin-bottom: 24px;
+      }
+      .planted-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 32px;
+        background: #1a3518;
+        color: #f5f0e8;
+        border: none;
+        border-radius: 100px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .planted-btn:hover {
+        background: #254d22;
+        transform: translateY(-1px);
+      }
+
       /* ─── Responsive ─── */
       @media (max-width: 820px) {
         .main-area {
@@ -828,6 +871,30 @@
   </head>
 
   <body>
+    <!-- Already-planted overlay (hidden by default, shown by JS) -->
+    <div id="planted-overlay" class="planted-overlay" style="display:none;">
+      <div class="planted-card">
+        <div class="planted-icon">🌸</div>
+        <p class="planted-title">Your bloom is already here.</p>
+        <p class="planted-sub">
+          You've already planted your flower in the garden.<br />Every visitor
+          can only leave one bloom.
+        </p>
+        <p class="planted-name" id="planted-name-display"></p>
+        <button class="planted-btn" id="planted-go-btn">
+          Go to the garden
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+            <path
+              d="M4 6.5h6M7.5 4l3 2.5-3 2.5"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
     <!-- Crossfade curtain: overlays garden-bg and fades out to reveal bloom-bg -->
     <div id="transition-curtain" aria-hidden="true"></div>
 
@@ -1694,6 +1761,25 @@ or a little message..."
     </div><!-- end page-wrapper -->
 
     <script>
+      import { supabase } from "../lib/supabase";
+
+      // ── Already planted guard ─────────────────────────────────────
+      const plantedData = localStorage.getItem("bloomPlanted");
+      if (plantedData) {
+        const overlay = document.getElementById("planted-overlay")!;
+        overlay.style.display = "flex";
+        try {
+          const d = JSON.parse(plantedData);
+          const nameEl2 = document.getElementById("planted-name-display")!;
+          nameEl2.textContent = d.name
+            ? `planted by ${d.name} · ${d.date}`
+            : "";
+        } catch (_) {}
+        document
+          .getElementById("planted-go-btn")!
+          .addEventListener("click", () => navigateTo("/home"));
+      }
+
       // ── Helpers ──────────────────────────────────────────────────
       function navigateTo(href: string) {
         sessionStorage.setItem("introSeen", "1");
@@ -1782,8 +1868,29 @@ or a little message..."
         return el;
       }
 
-      // Garden starts empty — flowers are added when user plants one
+      // Fetch existing blooms from Supabase and render them in the garden
       const container = document.getElementById("flowers-container")!;
+
+      supabase
+        .from("blooms")
+        .select("name, flower, date, x, y")
+        .order("created_at", { ascending: true })
+        .limit(50)
+        .then(({ data }) => {
+          if (!data) return;
+          data.forEach((row) => {
+            const svg = flowerSVGs[row.flower as string] ?? flowerSVGs.daisy;
+            const el = createFlowerEl(
+              svg,
+              row.x as number,
+              row.y as number,
+              row.name as string,
+              row.date as string,
+              false,
+            );
+            container.appendChild(el);
+          });
+        });
 
       // ── Flower picker ──────────────────────────────────────────────
       const pickBtns =
@@ -1855,14 +1962,6 @@ or a little message..."
         // Remove previous preview
         document.querySelector(".garden-flower.preview")?.remove();
 
-        // Add sparkle
-        const spark = document.createElement("div");
-        spark.className = "sparkle-ring";
-        spark.style.left = px + "%";
-        spark.style.top = py + "%";
-        gardenField.appendChild(spark);
-        setTimeout(() => spark.remove(), 700);
-
         // Add flower preview
         const svg = flowerSVGs[selectedFlower] ?? "";
         const el = createFlowerEl(svg, px, py, "", "", true);
@@ -1876,9 +1975,12 @@ or a little message..."
       });
 
       // ── Plant My Bloom ────────────────────────────────────────────
-      btnPlant.addEventListener("click", () => {
+      btnPlant.addEventListener("click", async () => {
         const name = nameEl.value.trim();
         if (!name || !selectedFlower) return;
+
+        // Prevent double-submit
+        btnPlant.disabled = true;
 
         // If they didn't click the garden, plant at a random nice spot
         if (!pendingPosition) {
@@ -1899,21 +2001,30 @@ or a little message..."
           gardenField.appendChild(el);
         }
 
-        // Save to session
-        sessionStorage.setItem(
-          "bloomData",
-          JSON.stringify({
-            name,
-            message: (
-              document.getElementById("input-message") as HTMLTextAreaElement
-            ).value.trim(),
-            flower: selectedFlower,
-            date: dateStr,
-            visitorNum,
-            x: pendingPosition.x,
-            y: pendingPosition.y,
-          }),
+        const bloomEntry = {
+          name,
+          flower: selectedFlower,
+          message: (
+            document.getElementById("input-message") as HTMLTextAreaElement
+          ).value.trim(),
+          date: dateStr,
+          visitor_num: String(visitorNum),
+          x: pendingPosition.x,
+          y: pendingPosition.y,
+        };
+
+        // Save to Supabase (shared across all visitors)
+        const { error } = await supabase.from("blooms").insert(bloomEntry);
+        if (error) console.warn("Supabase insert failed:", error.message);
+
+        // Mark this browser as having already planted
+        localStorage.setItem(
+          "bloomPlanted",
+          JSON.stringify({ name, date: dateStr }),
         );
+
+        // Keep sessionStorage so home page can reference "your flower"
+        sessionStorage.setItem("bloomData", JSON.stringify(bloomEntry));
 
         navigateTo("/home");
       });
