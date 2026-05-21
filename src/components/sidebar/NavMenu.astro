@@ -116,6 +116,7 @@ const navItems = [
     document.querySelectorAll(".nav-link").forEach((link) => {
       const el = link as HTMLElement;
       const isActive = el.dataset.navId === id;
+      el.dataset.active = isActive ? "true" : "false";
       if (isActive) {
         el.style.background = "rgba(200,219,160,0.35)";
         el.style.color = "#2d4a1e";
@@ -147,14 +148,12 @@ const navItems = [
   document.querySelectorAll(".nav-link").forEach((link) => {
     const el = link as HTMLElement;
     el.addEventListener("mouseenter", () => {
-      if (!el.style.background || el.style.background === "") {
+      if (el.dataset.active !== "true") {
         el.style.background = "rgba(200,219,160,0.15)";
       }
     });
     el.addEventListener("mouseleave", () => {
-      const isActive = el.style.background === "rgba(200, 219, 160, 0.35)" ||
-                       el.style.background === "rgba(200,219,160,0.35)";
-      if (!isActive) {
+      if (el.dataset.active !== "true") {
         el.style.background = "";
       }
     });
