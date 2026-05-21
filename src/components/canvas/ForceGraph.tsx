@@ -201,48 +201,78 @@ function ProjectPage({
   return (
     <div
       className={`absolute inset-6 z-20 rounded-2xl flex flex-col overflow-hidden shadow-xl ${isClosing ? "mac-close" : "mac-open"}`}
-      style={{ transformOrigin, background: "#FAF6EE" }}
+      style={{ transformOrigin, background: "#FAF7F2" }}
     >
-      {/* Window chrome */}
-      <div className="flex items-center gap-1.5 px-4 pt-3.5 pb-3 border-b border-[#EDE5D6] shrink-0">
-        <button
-          onClick={handleClose}
-          title="Close"
-          className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90
-            transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
-          aria-label="Close"
-        >
-          <svg
-            className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
-            viewBox="0 0 8 8"
-            fill="none"
-            stroke="#7A0000"
-            strokeWidth="1.5"
-            strokeLinecap="round"
+      {/* Window chrome / topbar */}
+      <div
+        className="flex items-center gap-3 px-6 py-3 shrink-0"
+        style={{
+          borderBottom: "0.5px solid rgba(154,175,122,0.2)",
+          background: "#FAF7F2",
+        }}
+      >
+        <div className="flex items-center gap-[5px]">
+          <button
+            onClick={handleClose}
+            title="Close"
+            className="w-[10px] h-[10px] rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90
+              transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
+            aria-label="Close"
           >
-            <line x1="1" y1="1" x2="7" y2="7" />
-            <line x1="7" y1="1" x2="1" y2="7" />
-          </svg>
-        </button>
-        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
-        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
-        <span className="ml-2 text-sm font-medium text-gray-700 select-none">
+            <svg
+              className="w-[6px] h-[6px] opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+              viewBox="0 0 8 8"
+              fill="none"
+              stroke="#7A0000"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            >
+              <line x1="1" y1="1" x2="7" y2="7" />
+              <line x1="7" y1="1" x2="1" y2="7" />
+            </svg>
+          </button>
+          <span
+            className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]"
+            title="Minimize"
+          />
+          <span
+            className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]"
+            title="Maximize"
+          />
+        </div>
+        <span
+          className="text-[14px] font-medium select-none"
+          style={{ color: "#2d4a1e" }}
+        >
           Project
         </span>
-        <span className="ml-2 text-sm text-gray-400 select-none">My works</span>
+        <span
+          className="text-[14px] font-normal select-none"
+          style={{ color: "#9aaf7a" }}
+        >
+          My works
+        </span>
       </div>
 
-      {/* Scrollable grid */}
-      <div className="overflow-y-auto p-5 scrollbar-hide flex-1">
-        {/* Two independent columns — expand in one column doesn't affect the other */}
-        <div className="flex gap-4">
+      {/* Scrollable cards grid */}
+      <div className="overflow-y-auto px-6 py-5 scrollbar-hide flex-1">
+        {/* Two independent columns — align-items: start behaviour: each col is its own flex column */}
+        <div className="flex gap-4 items-start">
           {[0, 1].map((col) => (
             <div key={col} className="flex flex-col gap-4 flex-1">
               {PROJECT_ITEMS.filter((_, i) => i % 2 === col).map((p) => (
-                <div
+                <article
                   key={p.num}
-                  className="border border-[#DDD3C0] bg-[#FFFDF8] rounded-xl overflow-hidden transition-all duration-200 hover:border-[#8FAF7E] hover:shadow-md"
-                  onMouseEnter={() => {
+                  className="overflow-hidden transition-all duration-200"
+                  style={{
+                    background: "#ffffff",
+                    border: "0.5px solid rgba(154,175,122,0.3)",
+                    borderRadius: "12px",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(107,143,78,0.5)";
                     setHoveredCard(p.num);
                     window.dispatchEvent(
                       new CustomEvent("project-cursor", {
@@ -250,7 +280,9 @@ function ProjectPage({
                       }),
                     );
                   }}
-                  onMouseLeave={() => {
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(154,175,122,0.3)";
                     setHoveredCard(null);
                     window.dispatchEvent(
                       new CustomEvent("project-cursor", {
@@ -259,65 +291,92 @@ function ProjectPage({
                     );
                   }}
                 >
-                  <div className="flex justify-end px-4 pt-1">
-                    <span className="text-[12px] font-mono text-[#B8A898] tracking-widest">
-                      NO. {p.num}
-                    </span>
-                  </div>
+                  {/* Cover image area */}
                   <div
-                    className="mx-4 mb-4 bg-[#EDE5D4] rounded-lg overflow-hidden flex items-center justify-center"
-                    style={{ aspectRatio: "16/9" }}
+                    className="w-full overflow-hidden flex items-center justify-center"
+                    style={{
+                      height: "200px",
+                      background: "#e8e2d8",
+                      flexShrink: 0,
+                    }}
                   >
-                    <span className="text-xs text-[#C4B49A] tracking-wide select-none">
+                    <span
+                      className="text-[12px] font-light select-none tracking-wide"
+                      style={{ color: "#b8b0a2" }}
+                    >
                       Cover Image
                     </span>
                   </div>
-                  <div className="px-4 pb-3 flex flex-col gap-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-[18px] font-medium text-gray-800 select-none">
+
+                  {/* Card body — always visible */}
+                  <div className="px-4 pt-[14px] pb-[14px] flex flex-col gap-[6px]">
+                    <div className="flex items-start justify-between gap-[10px]">
+                      <h2
+                        className="text-[16px] font-medium leading-[1.3] select-none"
+                        style={{ color: "#2d4a1e" }}
+                      >
                         {p.title}
-                      </p>
-                      <div className="flex gap-1 shrink-0">
+                      </h2>
+                      <div className="flex gap-[5px] flex-wrap shrink-0">
                         {p.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="text-[13px] bg-[#EAF2E8] text-[#6B9962] border border-[#C5DEBA] px-2 py-0.5 rounded-full select-none"
+                            className="text-[12px] font-normal rounded-full px-[10px] py-[3px] whitespace-nowrap select-none"
+                            style={{
+                              color: "#4e7a30",
+                              background: "rgba(200,219,160,0.3)",
+                              border: "0.5px solid rgba(107,143,78,0.3)",
+                            }}
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <p className="text-[15px] text-[#9B8F83] select-none">
+                    <p
+                      className="text-[14px] font-light leading-[1.5] select-none"
+                      style={{ color: "#5a7040" }}
+                    >
                       {p.desc}
                     </p>
                   </div>
-                  {/* Expand: Role / Team / Timeframe */}
+
+                  {/* Expanded section — hover expand (behavior preserved) */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${hoveredCard === p.num ? "max-h-52 opacity-100" : "max-h-0 opacity-0"}`}
                   >
-                    <div className="border-t border-dashed border-[#DDD3C0] mx-4 mt-3 mb-4" />
-                    <div className="px-4 pb-4 flex flex-col gap-4">
+                    <hr
+                      className="mx-4"
+                      style={{
+                        border: "none",
+                        borderTop: "0.5px solid rgba(154,175,122,0.25)",
+                        marginBottom: "12px",
+                      }}
+                    />
+                    <div className="px-4 pb-4 flex flex-col gap-3">
                       {[
                         { label: "Role", value: p.role },
                         { label: "Team", value: p.team },
                         { label: "Timeframe", value: p.timeframe },
                       ].map((row) => (
-                        <div
-                          key={row.label}
-                          className="flex items-start gap-6 text-[15px]"
-                        >
-                          <span className="text-[#9B8F83] uppercase tracking-wider font-medium w-28 shrink-0 text-left select-none">
+                        <div key={row.label} className="flex items-start">
+                          <span
+                            className="text-[10px] font-medium uppercase tracking-[0.1em] shrink-0 select-none"
+                            style={{ color: "#9aaf7a", width: "80px" }}
+                          >
                             {row.label}
                           </span>
-                          <span className="text-gray-600 text-left select-none">
+                          <span
+                            className="text-[14px] font-light select-none"
+                            style={{ color: "#5a7040" }}
+                          >
                             {row.value}
                           </span>
                         </div>
                       ))}
                     </div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           ))}
@@ -421,16 +480,35 @@ function TimelineItem({
   desc: string;
 }) {
   return (
-    <div className="flex flex-col gap-2">
-      {/* Company + Date on same row */}
+    <div className="flex flex-col gap-[6px]">
       <div className="flex items-baseline justify-between gap-4">
-        <p className="text-[16px] font-semibold text-gray-800">{company}</p>
-        <span className="text-[14px] text-gray-400 shrink-0">{period}</span>
+        <p
+          className="text-[16px] font-medium select-none"
+          style={{ color: "#2d4a1e" }}
+        >
+          {company}
+        </p>
+        <span
+          className="text-[12px] font-light shrink-0 select-none"
+          style={{ color: "#9aaf7a", whiteSpace: "nowrap" }}
+        >
+          {period}
+        </span>
       </div>
-      {/* Role */}
-      {role && <p className="text-[15px] text-gray-500">{role}</p>}
-      {/* Description */}
-      <p className="text-[15px] text-gray-500 leading-relaxed">{desc}</p>
+      {role && (
+        <p
+          className="text-[14px] font-light select-none"
+          style={{ color: "#6b8f4e" }}
+        >
+          {role}
+        </p>
+      )}
+      <p
+        className="text-[14px] font-light leading-[1.7] select-none"
+        style={{ color: "#5a7040" }}
+      >
+        {desc}
+      </p>
     </div>
   );
 }
@@ -457,99 +535,127 @@ function AboutPage({
   return (
     <div
       className={`absolute inset-6 z-20 rounded-2xl flex flex-col overflow-hidden shadow-xl ${isClosing ? "mac-close" : "mac-open"}`}
-      style={{ transformOrigin, background: "#FAF6EE" }}
+      style={{ transformOrigin, background: "#FAF7F2" }}
     >
-      {/* Window chrome */}
-      <div className="flex items-center gap-1.5 px-4 pt-3.5 pb-3 border-b border-[#EDE5D6] shrink-0">
-        <button
-          onClick={handleClose}
-          title="Close"
-          className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90 transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
-          aria-label="Close"
-        >
-          <svg
-            className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
-            viewBox="0 0 8 8"
-            fill="none"
-            stroke="#7A0000"
-            strokeWidth="1.5"
-            strokeLinecap="round"
+      {/* Window chrome / topbar */}
+      <div
+        className="flex items-center gap-3 px-6 py-3 shrink-0"
+        style={{ borderBottom: "0.5px solid rgba(154,175,122,0.2)", background: "#FAF7F2" }}
+      >
+        <div className="flex items-center gap-[5px]">
+          <button
+            onClick={handleClose}
+            title="Close"
+            className="w-[10px] h-[10px] rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90 transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
+            aria-label="Close"
           >
-            <line x1="1" y1="1" x2="7" y2="7" />
-            <line x1="7" y1="1" x2="1" y2="7" />
-          </svg>
-        </button>
-        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
-        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
-        <span className="ml-2 text-sm font-medium text-gray-700 select-none">
+            <svg
+              className="w-[6px] h-[6px] opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+              viewBox="0 0 8 8"
+              fill="none"
+              stroke="#7A0000"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            >
+              <line x1="1" y1="1" x2="7" y2="7" />
+              <line x1="7" y1="1" x2="1" y2="7" />
+            </svg>
+          </button>
+          <span className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]" title="Minimize" />
+          <span className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]" title="Maximize" />
+        </div>
+        <span
+          className="text-[14px] font-medium select-none"
+          style={{ color: "#2d4a1e" }}
+        >
           About Me
         </span>
-        <span className="ml-2 text-sm text-gray-400 select-none">Who I am</span>
+        <span
+          className="text-[14px] font-normal select-none"
+          style={{ color: "#9aaf7a" }}
+        >
+          Who I am
+        </span>
       </div>
 
-      {/* Scrollable body — Medium-style reading column */}
+      {/* Scrollable body */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="max-w-[640px] mx-auto px-8 py-12 flex flex-col gap-10">
-          {/* ── Quote ──────────────────────────────────────────────────── */}
+
+          {/* ── Quote ── */}
           <div className="flex flex-col gap-4">
-            <p className="text-[13px] font-semibold text-[#9B8F83] uppercase tracking-widest">
+            <p
+              className="text-[10px] font-medium uppercase tracking-[0.14em] select-none"
+              style={{ color: "#9aaf7a" }}
+            >
               Steve Jobs once said...
             </p>
-            <blockquote className="border-l-2 border-[#8FAF7E] pl-5">
-              <p className="text-[18px] italic text-gray-700 leading-relaxed font-medium">
-                "Design is not just what it looks like and feels like. Design is
-                how it works."
+            <blockquote
+              className="pl-4"
+              style={{ borderLeft: "2.5px solid rgba(107,143,78,0.4)" }}
+            >
+              <p
+                className="text-[18px] italic leading-[1.5] select-none"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, color: "#2d4a1e" }}
+              >
+                "Design is not just what it looks like and feels like. Design is how it works."
               </p>
             </blockquote>
-            <p className="text-[16px] text-gray-500 leading-relaxed">
-              They remind me that design lives in how people experience it, and
-              that's what eventually led me to UI/UX.
+            <p
+              className="text-[14px] font-light leading-[1.7] select-none"
+              style={{ color: "#5a7040" }}
+            >
+              They remind me that design lives in how people experience it, and that's what eventually led me to UI/UX.
             </p>
           </div>
 
-          <hr className="border-[#EDE5D6]" />
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
 
-          {/* ── Bio ────────────────────────────────────────────────────── */}
-          <div className="flex flex-col gap-4">
-            <p className="text-[16px] text-gray-700 leading-relaxed">
-              <strong className="font-semibold text-gray-900">
-                Hi, I'm Fitri Zahwa Januarita, a former illustrator and animator
-                who found a new purpose in UI/UX design.
-              </strong>
+          {/* ── Bio ── */}
+          <div className="flex flex-col gap-3">
+            <p
+              className="text-[16px] font-medium leading-[1.6] select-none"
+              style={{ color: "#2d4a1e" }}
+            >
+              Hi, I'm Fitri Zahwa Januarita, a former illustrator and animator who found a new purpose in UI/UX design.
             </p>
-            <p className="text-[16px] text-gray-600 leading-relaxed">
-              I've been drawing since I was a kid and even earned from it in
-              high school. But over time, something felt missing — the joy of
-              creating started to fade. I wanted my work to matter again. That's
-              when I discovered UI/UX. It changed how I see design — not just as
-              aesthetics, but as clarity, connection, and impact.
+            <p
+              className="text-[14px] font-light leading-[1.8] select-none"
+              style={{ color: "#5a7040" }}
+            >
+              I've been drawing since I was a kid and even earned from it in high school. But over time, something felt missing — the joy of creating started to fade. I wanted my work to matter again. That's when I discovered UI/UX. It changed how I see design — not just as aesthetics, but as clarity, connection, and impact.
             </p>
-            <p className="text-[16px] text-gray-600 leading-relaxed">
-              My attention to detail, which once slowed me down, now helps me
-              craft thoughtful and meaningful experiences. I design from
-              real-life struggles. My projects,{" "}
-              <strong className="font-semibold text-gray-800">Nabu</strong> (a
-              finance tracker) and{" "}
-              <strong className="font-semibold text-gray-800">Fishdoro</strong>{" "}
-              (a cozy focus timer), are built to help people facing challenges
-              similar to mine.
+            <p
+              className="text-[14px] font-light leading-[1.8] select-none"
+              style={{ color: "#5a7040" }}
+            >
+              My attention to detail, which once slowed me down, now helps me craft thoughtful and meaningful experiences. I design from real-life struggles. My projects,{" "}
+              <strong className="font-medium" style={{ color: "#2d4a1e" }}>Nabu</strong>{" "}
+              (a finance tracker) and{" "}
+              <strong className="font-medium" style={{ color: "#2d4a1e" }}>Fishdoro</strong>{" "}
+              (a cozy focus timer), are built to help people facing challenges similar to mine.
             </p>
-            <p className="text-[16px] text-gray-600 leading-relaxed">
-              I still tell stories, only now they're about users, their needs,
-              and how design can make their lives better.
+            <p
+              className="text-[14px] font-light leading-[1.8] select-none"
+              style={{ color: "#5a7040" }}
+            >
+              I still tell stories, only now they're about users, their needs, and how design can make their lives better.
             </p>
           </div>
 
-          <hr className="border-[#EDE5D6]" />
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
 
-          {/* ── Experience ─────────────────────────────────────────────── */}
+          {/* ── Experience ── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
-              <span className="px-5 py-1.5 rounded-full border border-[#C5DEBA] text-[14px] font-medium text-[#5A7E52] bg-[#EDF5E8] select-none">
+              <span
+                className="inline-block text-[12px] font-normal select-none"
+                style={{ color: "#4e7a30", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "5px 16px" }}
+              >
                 Experience
               </span>
             </div>
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               {ABOUT_EXPERIENCE.map((item) => (
                 <TimelineItem
                   key={item.company + item.period}
@@ -562,16 +668,19 @@ function AboutPage({
             </div>
           </div>
 
-          <hr className="border-[#EDE5D6]" />
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
 
-          {/* ── Organization ───────────────────────────────────────────── */}
+          {/* ── Organization ── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
-              <span className="px-5 py-1.5 rounded-full border border-[#C5DEBA] text-[14px] font-medium text-[#5A7E52] bg-[#EDF5E8] select-none">
+              <span
+                className="inline-block text-[12px] font-normal select-none"
+                style={{ color: "#4e7a30", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "5px 16px" }}
+              >
                 Organization
               </span>
             </div>
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               {ABOUT_ORGS.map((item) => (
                 <TimelineItem
                   key={item.company}
@@ -584,16 +693,19 @@ function AboutPage({
             </div>
           </div>
 
-          <hr className="border-[#EDE5D6]" />
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
 
-          {/* ── Courses & Certifications ────────────────────────────────── */}
+          {/* ── Courses & Certifications ── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
-              <span className="px-5 py-1.5 rounded-full border border-[#C5DEBA] text-[14px] font-medium text-[#5A7E52] bg-[#EDF5E8] select-none">
+              <span
+                className="inline-block text-[12px] font-normal select-none"
+                style={{ color: "#4e7a30", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "5px 16px" }}
+              >
                 Courses, Training & Certifications
               </span>
             </div>
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               {ABOUT_COURSES.map((item) => (
                 <TimelineItem
                   key={item.company}
@@ -606,86 +718,57 @@ function AboutPage({
             </div>
           </div>
 
-          <hr className="border-[#EDE5D6]" />
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
 
-          {/* ── Testimonials ────────────────────────────────────────────── */}
+          {/* ── Testimonials ── */}
           <div className="flex flex-col gap-5">
-            <h2 className="text-[13px] font-semibold text-[#9B8F83] uppercase tracking-widest">
+            <p
+              className="text-[10px] font-medium uppercase tracking-[0.14em] select-none"
+              style={{ color: "#9aaf7a" }}
+            >
               That's what they said 🩷
-            </h2>
-
-            <div className="flex flex-col gap-4">
+            </p>
+            <div className="flex flex-col gap-[14px]">
               {TESTIMONIALS.map((t) => (
                 <a
                   key={t.name}
                   href="https://www.fiverr.com/fitrizahwa"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col gap-4 p-5 rounded-2xl border border-[#DDD3C0] bg-[#FFFDF8]
-                    overflow-hidden cursor-pointer select-none
-                    transition-all duration-200
-                    hover:border-[#8FAF7E]/50 hover:shadow-[0_4px_24px_rgba(143,175,126,0.12)] hover:-translate-y-0.5"
+                  className="flex flex-col gap-3 cursor-pointer select-none transition-all duration-200"
+                  style={{ background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "16px 18px", textDecoration: "none" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(107,143,78,0.5)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(154,175,122,0.3)"; }}
                 >
-                  {/* Subtle green gradient bg on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#8FAF7E]/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
-
-                  {/* Top row: stars + quote mark */}
-                  <div className="flex items-center justify-between">
-                    {/* 5 stars */}
-                    <div className="flex gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className="w-3.5 h-3.5 fill-amber-400"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                    {/* Decorative quote mark */}
-                    <span className="text-[32px] leading-none text-[#8FAF7E]/30 font-serif group-hover:text-[#8FAF7E]/60 transition-colors duration-300 -mt-1">
-                      "
-                    </span>
+                  <div className="flex gap-0.5">
+                    {[...Array(t.stars)].map((_, i) => (
+                      <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 20 20" style={{ fill: "#e8b94a" }}>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
                   </div>
-
-                  {/* Quote text */}
-                  <p className="text-[14px] text-gray-500 leading-relaxed italic">
+                  <p
+                    className="text-[14px] font-light italic leading-[1.7] select-none"
+                    style={{ color: "#5a7040" }}
+                  >
                     "{t.text}"
                   </p>
-
-                  {/* Divider */}
-                  <div className="border-t border-[#EDE5D6]" />
-
-                  {/* Author row */}
-                  <div className="flex items-center gap-3">
-                    {/* Avatar initial */}
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#8FAF7E]/20 to-[#8FAF7E]/5 flex items-center justify-center shrink-0">
-                      <span className="text-[13px] font-semibold text-[#5A7E52]">
+                  <div className="flex items-center gap-[10px]">
+                    <div
+                      className="flex items-center justify-center shrink-0"
+                      style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#e8dfd4", border: "0.5px solid rgba(154,175,122,0.3)" }}
+                    >
+                      <span className="text-[12px] font-medium select-none" style={{ color: "#6b8f4e" }}>
                         {t.initial}
                       </span>
                     </div>
-                    <div className="flex flex-col gap-0">
-                      <span className="text-[14px] font-semibold text-gray-800">
-                        {t.name}
-                      </span>
-                      <span className="text-[12px] text-gray-400">
-                        {t.flag} {t.country}
-                      </span>
+                    <div className="flex flex-col">
+                      <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>{t.name}</span>
+                      <span className="text-[12px] font-light select-none" style={{ color: "#9aaf7a" }}>{t.flag} {t.country}</span>
                     </div>
-                    {/* Fiverr badge on hover */}
-                    <div className="ml-auto flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <span className="text-[11px] text-gray-400">
-                        via Fiverr
-                      </span>
-                      <svg
-                        className="w-3 h-3 text-gray-300"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      >
+                    <div className="ml-auto flex items-center gap-1">
+                      <span className="text-[12px] font-light" style={{ color: "#9aaf7a" }}>via Fiverr</span>
+                      <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="#9aaf7a" strokeWidth="1.5" strokeLinecap="round">
                         <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" />
                       </svg>
                     </div>
@@ -693,63 +776,52 @@ function AboutPage({
                 </a>
               ))}
             </div>
-
-            {/* Fiverr CTA */}
             <a
               href="https://www.fiverr.com/fitrizahwa"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-[#C5DEBA]
-                text-[14px] text-[#9B8F83] hover:text-[#5A7E52] hover:border-[#8FAF7E] hover:bg-[#EDF5E8]/50
-                transition-all duration-200"
+              className="flex items-center justify-center gap-2 py-3 transition-all duration-200"
+              style={{ borderRadius: "99px", border: "1px solid rgba(107,143,78,0.35)", color: "#9aaf7a", fontSize: "14px", fontWeight: 300, textDecoration: "none" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(200,219,160,0.15)"; (e.currentTarget as HTMLElement).style.color = "#4e7a30"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "#9aaf7a"; }}
             >
               <span>See all reviews on Fiverr</span>
-              <svg
-                className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                viewBox="0 0 12 12"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              >
+              <svg className="w-3.5 h-3.5" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                 <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" />
               </svg>
             </a>
           </div>
 
-          <hr className="border-[#EDE5D6]" />
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
 
-          {/* ── Read ────────────────────────────────────────────────────── */}
+          {/* ── Read ── */}
           <div className="flex flex-col gap-4">
-            <h2 className="text-[13px] font-semibold text-[#9B8F83] uppercase tracking-widest">
+            <h2
+              className="text-[10px] font-medium uppercase tracking-[0.14em] select-none"
+              style={{ color: "#9aaf7a" }}
+            >
               Read
             </h2>
             <a
               href="https://fitrizahwa-garden.framer.website/reading"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center justify-between px-5 py-4 rounded-xl border border-[#DDD3C0] bg-[#FFFDF8] overflow-hidden transition-all duration-200 hover:border-[#8FAF7E] hover:shadow-md"
+              className="flex items-center justify-between px-5 py-4 overflow-hidden transition-all duration-200"
+              style={{ borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", background: "#ffffff", textDecoration: "none" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(107,143,78,0.5)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(154,175,122,0.3)"; }}
             >
-              {/* Shimmer sweep on hover */}
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-[#8FAF7E]/8 to-transparent pointer-events-none" />
               <div className="flex items-center gap-3">
                 <span className="text-[20px]">📚</span>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[15px] font-medium text-gray-800 group-hover:text-[#5A7E52] transition-colors duration-200">
-                    Fitri's Garden
-                  </span>
-                  <span className="text-[13px] text-gray-400">
-                    Reading list & notes
-                  </span>
+                  <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>Fitri's Garden</span>
+                  <span className="text-[12px] font-light select-none" style={{ color: "#9aaf7a" }}>Reading list & notes</span>
                 </div>
               </div>
-              <span className="text-gray-300 group-hover:text-[#5A7E52] transition-colors duration-200 text-[18px]">
-                ↗
-              </span>
+              <span style={{ color: "#9aaf7a", fontSize: "18px" }}>↗</span>
             </a>
           </div>
 
-          {/* Bottom spacer */}
           <div className="h-4" />
         </div>
       </div>
@@ -1133,66 +1205,84 @@ function VisitorGalleryPage({
   return (
     <div
       className={`absolute inset-6 z-20 rounded-2xl flex flex-col overflow-hidden shadow-xl ${isClosing ? "mac-close" : "mac-open"}`}
-      style={{ transformOrigin: "center center", background: "#FAF6EE" }}
+      style={{ transformOrigin: "center center", background: "#FAF7F2" }}
     >
       {/* ── Window chrome ──────────────────────────────────────────────── */}
-      <div className="flex items-center gap-1.5 px-4 pt-3.5 pb-3 border-b border-[#EDE5D6] shrink-0">
-        <button
-          onClick={handleClose}
-          title="Close"
-          className="w-3 h-3 rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90 transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
-          aria-label="Close"
-        >
-          <svg
-            className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
-            viewBox="0 0 8 8"
-            fill="none"
-            stroke="#7A0000"
-            strokeWidth="1.5"
-            strokeLinecap="round"
+      <div
+        className="flex items-center shrink-0 px-6 py-3"
+        style={{ borderBottom: "0.5px solid rgba(154,175,122,0.2)" }}
+      >
+        <div className="flex items-center gap-[5px]">
+          <button
+            onClick={handleClose}
+            title="Close"
+            className="w-[10px] h-[10px] rounded-full bg-[#FF5F57] hover:brightness-90 active:scale-90 transition-all duration-100 flex items-center justify-center focus:outline-none group/dot"
+            aria-label="Close"
           >
-            <line x1="1" y1="1" x2="7" y2="7" />
-            <line x1="7" y1="1" x2="1" y2="7" />
-          </svg>
-        </button>
-        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Minimize" />
-        <span className="w-3 h-3 rounded-full bg-[#D9D9D9]" title="Maximize" />
-        <span className="ml-2 text-sm font-medium text-gray-700 select-none">
+            <svg
+              className="w-1.5 h-1.5 opacity-0 group-hover/dot:opacity-100 transition-opacity duration-100"
+              viewBox="0 0 8 8"
+              fill="none"
+              stroke="#7A0000"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            >
+              <line x1="1" y1="1" x2="7" y2="7" />
+              <line x1="7" y1="1" x2="1" y2="7" />
+            </svg>
+          </button>
+          <span className="w-[10px] h-[10px] rounded-full bg-[#FEBC2E]" title="Minimize" />
+          <span className="w-[10px] h-[10px] rounded-full bg-[#28C840]" title="Maximize" />
+        </div>
+        <span className="ml-4 text-[14px] font-medium select-none" style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}>
           Visitor Gallery
         </span>
-        <span className="ml-2 text-sm text-gray-400 select-none">
+        <span className="ml-3 text-[14px] font-normal select-none" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
           Bloomed with love 🌿
         </span>
-        <div className="ml-auto flex items-center gap-2">
-          <span className="text-[13px] text-gray-400 select-none">
-            My corner
-          </span>
-          <div className="w-7 h-7 rounded-full bg-[#E8DDD0] flex items-center justify-center text-[13px]">
-            🌿
-          </div>
+        <div className="ml-auto">
+          <button
+            className="flex items-center gap-1.5 px-4 py-1.5 select-none transition-all duration-200"
+            style={{
+              border: "1px solid #6b8f4e",
+              borderRadius: "99px",
+              background: "rgba(250,247,242,0.5)",
+              fontFamily: "Inter, sans-serif",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#2d4a1e",
+            }}
+          >
+            <span>🌿</span>
+            <span>My corner</span>
+          </button>
         </div>
       </div>
 
       {/* ── Page header ────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between px-6 pt-4 pb-3 shrink-0">
-        <div className="flex items-center gap-3">
-          <h2 className="text-[22px] font-bold text-gray-800 select-none">
-            Visitor Gallery
-          </h2>
-          <span className="text-[10px] font-semibold tracking-widest uppercase text-[#8FAF7E] bg-[#EDF5E8] px-3 py-1 rounded-full border border-[#C5DEBA] select-none">
-            {loading
-              ? "Loading…"
-              : `${totalCount ?? blooms.length} bloom${(totalCount ?? blooms.length) !== 1 ? "s" : ""} planted`}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D6CCB8] bg-white text-[12px] text-gray-600 hover:bg-[#F5F0E6] transition-colors duration-150 select-none">
-            Edit my card <span>✏️</span>
-          </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D6CCB8] bg-white text-[12px] text-gray-600 hover:bg-[#F5F0E6] transition-colors duration-150 select-none">
-            Shuffle <span>🔀</span>
-          </button>
-        </div>
+      <div className="flex items-center px-6 pt-4 pb-3 shrink-0">
+        <h2
+          className="text-[20px] font-medium select-none"
+          style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}
+        >
+          Visitor Gallery
+        </h2>
+        <span
+          className="ml-3 text-[12px] select-none"
+          style={{
+            color: "#4e7a30",
+            background: "rgba(200,219,160,0.3)",
+            border: "0.5px solid rgba(107,143,78,0.3)",
+            borderRadius: "99px",
+            padding: "3px 12px",
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 400,
+          }}
+        >
+          {loading
+            ? "Loading…"
+            : `${totalCount ?? blooms.length} bloom${(totalCount ?? blooms.length) !== 1 ? "s" : ""} planted`}
+        </span>
       </div>
 
       {/* ── Main body ──────────────────────────────────────────────────── */}
@@ -1202,7 +1292,7 @@ function VisitorGalleryPage({
           <div
             className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-xl"
             style={{
-              background: "rgba(250,246,238,0.88)",
+              background: "rgba(250,247,242,0.88)",
               backdropFilter: "blur(4px)",
             }}
           >
@@ -1210,16 +1300,17 @@ function VisitorGalleryPage({
               {[0, 0.15, 0.3].map((delay, i) => (
                 <div
                   key={i}
-                  className="w-2 h-2 rounded-full bg-[#8FAF7E]"
+                  className="w-2 h-2 rounded-full"
                   style={{
+                    background: "#9aaf7a",
                     animation: `vg-bounce 0.9s ease-in-out ${delay}s infinite`,
                   }}
                 />
               ))}
             </div>
             <p
-              className="text-[11px] text-[#8FAF7E] tracking-widest uppercase font-medium select-none"
-              style={{ fontFamily: "'Source Code Pro', monospace" }}
+              className="text-[11px] tracking-widest uppercase font-medium select-none"
+              style={{ color: "#9aaf7a", fontFamily: "'Source Code Pro', monospace" }}
             >
               Growing the garden…
             </p>
@@ -1233,10 +1324,11 @@ function VisitorGalleryPage({
         )}
         {/* Garden canvas */}
         <div
-          className="flex-1 relative rounded-xl overflow-hidden border border-[#DCCFB6]"
+          className="flex-1 relative overflow-hidden"
           style={{
-            background:
-              "radial-gradient(ellipse at 60% 35%, #F7EED8 0%, #EAE0C6 100%)",
+            background: "#f2ede4",
+            borderRadius: "14px",
+            border: "1px solid rgba(154,175,122,0.3)",
           }}
         >
           {/* Grain texture overlay */}
@@ -1311,23 +1403,26 @@ function VisitorGalleryPage({
                 </div>
                 {isHov && (
                   <div
-                    className="absolute z-20 bg-white/96 rounded-xl shadow-lg border border-[#EDE5D6] px-3 py-2.5 w-44 pointer-events-none"
+                    className="absolute z-20 shadow-lg px-3 py-2.5 w-44 pointer-events-none"
                     style={{
+                      background: "#ffffff",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      borderRadius: "12px",
                       [tipAbove ? "bottom" : "top"]: "calc(100% + 10px)",
                       left: "50%",
                       transform: "translateX(-50%)",
                     }}
                   >
-                    <p className="text-[13px] font-semibold text-gray-800 select-none leading-tight">
+                    <p className="text-[12px] font-medium select-none leading-tight" style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}>
                       {bloom.flowerName}
                     </p>
-                    <p className="text-[12px] text-gray-500 select-none mt-0.5">
-                      {bloom.name} <span className="text-[10px]">✏️</span>
+                    <p className="text-[10px] select-none mt-0.5" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
+                      by {bloom.name}
                     </p>
-                    <p className="text-[11px] text-gray-400 select-none mt-0.5">
+                    <p className="text-[10px] select-none mt-0.5" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
                       {bloom.date}
                     </p>
-                    <p className="text-[11px] text-gray-500 italic select-none mt-1.5 border-t border-gray-100 pt-1.5 leading-relaxed">
+                    <p className="text-[12px] italic select-none mt-1.5 pt-1.5 leading-relaxed" style={{ color: "#5a7040", fontFamily: "Inter, sans-serif", borderTop: "0.5px solid rgba(154,175,122,0.2)" }}>
                       {bloom.message}
                     </p>
                   </div>
@@ -1338,46 +1433,40 @@ function VisitorGalleryPage({
         </div>
 
         {/* Right: visitor card list */}
-        <div className="w-[252px] overflow-y-auto shrink-0 flex flex-col gap-2.5 pb-4 scrollbar-hide">
+        <div className="w-[220px] overflow-y-auto shrink-0 flex flex-col gap-2.5 pb-4 scrollbar-hide">
           {blooms.map((bloom) => {
-            const pal = FLOWER_PAL[bloom.flower] ?? FLOWER_PAL.daisy;
             return (
               <div
                 key={bloom.id}
-                className="rounded-xl border px-3 pt-2.5 pb-2 flex flex-col gap-1.5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer select-none"
-                style={{ background: pal.bg, borderColor: pal.border }}
+                className="flex flex-col gap-1.5 transition-all duration-200 cursor-pointer select-none"
+                style={{
+                  background: "#ffffff",
+                  border: "0.5px solid rgba(154,175,122,0.3)",
+                  borderRadius: "10px",
+                  padding: "10px 12px",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(107,143,78,0.5)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(154,175,122,0.3)"; }}
               >
                 <div className="flex gap-2.5 items-start">
-                  <div className="shrink-0 w-11 flex items-end justify-center">
-                    <FlowerSvg type={bloom.flower} size={54} />
+                  <div className="shrink-0 w-10 flex items-end justify-center">
+                    <FlowerSvg type={bloom.flower} size={48} />
                   </div>
                   <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-gray-800 leading-tight">
+                    <p className="text-[12px] font-normal leading-tight" style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}>
                       {bloom.flowerName}
                     </p>
-                    <p className="text-[11px] text-gray-500">
-                      by {bloom.name}{" "}
-                      <span className="opacity-60 text-[10px]">✏️</span>
+                    <p className="text-[10px]" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
+                      by {bloom.name}
                     </p>
-                    <p className="text-[12px] text-gray-600 leading-relaxed mt-0.5">
+                    <p className="text-[12px] leading-relaxed mt-0.5" style={{ color: "#5a7040", fontFamily: "Inter, sans-serif" }}>
                       {bloom.message}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-end justify-between pt-1.5 border-t border-black/5 mt-0.5">
-                  <div>
-                    <p className="text-[11px] text-gray-400">{bloom.date}</p>
-                    <p className="text-[10px] text-gray-300">No. {bloom.num}</p>
-                  </div>
-                  <p
-                    className="text-[14px] text-gray-400/70"
-                    style={{
-                      fontFamily: "Georgia, 'Times New Roman', serif",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {bloom.name}
-                  </p>
+                <div className="flex items-end justify-between pt-1.5 mt-0.5" style={{ borderTop: "0.5px solid rgba(154,175,122,0.15)" }}>
+                  <p className="text-[10px]" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>{bloom.date}</p>
+                  <p className="text-[10px]" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>No. {bloom.num}</p>
                 </div>
               </div>
             );
@@ -1387,32 +1476,35 @@ function VisitorGalleryPage({
 
       {/* ── Footer stats ───────────────────────────────────────────────── */}
       <div
-        className="shrink-0 flex items-stretch border-t border-[#EDE5D6] mt-3"
-        style={{ background: "rgba(245,239,223,0.7)" }}
+        className="shrink-0 flex items-stretch mt-3"
+        style={{ borderTop: "0.5px solid rgba(154,175,122,0.2)", background: "#FAF7F2" }}
       >
         <div className="flex items-center gap-3 px-5 py-3 flex-1">
-          <span className="text-2xl opacity-70">🌿</span>
+          <span className="text-xl opacity-70">🌿</span>
           <div>
-            <p className="text-[17px] font-bold text-gray-700 leading-none select-none">
+            <p
+              className="leading-none select-none"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}
+            >
               {totalCount ?? blooms.length}
             </p>
-            <p className="text-[11px] text-gray-400 mt-0.5 select-none">
+            <p className="mt-0.5 select-none" style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", fontWeight: 300, color: "#9aaf7a" }}>
               Blooms planted so far
             </p>
           </div>
         </div>
-        <div className="w-px bg-[#EDE5D6]" />
+        <div className="w-px" style={{ background: "rgba(154,175,122,0.2)" }} />
         <div className="flex items-center px-5 py-3 flex-1">
-          <p className="text-[12px] text-gray-500 leading-relaxed select-none">
+          <p className="leading-relaxed select-none" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#9aaf7a" }}>
             Every flower here was planted
             <br />
             by a visitor with a kind heart.
           </p>
         </div>
-        <div className="w-px bg-[#EDE5D6]" />
+        <div className="w-px" style={{ background: "rgba(154,175,122,0.2)" }} />
         <div className="flex items-center gap-2 px-5 py-3 flex-1">
-          <span className="text-lg">🦋</span>
-          <p className="text-[12px] text-gray-500 select-none">
+          <span className="text-base">🦋</span>
+          <p className="select-none" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#9aaf7a" }}>
             Hover a bloom
             <br />
             to read its story
