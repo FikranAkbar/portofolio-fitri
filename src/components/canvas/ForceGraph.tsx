@@ -696,7 +696,13 @@ function ProjectPage({
                       borderRadius: "12px",
                       cursor: "pointer",
                     }}
-                    onClick={() => { if (p.caseStudy) setSelectedCase(p.caseStudy); }}
+                    onClick={() => {
+                      if (p.caseStudy) {
+                        setSelectedCase(p.caseStudy);
+                        setHoveredCard(null);
+                        window.dispatchEvent(new CustomEvent("project-cursor", { detail: { active: false } }));
+                      }
+                    }}
                     onMouseEnter={(e) => {
                       (e.currentTarget as HTMLElement).style.borderColor =
                         "rgba(107,143,78,0.5)";
