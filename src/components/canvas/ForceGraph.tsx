@@ -2632,24 +2632,6 @@ function FlowerSvg({ type, size = 64 }: { type: string; size?: number }) {
             strokeWidth="2"
             strokeLinecap="round"
           />
-          <line
-            x1="24"
-            y1="30"
-            x2="18"
-            y2="24"
-            stroke="#6a8f45"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-          />
-          <line
-            x1="24"
-            y1="30"
-            x2="30"
-            y2="24"
-            stroke="#6a8f45"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-          />
           <ellipse
             cx="24"
             cy="20"
@@ -2660,7 +2642,7 @@ function FlowerSvg({ type, size = 64 }: { type: string; size?: number }) {
           />
           <ellipse
             cx="24"
-            cy="15"
+            cy="14"
             rx="3"
             ry="4.5"
             fill="#8b76c8"
@@ -2668,13 +2650,12 @@ function FlowerSvg({ type, size = 64 }: { type: string; size?: number }) {
           />
           <ellipse
             cx="24"
-            cy="11"
+            cy="9"
             rx="2.5"
             ry="3.5"
             fill="#7b68c4"
             opacity="0.9"
           />
-          <ellipse cx="24" cy="8" rx="2" ry="2.5" fill="#6b58b8" />
         </svg>
       );
     case "sunflower":
