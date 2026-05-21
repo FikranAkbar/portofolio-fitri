@@ -35,8 +35,7 @@
         overflow: hidden;
         font-family: "Inter", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
-        background: url("/images/bloom-bg.jpg") center 80% / cover no-repeat
-          fixed;
+        background: #faf7f2;
       }
 
       /* ─── Transition curtain (crossfades from garden-bg to bloom-bg) ─── */
@@ -44,7 +43,7 @@
         position: fixed;
         inset: 0;
         z-index: 9998;
-        background: url("/images/garden-bg.jpg") center center / cover no-repeat;
+        background: #faf7f2;
         pointer-events: none;
         animation: curtain-fade-out 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.05s
           forwards;
@@ -165,8 +164,8 @@
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 11px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
         font-weight: 500;
         letter-spacing: 0.14em;
         text-transform: uppercase;
@@ -194,7 +193,7 @@
         background: rgba(255, 255, 255, 0.55);
         backdrop-filter: blur(8px);
         color: rgba(30, 58, 28, 0.72);
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", sans-serif;
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 0.14em;
@@ -225,7 +224,7 @@
         flex-shrink: 0;
       }
       .hero-welcome {
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", sans-serif;
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 0.26em;
@@ -273,21 +272,9 @@
 
       /* ─── Garden Field ─── */
       .garden-field {
-        background:
-          radial-gradient(
-            circle at 1px 1px,
-            rgba(100, 80, 50, 0.045) 1px,
-            transparent 0
-          ),
-          linear-gradient(160deg, #f7f2e6 0%, #ede7d5 50%, #e8e0cc 100%);
-        background-size:
-          22px 22px,
-          auto;
-        border: 1.5px solid rgba(130, 110, 70, 0.15);
-        border-radius: 16px;
-        box-shadow:
-          0 4px 24px rgba(80, 60, 30, 0.08),
-          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        background: #f2ede4;
+        border: 1px solid rgba(154, 175, 122, 0.3);
+        border-radius: 14px;
         position: relative;
         overflow: hidden;
         cursor: crosshair;
@@ -298,8 +285,8 @@
         content: "";
         position: absolute;
         inset: 10px;
-        border: 1px solid rgba(130, 110, 70, 0.09);
-        border-radius: 12px;
+        border: 1px solid rgba(154, 175, 122, 0.15);
+        border-radius: 10px;
         pointer-events: none;
         z-index: 1;
       }
@@ -314,7 +301,7 @@
         border-radius: 12px;
         padding: 11px 14px;
         font-family: "Inter", sans-serif;
-        font-size: 11.5px;
+        font-size: 12px;
         color: rgba(60, 45, 20, 0.65);
         line-height: 1.6;
         max-width: 180px;
@@ -334,7 +321,7 @@
         border-radius: 12px;
         padding: 10px 14px;
         font-family: "Inter", sans-serif;
-        font-size: 11px;
+        font-size: 12px;
         color: rgba(60, 45, 20, 0.6);
         line-height: 1.55;
         text-align: center;
@@ -354,7 +341,7 @@
         align-items: center;
         gap: 7px;
         font-family: "Inter", sans-serif;
-        font-size: 11px;
+        font-size: 12px;
         color: rgba(60, 45, 20, 0.45);
         z-index: 5;
         pointer-events: none;
@@ -425,7 +412,7 @@
         border-radius: 10px;
         padding: 8px 12px;
         font-family: "Inter", sans-serif;
-        font-size: 11px;
+        font-size: 12px;
         color: rgba(50, 35, 15, 0.75);
         white-space: nowrap;
         box-shadow: 0 4px 14px rgba(80, 60, 30, 0.1);
@@ -452,13 +439,10 @@
 
       /* ─── Form Panel ─── */
       .form-panel {
-        background: linear-gradient(160deg, #d4e0cf 0%, #c9d9c3 100%);
-        border: 1.5px solid rgba(100, 130, 90, 0.22);
-        border-radius: 16px;
+        background: #f5f0e8;
+        border: 0.5px solid rgba(154, 175, 122, 0.3);
+        border-radius: 14px;
         padding: 16px 16px 14px;
-        box-shadow:
-          0 4px 24px rgba(60, 90, 50, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.4);
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -468,12 +452,12 @@
 
       .form-panel-title {
         text-align: center;
-        font-family: "Source Code Pro", monospace;
-        font-size: 10.5px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
         font-weight: 500;
-        letter-spacing: 0.24em;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: rgba(30, 55, 25, 0.65);
+        color: #9aaf7a;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -486,7 +470,7 @@
 
       .form-divider {
         height: 1px;
-        background: rgba(80, 115, 65, 0.14);
+        background: rgba(154, 175, 122, 0.2);
         margin: -4px 0;
       }
 
@@ -496,22 +480,22 @@
         gap: 4px;
       }
       .form-label {
-        font-family: "Source Code Pro", monospace;
-        font-size: 9.5px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
         font-weight: 500;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: rgba(30, 55, 25, 0.55);
+        color: #9aaf7a;
       }
       .form-input {
         width: 100%;
-        background: rgba(255, 255, 255, 0.72);
-        border: 1.5px solid rgba(100, 130, 90, 0.2);
+        background: rgba(255, 255, 255, 0.8);
+        border: 0.5px solid rgba(154, 175, 122, 0.35);
         border-radius: 10px;
         padding: 8px 12px;
         font-family: "Inter", sans-serif;
         font-size: 12px;
-        color: #1e3a1c;
+        color: #2d4a1e;
         outline: none;
         transition:
           border-color 0.2s ease,
@@ -519,11 +503,11 @@
         -webkit-appearance: none;
       }
       .form-input:focus {
-        border-color: rgba(80, 120, 65, 0.55);
-        box-shadow: 0 0 0 3px rgba(80, 120, 65, 0.1);
+        border-color: rgba(107, 143, 78, 0.5);
+        box-shadow: 0 0 0 3px rgba(107, 143, 78, 0.1);
       }
       .form-input::placeholder {
-        color: rgba(50, 80, 40, 0.35);
+        color: rgba(90, 112, 64, 0.4);
         font-style: italic;
       }
       .form-input[readonly] {
@@ -571,8 +555,8 @@
       }
       .char-count {
         text-align: right;
-        font-family: "Source Code Pro", monospace;
-        font-size: 9px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
         color: rgba(50, 80, 40, 0.4);
         letter-spacing: 0.08em;
         margin-top: -10px;
@@ -586,8 +570,8 @@
         margin-top: auto;
       }
       .visitor-label {
-        font-family: "Source Code Pro", monospace;
-        font-size: 9px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
         font-weight: 500;
         letter-spacing: 0.26em;
         text-transform: uppercase;
@@ -629,8 +613,8 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 9px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
         font-weight: 500;
         letter-spacing: 0.28em;
         text-transform: uppercase;
@@ -695,7 +679,7 @@
       }
       .flower-pick-btn .pick-name {
         font-family: "Inter", sans-serif;
-        font-size: 9px;
+        font-size: 10px;
         font-weight: 500;
         color: rgba(50, 35, 15, 0.6);
         text-align: center;
@@ -721,27 +705,25 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 11px 44px;
-        background: #1a3518;
-        color: #f5f0e8;
-        border: none;
-        border-radius: 100px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 11px;
-        font-weight: 500;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
+        padding: 10px 28px;
+        background: rgba(250, 247, 242, 0.5);
+        color: #2d4a1e;
+        border: 1px solid #6b8f4e;
+        border-radius: 99px;
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0.05em;
         cursor: pointer;
-        transition: all 0.25s ease;
-        box-shadow: 0 6px 22px rgba(20, 45, 15, 0.22);
+        transition: background 0.2s ease;
       }
       .btn-plant:hover {
-        background: #254d22;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 28px rgba(20, 45, 15, 0.3);
+        background: rgba(155, 175, 122, 0.15);
+        transform: none;
+        box-shadow: none;
       }
       .btn-plant:active {
-        transform: translateY(0);
+        transform: none;
       }
       .btn-plant:disabled {
         opacity: 0.45;
@@ -751,7 +733,7 @@
       }
       .cta-fine-print {
         font-family: "Inter", sans-serif;
-        font-size: 11px;
+        font-size: 12px;
         font-style: italic;
         color: rgba(30, 58, 28, 0.35);
       }
@@ -791,14 +773,14 @@
       }
       .planted-sub {
         font-family: "Inter", sans-serif;
-        font-size: 13px;
+        font-size: 14px;
         color: rgba(30, 58, 28, 0.6);
         line-height: 1.6;
         margin-bottom: 20px;
       }
       .planted-name {
         font-family: "Playfair Display", Georgia, serif;
-        font-size: 15px;
+        font-size: 16px;
         font-style: italic;
         color: rgba(30, 58, 28, 0.55);
         margin-bottom: 24px;
@@ -807,22 +789,20 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 32px;
-        background: #1a3518;
-        color: #f5f0e8;
-        border: none;
-        border-radius: 100px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
+        padding: 10px 28px;
+        background: rgba(250, 247, 242, 0.5);
+        color: #2d4a1e;
+        border: 1px solid #6b8f4e;
+        border-radius: 99px;
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: background 0.2s ease;
       }
       .planted-btn:hover {
-        background: #254d22;
-        transform: translateY(-1px);
+        background: rgba(155, 175, 122, 0.15);
+        transform: none;
       }
 
       /* ─── Responsive ─── */

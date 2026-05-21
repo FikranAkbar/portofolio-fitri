@@ -1665,8 +1665,8 @@ function VisitorGalleryPage({
               <line x1="7" y1="1" x2="1" y2="7" />
             </svg>
           </button>
-          <span className="w-[10px] h-[10px] rounded-full bg-[#FEBC2E]" title="Minimize" />
-          <span className="w-[10px] h-[10px] rounded-full bg-[#28C840]" title="Maximize" />
+          <span className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]" title="Minimize" />
+          <span className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]" title="Maximize" />
         </div>
         <span className="ml-4 text-[14px] font-medium select-none" style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}>
           Visitor Gallery
@@ -2861,7 +2861,7 @@ export default function ForceGraph() {
 
         // "Fitri Zahwa" text below circle
         const name = txt(d.label, {
-          size: 15,
+          size: 16,
           weight: 700,
           fill: "#3D3128",
           dy: 66,
@@ -2908,7 +2908,7 @@ export default function ForceGraph() {
         // ── Number label (above circle) ───────────────────────────────────
         const numEl = el("text") as SVGTextElement;
         numEl.setAttribute("font-family", "Inter, system-ui, sans-serif");
-        numEl.setAttribute("font-size", "11");
+        numEl.setAttribute("font-size", "10");
         numEl.setAttribute("font-weight", "500");
         numEl.setAttribute("fill", "#B0A898");
         numEl.setAttribute("text-anchor", "middle");
@@ -2933,7 +2933,7 @@ export default function ForceGraph() {
         // ── Description (below title, hidden by default) ──────────────────
         const desc = el("text") as SVGTextElement;
         desc.setAttribute("font-family", "Inter, system-ui, sans-serif");
-        desc.setAttribute("font-size", "11");
+        desc.setAttribute("font-size", "12");
         desc.setAttribute("font-weight", "400");
         desc.setAttribute("fill", "#8B7E74");
         desc.setAttribute("text-anchor", "middle");

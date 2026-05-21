@@ -6,7 +6,7 @@ const links = [
     label: "Email",
     href: "mailto:fitri@example.com",
     ionicon: null,
-    customIcon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0"><rect width="18.5" height="17" x="2.682" y="3.5" rx="4"/><path stroke-linecap="round" stroke-linejoin="round" d="m2.729 7.59l7.205 4.13a3.96 3.96 0 0 0 3.975 0l7.225-4.13"/></svg>`,
+    customIcon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0"><rect width="18.5" height="17" x="2.682" y="3.5" rx="4"/><path stroke-linecap="round" stroke-linejoin="round" d="m2.729 7.59l7.205 4.13a3.96 3.96 0 0 0 3.975 0l7.225-4.13"/></svg>`,
   },
   {
     label: "LinkedIn",
@@ -29,38 +29,55 @@ const links = [
 ];
 ---
 
-<div>
+<div style="margin-bottom: 16px;">
   <p
-    class="text-[14px] font-semibold tracking-widest uppercase mb-2"
-    style="color:#6D6D6D"
+    style="
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9aaf7a;
+      margin-bottom: 6px;
+      padding: 0 2px;
+    "
   >
     Find Me At
   </p>
-  <div class="flex flex-col gap-1.5">
+  <div style="display: flex; flex-direction: column; gap: 6px;">
     {
       links.map((link) => (
         <a
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          class="group inline-flex items-center gap-2 text-[14px] transition-colors duration-200"
-          style="color:#6D6D6D"
+          class="social-link"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            color: #5a7040;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            padding: 2px 10px;
+          "
         >
           {link.ionicon ? (
             <Icon
               name={link.ionicon}
-              class="shrink-0 w-4 h-4 transition-colors duration-200 group-hover:text-[#7A9E72]"
+              class="shrink-0"
+              style="width: 14px; height: 14px; color: #9aaf7a;"
             />
           ) : (
             <span
-              class="transition-colors duration-200 [&>svg]:w-4 [&>svg]:h-4 group-hover:[&>svg]:stroke-[#7A9E72]"
-              style="color:#6D6D6D"
+              style="color: #9aaf7a; display: flex; align-items: center;"
               set:html={link.customIcon}
             />
           )}
-          <span class="group-hover:text-[#3D3128] transition-colors duration-200">
-            {link.label}
-          </span>
+          <span>{link.label}</span>
         </a>
       ))
     }

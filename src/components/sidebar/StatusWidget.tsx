@@ -21,28 +21,45 @@ export default function StatusWidget() {
   }, []);
 
   return (
-    <div className="select-none font-mono">
-      {/* Live clock — 16px */}
-      <p className="font-medium tracking-tight" style={{ fontSize: '16px', color: '#000000' }}>
+    <div style={{ userSelect: 'none' }}>
+      {/* Live clock */}
+      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 400, color: '#2d4a1e', marginBottom: '4px' }}>
         {time}
       </p>
 
-      {/* Status row — 14px */}
-      <div className="flex items-center gap-1.5 mt-1">
-        <span className="relative inline-flex h-2 w-2">
+      {/* Status row */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <span style={{ position: 'relative', display: 'inline-flex', width: '8px', height: '8px', flexShrink: 0 }}>
           <span
-            className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping"
-            style={{ background: '#4CAF50' }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '50%',
+              background: '#6b8f4e',
+              opacity: 0.75,
+              animation: 'ping 1.2s cubic-bezier(0,0,0.2,1) infinite',
+            }}
           />
           <span
-            className="relative inline-flex h-2 w-2 rounded-full"
-            style={{ background: '#4CAF50' }}
+            style={{
+              position: 'relative',
+              display: 'inline-flex',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: '#6b8f4e',
+            }}
           />
         </span>
-        <span className="uppercase tracking-widest" style={{ fontSize: '14px', color: '#6D6D6D' }}>
-          All Systems Operational
+        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', fontWeight: 400, color: '#9aaf7a', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          All systems operational
         </span>
       </div>
+      <style>{`
+        @keyframes ping {
+          75%, 100% { transform: scale(2); opacity: 0; }
+        }
+      `}</style>
     </div>
   );
 }
