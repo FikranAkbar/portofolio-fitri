@@ -15,6 +15,7 @@ _Dibuat bersama Claude — May 2026_
 6. [About Me](#about-me)
 7. [Visitor Gallery](#visitor-gallery)
 8. [Referensi File](#referensi-file)
+9. [FAQ — Copilot Cloud Agent](#faq--copilot-cloud-agent)
 
 ---
 
@@ -468,6 +469,13 @@ const aboutData = {
 8. **`align-items` di Project grid** — harus `start`, bukan `stretch`
 9. **Posisi bunga pakai pixel absolut** — harus koordinat relatif 0–1
 10. **Dummy data tidak dihapus** — pastikan Leave Your Bloom mulai dari empty state
+
+---
+
+## FAQ — Copilot Cloud Agent
+
+**Q:** apakah ketika aku menggunakan Copilot Pro+ mode cloud ini, aku bisa menyuruh agent bekerja tanpa laptopku menyala?  
+**A:** Bisa. Di mode cloud, proses agent berjalan di server GitHub, jadi laptop kamu tidak harus tetap menyala selama agent bekerja.
 
 ---
 
