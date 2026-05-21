@@ -2592,160 +2592,365 @@ function rowToBloomEntry(e: BloomRow, i = 0): BloomEntry {
   void i;
 }
 
-const FLOWER_PAL: Record<
-  string,
-  { p: string; p2: string; c: string; bg: string; border: string }
-> = {
-  sakura: {
-    p: "#FBCFDF",
-    p2: "#F472B6",
-    c: "#FBBF24",
-    bg: "#FFF5F8",
-    border: "#F9C0D4",
-  },
-  lavender: {
-    p: "#DDD6FE",
-    p2: "#A78BFA",
-    c: "#7C3AED",
-    bg: "#F5F3FF",
-    border: "#C4BBFA",
-  },
-  daisy: {
-    p: "#FEF9C3",
-    p2: "#FDE047",
-    c: "#D97706",
-    bg: "#FEFCE8",
-    border: "#FDE68A",
-  },
-  sunflower: {
-    p: "#FDE68A",
-    p2: "#F59E0B",
-    c: "#92400E",
-    bg: "#FFFBEB",
-    border: "#FDE68A",
-  },
-  forgetmenot: {
-    p: "#BFDBFE",
-    p2: "#60A5FA",
-    c: "#FBBF24",
-    bg: "#EFF6FF",
-    border: "#93C5FD",
-  },
-  rose: {
-    p: "#FECDD3",
-    p2: "#FB7185",
-    c: "#BE123C",
-    bg: "#FFF1F2",
-    border: "#FECDD3",
-  },
-  cosmos: {
-    p: "#FBCFE8",
-    p2: "#F9A8D4",
-    c: "#FBBF24",
-    bg: "#FDF2F8",
-    border: "#F9C0E2",
-  },
-};
-
 function FlowerSvg({ type, size = 64 }: { type: string; size?: number }) {
-  const pal = FLOWER_PAL[type] ?? FLOWER_PAL.daisy;
-  const hw = size / 2;
-  const stemTop = size * 0.4;
-
-  if (type === "lavender") {
-    return (
-      <svg
-        width={size}
-        height={size}
-        viewBox={`0 0 ${size} ${size}`}
-        style={{ overflow: "visible" }}
-      >
-        <line
-          x1={hw}
-          y1={stemTop * 0.55}
-          x2={hw}
-          y2={size - 2}
-          stroke="#8FAF7E"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-        {[0.18, 0.26, 0.34, 0.42, 0.5].map((t, i) => (
-          <React.Fragment key={i}>
-            <ellipse
-              cx={hw - 6}
-              cy={size * t}
-              rx={4}
-              ry={2.5}
-              fill={pal.p}
-              transform={`rotate(-25,${hw - 6},${size * t})`}
-            />
-            <ellipse
-              cx={hw + 6}
-              cy={size * (t + 0.04)}
-              rx={4}
-              ry={2.5}
-              fill={pal.p2}
-              transform={`rotate(25,${hw + 6},${size * (t + 0.04)})`}
-            />
-          </React.Fragment>
-        ))}
-        <ellipse cx={hw} cy={size * 0.12} rx={3.5} ry={5.5} fill={pal.p2} />
-      </svg>
-    );
-  }
-
-  const configs: Record<
-    string,
-    { n: number; rx: number; ry: number; dist: number }
-  > = {
-    sakura: { n: 5, rx: 7, ry: 5, dist: 9 },
-    daisy: { n: 10, rx: 9, ry: 3.5, dist: 10 },
-    sunflower: { n: 14, rx: 8, ry: 3, dist: 11 },
-    forgetmenot: { n: 5, rx: 5, ry: 4, dist: 7 },
-    rose: { n: 6, rx: 8, ry: 6, dist: 8 },
-    cosmos: { n: 8, rx: 9, ry: 3.5, dist: 10 },
+  const common = {
+    width: size,
+    height: size,
+    viewBox: "0 0 48 48",
+    fill: "none" as const,
+    style: { overflow: "visible" as const },
   };
-  const { n, rx, ry, dist } = configs[type] ?? { n: 5, rx: 7, ry: 5, dist: 9 };
-  const centerR = type === "sunflower" ? 9 : 5;
 
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      style={{ overflow: "visible" }}
-    >
-      <line
-        x1={hw}
-        y1={stemTop + 4}
-        x2={hw}
-        y2={size - 2}
-        stroke="#8FAF7E"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-      {Array.from({ length: n }, (_, i) => {
-        const angle = (360 / n) * i - 90;
-        const rad = (angle * Math.PI) / 180;
-        const cx = hw + Math.cos(rad) * dist;
-        const cy = stemTop + Math.sin(rad) * dist;
-        return (
-          <ellipse
-            key={i}
-            cx={cx}
-            cy={cy}
-            rx={rx}
-            ry={ry}
-            fill={i % 2 === 0 ? pal.p : pal.p2}
-            stroke={pal.p2}
-            strokeWidth="0.3"
-            transform={`rotate(${angle + 90},${cx},${cy})`}
+  switch (type) {
+    case "sakura":
+      return (
+        <svg {...common}>
+          <g transform="translate(24,24)">
+            {[0, 72, 144, 216, 288].map((r) => (
+              <path
+                key={r}
+                d="M0,0 Q-5,-2 -3,-10 L0,-13 L3,-10 Q5,-2 0,0 Z"
+                fill="#e8a0bc"
+                opacity="0.85"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="3.5" fill="#f9d0e0" opacity="0.95" />
+            <circle cx="0" cy="0" r="1.5" fill="#e8a0bc" opacity="0.5" />
+          </g>
+        </svg>
+      );
+    case "lavender":
+      return (
+        <svg {...common}>
+          <line
+            x1="24"
+            y1="44"
+            x2="24"
+            y2="12"
+            stroke="#6a8f45"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
-        );
-      })}
-      <circle cx={hw} cy={stemTop} r={centerR} fill={pal.c} />
-    </svg>
-  );
+          <line
+            x1="24"
+            y1="30"
+            x2="18"
+            y2="24"
+            stroke="#6a8f45"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+          <line
+            x1="24"
+            y1="30"
+            x2="30"
+            y2="24"
+            stroke="#6a8f45"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+          <ellipse
+            cx="24"
+            cy="20"
+            rx="3.5"
+            ry="5"
+            fill="#9b86d4"
+            opacity="0.8"
+          />
+          <ellipse
+            cx="24"
+            cy="15"
+            rx="3"
+            ry="4.5"
+            fill="#8b76c8"
+            opacity="0.85"
+          />
+          <ellipse
+            cx="24"
+            cy="11"
+            rx="2.5"
+            ry="3.5"
+            fill="#7b68c4"
+            opacity="0.9"
+          />
+          <ellipse cx="24" cy="8" rx="2" ry="2.5" fill="#6b58b8" />
+        </svg>
+      );
+    case "sunflower":
+      return (
+        <svg {...common}>
+          <g transform="translate(24,18)">
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((r) => (
+              <ellipse
+                key={r}
+                cx="0"
+                cy="-10"
+                rx="3.5"
+                ry="7"
+                fill="#f0c030"
+                opacity="0.88"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="6.5" fill="#7a4a10" />
+            <circle cx="0" cy="0" r="4.5" fill="#5a3008" />
+          </g>
+          <line
+            x1="24"
+            y1="42"
+            x2="24"
+            y2="24"
+            stroke="#6a8f45"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "babysbreath":
+      return (
+        <svg {...common}>
+          <line
+            x1="24"
+            y1="42"
+            x2="24"
+            y2="28"
+            stroke="#7a9a55"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <line
+            x1="24"
+            y1="32"
+            x2="15"
+            y2="22"
+            stroke="#7a9a55"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+          <line
+            x1="24"
+            y1="30"
+            x2="33"
+            y2="20"
+            stroke="#7a9a55"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+          <line
+            x1="24"
+            y1="28"
+            x2="19"
+            y2="16"
+            stroke="#7a9a55"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+          <line
+            x1="24"
+            y1="28"
+            x2="29"
+            y2="14"
+            stroke="#7a9a55"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+          <circle
+            cx="15"
+            cy="21"
+            r="2.5"
+            fill="white"
+            stroke="#d0c8d8"
+            strokeWidth="0.8"
+          />
+          <circle
+            cx="33"
+            cy="19"
+            r="2.5"
+            fill="white"
+            stroke="#d0c8d8"
+            strokeWidth="0.8"
+          />
+          <circle
+            cx="19"
+            cy="15"
+            r="2"
+            fill="white"
+            stroke="#d0c8d8"
+            strokeWidth="0.8"
+          />
+          <circle
+            cx="29"
+            cy="13"
+            r="2"
+            fill="white"
+            stroke="#d0c8d8"
+            strokeWidth="0.8"
+          />
+          <circle
+            cx="24"
+            cy="11"
+            r="1.8"
+            fill="white"
+            stroke="#d0c8d8"
+            strokeWidth="0.8"
+          />
+        </svg>
+      );
+    case "forgetmenot":
+      return (
+        <svg {...common}>
+          <g transform="translate(16,22)">
+            {[0, 72, 144, 216, 288].map((r) => (
+              <circle
+                key={r}
+                cx="0"
+                cy="-6"
+                r="3.5"
+                fill="#80aee0"
+                opacity="0.85"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="2.2" fill="#fff7c0" />
+          </g>
+          <g transform="translate(32,28)">
+            {[0, 72, 144, 216, 288].map((r) => (
+              <circle
+                key={r}
+                cx="0"
+                cy="-5"
+                r="2.8"
+                fill="#6898d0"
+                opacity="0.8"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="1.8" fill="#fff7c0" />
+          </g>
+          <line
+            x1="24"
+            y1="42"
+            x2="16"
+            y2="32"
+            stroke="#6a8f45"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+          <line
+            x1="16"
+            y1="32"
+            x2="16"
+            y2="24"
+            stroke="#6a8f45"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+          <line
+            x1="16"
+            y1="30"
+            x2="30"
+            y2="26"
+            stroke="#6a8f45"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "cosmos":
+      return (
+        <svg {...common}>
+          <g transform="translate(24,20)">
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((r) => (
+              <path
+                key={r}
+                d="M0,2 C-6,1 -10,-6 -5,-12 C-3,-15 3,-15 5,-12 C10,-6 6,1 0,2 Z"
+                fill="#e090a8"
+                opacity="0.8"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="4" fill="#f0c038" />
+            <circle cx="0" cy="0" r="2.5" fill="#e6a820" />
+          </g>
+          <line
+            x1="24"
+            y1="40"
+            x2="24"
+            y2="26"
+            stroke="#6a8f45"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "rose":
+      return (
+        <svg {...common}>
+          <g transform="translate(24,22)">
+            {[0, 72, 144, 216, 288].map((r) => (
+              <path
+                key={r}
+                d="M0,2 C-7,0 -9,-9 -4,-14 C-2,-16 2,-16 4,-14 C9,-9 7,0 0,2 Z"
+                fill="#e06080"
+                opacity="0.55"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            {[20, 140, 260].map((r) => (
+              <path
+                key={r}
+                d="M0,1 C-4,0 -6,-6 -2,-9 C0,-10 2,-10 2,-9 C6,-6 4,0 0,1 Z"
+                fill="#d04868"
+                opacity="0.9"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="3.5" fill="#c03055" />
+          </g>
+          <line
+            x1="24"
+            y1="40"
+            x2="24"
+            y2="28"
+            stroke="#4a7a30"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "daisy":
+    default:
+      return (
+        <svg {...common}>
+          <g transform="translate(24,20)">
+            {[0, 40, 80, 120, 160, 200, 240, 280, 320].map((r) => (
+              <ellipse
+                key={r}
+                cx="0"
+                cy="-9"
+                rx="3"
+                ry="6.5"
+                fill="white"
+                opacity="0.9"
+                transform={`rotate(${r})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="5" fill="#f0c030" opacity="0.95" />
+            <circle cx="0" cy="0" r="3" fill="#e6a820" />
+          </g>
+          <line
+            x1="24"
+            y1="40"
+            x2="24"
+            y2="28"
+            stroke="#6a8f45"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+  }
 }
 
 // ─── Visitor Gallery Page ─────────────────────────────────────────────────────
@@ -2762,7 +2967,7 @@ function VisitorGalleryPage({
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
-  // Fetch real visitor blooms from Supabase on mount (max 50 displayed, but count all)
+  // Fetch real visitor blooms from Supabase on mount (show more blooms, but count all)
   useEffect(() => {
     // Fetch total count
     supabase
@@ -2771,12 +2976,12 @@ function VisitorGalleryPage({
       .then(({ count }) => {
         setTotalCount(count ?? 0);
       });
-    // Fetch latest 50 to display
+    // Fetch latest blooms to display
     supabase
       .from("blooms")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(50)
+      .limit(120)
       .then(({ data, error }) => {
         if (!error && data) {
           setBlooms((data as BloomRow[]).map(rowToBloomEntry));
@@ -2923,6 +3128,15 @@ function VisitorGalleryPage({
                 0%, 100% { transform: translateY(0); opacity: 0.5; }
                 50% { transform: translateY(-6px); opacity: 1; }
               }
+              @keyframes vg-flower-float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-4px); }
+              }
+              @keyframes vg-flower-sway {
+                0%, 100% { transform: rotate(0deg); }
+                25% { transform: rotate(1deg); }
+                75% { transform: rotate(-1deg); }
+              }
             `}</style>
           </div>
         )}
@@ -2988,6 +3202,7 @@ function VisitorGalleryPage({
           {blooms.map((bloom) => {
             const isHov = hovered === bloom.id;
             const tipAbove = bloom.y > 52;
+            const swayDelay = (bloom.id % 11) * 0.25;
             return (
               <div
                 key={bloom.id}
@@ -3001,9 +3216,22 @@ function VisitorGalleryPage({
                 onMouseLeave={() => setHovered(null)}
               >
                 <div
-                  className={`transition-transform duration-200 drop-shadow-sm ${isHov ? "scale-110 -translate-y-1" : ""}`}
+                  style={{
+                    animation: `vg-flower-float 4s ease-in-out ${swayDelay}s infinite, vg-flower-sway 6.5s ease-in-out ${
+                      swayDelay * 0.8
+                    }s infinite`,
+                  }}
                 >
-                  <FlowerSvg type={bloom.flower} size={64} />
+                  <div
+                    className="transition-transform duration-200 drop-shadow-sm"
+                    style={{
+                      transform: isHov
+                        ? "scale(1.12) translateY(-3px)"
+                        : "scale(1)",
+                    }}
+                  >
+                    <FlowerSvg type={bloom.flower} size={64} />
+                  </div>
                 </div>
                 {isHov && (
                   <div

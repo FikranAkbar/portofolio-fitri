@@ -1876,7 +1876,7 @@ or a little message..."
         .from("blooms")
         .select("name, flower, date, x, y")
         .order("created_at", { ascending: true })
-        .limit(50)
+        .limit(120)
         .then(({ data }) => {
           if (!data) return;
           data.forEach((row) => {
