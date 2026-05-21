@@ -17,19 +17,12 @@ import CanvasPanel from "../components/canvas/CanvasPanel.astro";
       window.location.replace("/");
     }
   </script>
-  <!--
-    Full-viewport two-column layout:
-      left  → fixed-width sidebar (300px)
-      right → flexible canvas panel
-  -->
+
   <div
     class="flex h-screen w-full overflow-hidden"
-    style="background-image: url('/images/main-bg.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"
+    style="background: #faf7f2;"
   >
-    <!-- 24px spacing on left / top / bottom for the floating card -->
-    <div class="pl-6 pt-6 pb-6 shrink-0 flex h-full">
-      <Sidebar />
-    </div>
+    <Sidebar />
     <CanvasPanel />
   </div>
 </BaseLayout>

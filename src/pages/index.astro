@@ -15,7 +15,7 @@ import "../styles/global.css";
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,700&family=Source+Code+Pro:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -34,8 +34,7 @@ import "../styles/global.css";
         font-family: "Inter", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
         overflow: hidden;
-        background: url("/images/garden-bg.jpg") center center / cover no-repeat
-          fixed;
+        background: #faf7f2;
       }
 
       /* ── Cursor: botanical green ring + sage dot ── */
@@ -170,83 +169,91 @@ import "../styles/global.css";
         animation: fade-in 0.8s ease 2.2s forwards;
       }
 
-      /* Botanical gradient for "Garden" title */
+      /* Botanical "Garden" title — solid italic purple */
+      .title-fitris {
+        font-size: 74px;   /* Desktop */
+      }
       .title-garden {
         font-family: "Playfair Display", Georgia, serif;
         font-style: italic;
-        background: linear-gradient(
-          120deg,
-          #2d6a20 0%,
-          #5d9130 28%,
-          #8b6bae 62%,
-          #7040a8 100%
-        );
-        background-size: 220% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: shimmer 9s linear 2s infinite;
+        font-weight: 700;
+        color: #7a58a8;
+        font-size: 78px;   /* Desktop */
       }
 
-      /* ── Journey button (botanical sage green) ── */
+      /* Subtitle */
+      .intro-subtitle {
+        font-family: "Inter", sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.7;
+        color: rgba(30, 58, 28, 0.7);
+        max-width: 480px;
+        margin-bottom: 48px;
+        letter-spacing: 0.01em;
+        text-align: center;
+      }
+
+      /* ── Journey button — outline pill ── */
       .btn-journey {
         position: relative;
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 14px 34px;
-        border: 1.5px solid rgba(60, 100, 50, 0.45);
+        padding: 12px 32px;
+        border: 1.5px solid #9aaf7a;
         border-radius: 100px;
-        background: rgba(60, 100, 50, 0.05);
-        color: #1e3a1c;
-        font-size: 15px;
-        font-weight: 600;
+        background: transparent;
+        color: #4a6741;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
         letter-spacing: 0.02em;
-        transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-        backdrop-filter: blur(8px);
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         text-decoration: none;
-        overflow: hidden;
-      }
-
-      .btn-journey::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(60, 100, 50, 0.1),
-          rgba(139, 107, 174, 0.08)
-        );
-        opacity: 0;
-        transition: opacity 0.35s ease;
-        border-radius: inherit;
       }
 
       .btn-journey:hover {
-        border-color: rgba(100, 145, 65, 0.7);
-        color: #2d5e20;
-        transform: translateY(-3px);
-        box-shadow:
-          0 8px 28px rgba(60, 100, 50, 0.18),
-          0 0 40px rgba(139, 107, 174, 0.1);
-      }
-
-      .btn-journey:hover::after {
-        opacity: 1;
+        background: #9aaf7a;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(154, 175, 122, 0.32);
       }
 
       .btn-journey .arrow {
         transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         display: inline-block;
-        position: relative;
-        z-index: 1;
-      }
-      .btn-journey span {
-        position: relative;
-        z-index: 1;
       }
       .btn-journey:hover .arrow {
         transform: translateX(5px);
+      }
+
+      /* ── Responsive: tablet ── */
+      @media (max-width: 1024px) {
+        .title-fitris { font-size: 54px; }
+        .title-garden { font-size: 58px; }
+        .intro-subtitle { font-size: 14px; line-height: 1.65; margin-bottom: 36px; }
+        .btn-journey {
+          font-size: 14px;
+          padding: 10px 28px;
+        }
+        .btn-skip {
+          font-size: 12px;
+        }
+      }
+
+      /* ── Responsive: mobile ── */
+      @media (max-width: 480px) {
+        .title-fitris { font-size: 38px; }
+        .title-garden { font-size: 42px; }
+        .intro-subtitle { font-size: 14px; line-height: 1.6; margin-bottom: 28px; padding: 0 8px; }
+        .btn-journey {
+          font-size: 14px;
+          padding: 10px 24px;
+        }
+        .btn-skip {
+          font-size: 10px;
+        }
       }
 
       /* ── Skip button ── */
@@ -255,18 +262,17 @@ import "../styles/global.css";
         align-items: center;
         gap: 6px;
         padding: 8px 16px;
-        color: rgba(25, 45, 20, 0.42);
-        font-size: 11px;
-        font-weight: 500;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
+        color: #9aaf7a;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
         transition: color 0.25s ease;
         background: transparent;
         border: none;
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", system-ui, sans-serif;
       }
       .btn-skip:hover {
-        color: rgba(25, 45, 20, 0.88);
+        color: #6a8c48;
       }
 
       /* ── Garden circle ring behind title ── */
@@ -376,8 +382,8 @@ import "../styles/global.css";
         position: absolute;
         top: 26px;
         left: 30px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 11px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 12px;
         letter-spacing: 0.18em;
         text-transform: uppercase;
         color: rgba(42, 26, 14, 0.38);
@@ -397,7 +403,7 @@ import "../styles/global.css";
         margin-bottom: 22px;
       }
       .ov-header p {
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", system-ui, sans-serif;
         font-size: clamp(10px, 1vw, 12px);
         letter-spacing: 0.2em;
         text-transform: uppercase;
@@ -416,7 +422,7 @@ import "../styles/global.css";
         max-width: 520px;
       }
       .ov-name-label {
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", system-ui, sans-serif;
         font-size: 12px;
         letter-spacing: 0.14em;
         text-transform: uppercase;
@@ -426,8 +432,8 @@ import "../styles/global.css";
       }
       .ov-name-input {
         flex: 1;
-        font-family: "Source Code Pro", monospace;
-        font-size: 13px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 14px;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: #2a1a0e;
@@ -535,7 +541,7 @@ import "../styles/global.css";
       }
 
       .flower-hint {
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", system-ui, sans-serif;
         font-size: 10px;
         letter-spacing: 0.22em;
         text-transform: uppercase;
@@ -618,8 +624,8 @@ import "../styles/global.css";
         height: 26px;
       }
       .ov-flower-label {
-        font-family: "Source Code Pro", monospace;
-        font-size: 9px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 10px;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: rgba(42, 26, 14, 0.4);
@@ -715,7 +721,7 @@ import "../styles/global.css";
         z-index: 2;
       }
       .card-title-text {
-        font-family: "DM Sans", Inter, sans-serif;
+        font-family: "Playfair Display", Georgia, serif;
         font-size: 20px;
         font-weight: 700;
         font-style: italic;
@@ -737,8 +743,8 @@ import "../styles/global.css";
       }
       .card-visitor-label {
         display: block;
-        font-family: "Source Code Pro", monospace;
-        font-size: 8.5px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 8px;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: inherit;
@@ -747,8 +753,8 @@ import "../styles/global.css";
       }
       .card-visitor-name {
         display: block;
-        font-family: "Source Code Pro", monospace;
-        font-size: 14.5px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 14px;
         font-weight: 700;
         letter-spacing: 0.09em;
         text-transform: uppercase;
@@ -765,16 +771,16 @@ import "../styles/global.css";
         gap: 3px;
       }
       .card-meta-label {
-        font-family: "Source Code Pro", monospace;
-        font-size: 7.5px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 8px;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: inherit;
         opacity: 0.65;
       }
       .card-meta-val {
-        font-family: "Source Code Pro", monospace;
-        font-size: 13px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 14px;
         font-weight: 600;
         letter-spacing: 0.05em;
         color: inherit;
@@ -789,16 +795,16 @@ import "../styles/global.css";
         gap: 5px;
       }
       .card-no-label {
-        font-family: "Source Code Pro", monospace;
-        font-size: 7.5px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 8px;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: inherit;
         opacity: 0.65;
       }
       .card-no-val {
-        font-family: "Source Code Pro", monospace;
-        font-size: 11px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 12px;
         letter-spacing: 0.05em;
         color: inherit;
       }
@@ -809,7 +815,7 @@ import "../styles/global.css";
         margin-left: 24px;
       }
       .card-sig-x {
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", system-ui, sans-serif;
         font-size: 12px;
         color: inherit;
         opacity: 0.55;
@@ -838,33 +844,32 @@ import "../styles/global.css";
         color: #2a1a0e;
       }
 
-      /* ── Enter button ── */
+      /* ── Enter button — outline pill ── */
       #btn-enter {
-        background: #1a0e08;
-        color: #eceae4;
-        border: none;
+        background: transparent;
+        color: #4a6741;
+        border: 1.5px solid #9aaf7a;
         border-radius: 100px;
-        padding: 13px 52px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 13px;
+        padding: 12px 52px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 14px;
         font-weight: 500;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
+        letter-spacing: 0.08em;
         margin-bottom: 12px;
         transition: all 0.25s ease;
-        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.22);
       }
       #btn-enter:hover {
-        background: #2a1a0e;
+        background: #9aaf7a;
+        color: #fff;
         transform: translateY(-2px);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 6px 22px rgba(154, 175, 122, 0.32);
       }
       #btn-enter:active {
         transform: translateY(0);
       }
 
       .ov-fine-print {
-        font-family: "Source Code Pro", monospace;
+        font-family: "Inter", system-ui, sans-serif;
         font-size: 10px;
         letter-spacing: 0.06em;
         color: rgba(42, 26, 14, 0.32);
@@ -906,7 +911,7 @@ import "../styles/global.css";
       class="anim-skip"
     >
       <span
-        style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:0.14em;color:rgba(25,45,20,0.32);text-transform:uppercase;"
+        style="font-family:'Inter',system-ui,sans-serif;font-size:12px;letter-spacing:0.14em;color:rgba(25,45,20,0.42);text-transform:uppercase;font-weight:400;"
         >fitri.world</span
       >
     </div>
@@ -942,7 +947,7 @@ import "../styles/global.css";
               fill="none"></path>
           </svg>
           <span
-            style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:0.26em;color:rgba(50,85,35,0.75);text-transform:uppercase;font-weight:500;"
+            style="font-family:'Inter',system-ui,sans-serif;font-size:clamp(10px,1.2vw,14px);letter-spacing:0.26em;color:rgba(50,85,35,0.75);text-transform:uppercase;font-weight:400;"
             >Welcome to</span
           >
           <svg
@@ -968,10 +973,17 @@ import "../styles/global.css";
         <!-- Title -->
         <h1
           class="anim-title"
-          style="font-family:'DM Sans',Inter,sans-serif;font-size:clamp(54px,8.5vw,100px);font-weight:700;line-height:1.0;letter-spacing:-0.025em;margin-bottom:32px;"
+          style="font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.05;letter-spacing:-0.02em;margin-bottom:32px;"
         >
-          <span style="display:block;color:#1A3818;">Fitri's</span>
-          <span class="title-garden" style="display:block;">Garden</span>
+          <span
+            class="title-fitris"
+            style="display:block;font-style:normal;color:#2d4a1e;"
+            >Fitri's</span
+          >
+          <span
+            class="title-garden"
+            style="display:block;">Garden</span
+          >
         </h1>
 
         <!-- Botanical leaf divider -->
@@ -980,7 +992,7 @@ import "../styles/global.css";
         >
           <div
             class="anim-divider"
-            style="height:1px;flex:1;background:linear-gradient(to right,rgba(255,255,255,0),rgba(90,130,50,0.45));transform-origin:right;"
+            style="height:1px;flex:1;background:linear-gradient(to right,rgba(154,175,122,0),rgba(90,130,50,0.45));transform-origin:right;"
           >
           </div>
           <svg
@@ -1000,15 +1012,14 @@ import "../styles/global.css";
           </svg>
           <div
             class="anim-divider"
-            style="height:1px;flex:1;background:linear-gradient(to left,rgba(255,255,255,0),rgba(139,107,174,0.38));transform-origin:left;"
+            style="height:1px;flex:1;background:linear-gradient(to left,rgba(154,175,122,0),rgba(139,107,174,0.38));transform-origin:left;"
           >
           </div>
         </div>
 
         <!-- Subtitle -->
         <p
-          class="anim-subtitle"
-          style="font-family:'Inter',sans-serif;font-size:clamp(14px,1.35vw,17px);font-weight:400;line-height:1.85;color:rgba(30,58,28,0.58);max-width:480px;margin-bottom:60px;letter-spacing:0.01em;"
+          class="anim-subtitle intro-subtitle"
         >
           There are stories waiting to be shaped,<br />
           why not begin with mine and build something together?
@@ -1030,11 +1041,11 @@ import "../styles/global.css";
       style="position:fixed;bottom:28px;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:0 36px;"
     >
       <span
-        style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(25,45,20,0.32);text-transform:uppercase;"
+        style="font-family:'Inter',system-ui,sans-serif;font-size:10px;letter-spacing:0.1em;color:rgba(25,45,20,0.38);text-transform:uppercase;"
         >© 2025 Fitri Zahwa</span
       >
       <span
-        style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(25,45,20,0.32);text-transform:uppercase;"
+        style="font-family:'Inter',system-ui,sans-serif;font-size:10px;letter-spacing:0.1em;color:rgba(25,45,20,0.38);text-transform:uppercase;"
         >UI/UX · Illustration · Pixel Art</span
       >
     </div>

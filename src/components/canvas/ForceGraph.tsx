@@ -138,9 +138,14 @@ const LOCATION_ICON_PATH =
 
 // ─── Project Page Overlay ────────────────────────────────────────────────────
 const PROJECT_ITEMS: Array<{
-  num: string; title: string; desc: string;
-  tags: string[]; role: string; team: string;
-  timeframe: string; caseStudy?: string;
+  num: string;
+  title: string;
+  desc: string;
+  tags: string[];
+  role: string;
+  team: string;
+  timeframe: string;
+  caseStudy?: string;
 }> = [
   {
     num: "01",
@@ -185,7 +190,7 @@ const INSIGHT_CARDS = [
   {
     frontSub: "Insight 01",
     front: "The Guilt Spiral",
-    back: "Missing even one Pomodoro often leads to abandoning the system entirely. \"If I missed one, why bother?\" — a pattern repeated across 23 threads.",
+    back: 'Missing even one Pomodoro often leads to abandoning the system entirely. "If I missed one, why bother?" — a pattern repeated across 23 threads.',
   },
   {
     frontSub: "Insight 02",
@@ -195,28 +200,80 @@ const INSIGHT_CARDS = [
   {
     frontSub: "Insight 03",
     front: "Progress Hunger",
-    back: "Users want time to feel like space, not subtraction. \"25:00 → 0:00 feels like losing time, not gaining anything.\" They want to see growth.",
+    back: 'Users want time to feel like space, not subtraction. "25:00 → 0:00 feels like losing time, not gaining anything." They want to see growth.',
   },
 ];
 
 const DEFINE_PROBLEMS = [
-  { num: "01", problem: "No ceremony at the end", desc: "Focus sessions end abruptly. There's no acknowledgment that you finished something difficult. The timer just... stops." },
-  { num: "02", problem: "Rewards are external and interruptive", desc: "Treating yourself to something after focus means leaving the focused state. The reward itself becomes the distraction." },
-  { num: "03", problem: "Abstract numbers don't feel like progress", desc: "Watching 25:00 count down to 0 maps to subtraction, not accomplishment. It doesn't feel like building anything." },
+  {
+    num: "01",
+    problem: "No ceremony at the end",
+    desc: "Focus sessions end abruptly. There's no acknowledgment that you finished something difficult. The timer just... stops.",
+  },
+  {
+    num: "02",
+    problem: "Rewards are external and interruptive",
+    desc: "Treating yourself to something after focus means leaving the focused state. The reward itself becomes the distraction.",
+  },
+  {
+    num: "03",
+    problem: "Abstract numbers don't feel like progress",
+    desc: "Watching 25:00 count down to 0 maps to subtraction, not accomplishment. It doesn't feel like building anything.",
+  },
 ];
 
 const FISHDORO_ANNOTATIONS = [
-  { id: 1, x: 28, y: 32, label: "Focus timer", desc: "25-minute countdown embedded in the pond scene — not separate from it. Time as an environment, not a number." },
-  { id: 2, x: 70, y: 48, label: "Live pond", desc: "Fish swim in real time. Each completed session adds one to your pond. The reward is always visible." },
-  { id: 3, x: 50, y: 78, label: "Session controls", desc: "Single-tap start/pause. No menus. Intentionally one-screen — everything needed is always present." },
-  { id: 4, x: 16, y: 62, label: "Catch counter", desc: "Session count shown as fish caught, not abstract numbers. Growth feels tangible." },
+  {
+    id: 1,
+    x: 28,
+    y: 32,
+    label: "Focus timer",
+    desc: "25-minute countdown embedded in the pond scene — not separate from it. Time as an environment, not a number.",
+  },
+  {
+    id: 2,
+    x: 70,
+    y: 48,
+    label: "Live pond",
+    desc: "Fish swim in real time. Each completed session adds one to your pond. The reward is always visible.",
+  },
+  {
+    id: 3,
+    x: 50,
+    y: 78,
+    label: "Session controls",
+    desc: "Single-tap start/pause. No menus. Intentionally one-screen — everything needed is always present.",
+  },
+  {
+    id: 4,
+    x: 16,
+    y: 62,
+    label: "Catch counter",
+    desc: "Session count shown as fish caught, not abstract numbers. Growth feels tangible.",
+  },
 ];
 
 const KEY_TAKEAWAYS = [
-  { num: "01", title: "Constraints are creative fuel", desc: "Pixel art's 16×16 grid forced every design decision to be intentional. If it doesn't fit, it doesn't ship — and that's a feature, not a bug." },
-  { num: "02", title: "Emotional design > feature completeness", desc: "One well-crafted micro-interaction (the fish catch animation) was more impactful than all the settings screens I initially planned." },
-  { num: "03", title: "Building is the best form of user research", desc: "Making Fishdoro forced me to actually use a Pomodoro system. I found failure modes in week one that six months of interviews might have missed." },
-  { num: "04", title: "The tool is the prototype", desc: "Shipping a rough Electron build early revealed desktop UX patterns — window behavior, tray interactions, keyboard shortcuts — that no Figma prototype could surface." },
+  {
+    num: "01",
+    title: "Constraints are creative fuel",
+    desc: "Pixel art's 16×16 grid forced every design decision to be intentional. If it doesn't fit, it doesn't ship — and that's a feature, not a bug.",
+  },
+  {
+    num: "02",
+    title: "Emotional design > feature completeness",
+    desc: "One well-crafted micro-interaction (the fish catch animation) was more impactful than all the settings screens I initially planned.",
+  },
+  {
+    num: "03",
+    title: "Building is the best form of user research",
+    desc: "Making Fishdoro forced me to actually use a Pomodoro system. I found failure modes in week one that six months of interviews might have missed.",
+  },
+  {
+    num: "04",
+    title: "The tool is the prototype",
+    desc: "Shipping a rough Electron build early revealed desktop UX patterns — window behavior, tray interactions, keyboard shortcuts — that no Figma prototype could surface.",
+  },
 ];
 
 function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
@@ -254,7 +311,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           }
         });
       },
-      { root: el, threshold: 0.1, rootMargin: "0px 0px -10px 0px" }
+      { root: el, threshold: 0.1, rootMargin: "0px 0px -10px 0px" },
     );
     targets.forEach((t) => obs.observe(t));
     return () => obs.disconnect();
@@ -279,7 +336,19 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
 
   const sectionPill = (label: string) => (
     <div>
-      <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase" as const, letterSpacing: "0.14em", color: "#9aaf7a", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "3px 12px" }}>
+      <span
+        style={{
+          fontSize: "10px",
+          fontWeight: 500,
+          textTransform: "uppercase" as const,
+          letterSpacing: "0.14em",
+          color: "#9aaf7a",
+          background: "rgba(200,219,160,0.25)",
+          border: "1px solid rgba(107,143,78,0.35)",
+          borderRadius: "99px",
+          padding: "3px 12px",
+        }}
+      >
         {label}
       </span>
     </div>
@@ -294,102 +363,414 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       {/* Progress bar — attached to scroll content, not window */}
-      <div style={{ height: "2px", background: "rgba(154,175,122,0.15)", flexShrink: 0 }}>
-        <div style={{ height: "100%", width: `${progress * 100}%`, background: "linear-gradient(90deg, #9aaf7a, #6b8f4e)", transition: "width 80ms linear" }} />
+      <div
+        style={{
+          height: "2px",
+          background: "rgba(154,175,122,0.15)",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${progress * 100}%`,
+            background: "linear-gradient(90deg, #9aaf7a, #6b8f4e)",
+            transition: "width 80ms linear",
+          }}
+        />
       </div>
 
       {/* Scrollable content — max-width 640px, same as About Me */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide" style={{ padding: "40px 24px" }}>
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto scrollbar-hide"
+        style={{ padding: "40px 24px" }}
+      >
         <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-
           {/* ── Hero ── */}
           <div className="cs-reveal flex flex-col gap-3" style={reveal(0)}>
             <div className="flex items-center gap-2 flex-wrap">
-              <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.14em", color: "#9aaf7a", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "3px 12px" }}>Case Study</span>
-              <span style={{ fontSize: "10px", fontWeight: 400, color: "#9aaf7a" }}>Electron · HTML · CSS · JS</span>
+              <span
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: "#9aaf7a",
+                  background: "rgba(200,219,160,0.25)",
+                  border: "1px solid rgba(107,143,78,0.35)",
+                  borderRadius: "99px",
+                  padding: "3px 12px",
+                }}
+              >
+                Case Study
+              </span>
+              <span
+                style={{ fontSize: "10px", fontWeight: 400, color: "#9aaf7a" }}
+              >
+                Electron · HTML · CSS · JS
+              </span>
             </div>
-            <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "28px", fontWeight: 700, fontStyle: "italic", color: "#2d4a1e", lineHeight: 1.2 }}>
+            <h1
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "28px",
+                fontWeight: 700,
+                fontStyle: "italic",
+                color: "#2d4a1e",
+                lineHeight: 1.2,
+              }}
+            >
               Fishdoro
             </h1>
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "16px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>
-              A Pomodoro timer redesigned as a pixel art fishing mini-game. Every completed focus session catches a fish — the reward is embedded in the act of focusing, not external to it.
+            <p
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "16px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.6,
+              }}
+            >
+              A Pomodoro timer redesigned as a pixel art fishing mini-game.
+              Every completed focus session catches a fish — the reward is
+              embedded in the act of focusing, not external to it.
             </p>
-            <div className="flex items-center gap-6 flex-wrap" style={{ borderTop: "0.5px solid rgba(154,175,122,0.25)", paddingTop: "14px" }}>
+            <div
+              className="flex items-center gap-6 flex-wrap"
+              style={{
+                borderTop: "0.5px solid rgba(154,175,122,0.25)",
+                paddingTop: "14px",
+              }}
+            >
               {[
                 { label: "Role", value: "UI/UX Designer · Developer" },
                 { label: "Stack", value: "Electron · HTML/CSS/JS" },
                 { label: "Status", value: "In Development" },
               ].map((m) => (
                 <div key={m.label} className="flex flex-col gap-0.5">
-                  <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>{m.label}</span>
-                  <span style={{ fontSize: "12px", fontWeight: 400, color: "#5a7040", fontFamily: "Inter, sans-serif" }}>{m.value}</span>
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      color: "#9aaf7a",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {m.label}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 400,
+                      color: "#5a7040",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {m.value}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Hero image placeholder */}
-          <div className="cs-reveal" style={{ ...reveal(0.1), marginTop: "24px", height: "260px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Timer screen — mid-session (hero placeholder)</span>
+          <div
+            className="cs-reveal"
+            style={{
+              ...reveal(0.1),
+              marginTop: "24px",
+              height: "260px",
+              background: "#e8e2d8",
+              borderRadius: "12px",
+              border: "0.5px solid rgba(154,175,122,0.3)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "12px",
+                fontWeight: 300,
+                color: "#b8b0a2",
+                fontFamily: "Inter, sans-serif",
+              }}
+            >
+              Timer screen — mid-session (hero placeholder)
+            </span>
           </div>
 
           <div style={{ height: "48px" }} />
 
           {/* ── Background ── */}
           <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Background")}</div>
-            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Background")}
+            </div>
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0.05),
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#2d4a1e",
+              }}
+            >
               The productivity paradox
             </h2>
-            <div className="cs-reveal" style={{ ...reveal(0.1), borderLeft: "2.5px solid rgba(107,143,78,0.4)", paddingLeft: "16px" }}>
-              <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "16px", fontWeight: 700, fontStyle: "italic", color: "#2d4a1e", lineHeight: 1.5 }}>
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.1),
+                borderLeft: "2.5px solid rgba(107,143,78,0.4)",
+                paddingLeft: "16px",
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  color: "#2d4a1e",
+                  lineHeight: 1.5,
+                }}
+              >
                 "What if the reward was part of the focus itself?"
               </p>
             </div>
-            <p className="cs-reveal" style={{ ...reveal(0.15), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
-              Most productivity apps promise to help you focus. In practice, they add cognitive overhead — more notifications, more dashboards, more decisions. The tool becomes the distraction.
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              Most productivity apps promise to help you focus. In practice,
+              they add cognitive overhead — more notifications, more dashboards,
+              more decisions. The tool becomes the distraction.
             </p>
-            <p className="cs-reveal" style={{ ...reveal(0.2), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
-              Fishdoro started with a single question: <span style={{ color: "#2d4a1e", fontWeight: 500 }}>what if the reward mechanism was built into the timer itself</span> — not a badge you check later, but something that happens in real time as you focus?
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.2),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              Fishdoro started with a single question:{" "}
+              <span style={{ color: "#2d4a1e", fontWeight: 500 }}>
+                what if the reward mechanism was built into the timer itself
+              </span>{" "}
+              — not a badge you check later, but something that happens in real
+              time as you focus?
             </p>
           </section>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+              margin: "40px 0",
+            }}
+          />
 
           {/* ── Discover ── */}
           <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Discover")}</div>
-            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Discover")}
+            </div>
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0.05),
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#2d4a1e",
+              }}
+            >
               What are people actually struggling with?
             </h2>
-            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
-              Research method: qualitative analysis of Reddit threads from <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/productivity</span>, <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/ADHD</span>, and <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/pomodoro</span> — 47 threads, 200+ comments. Thematic coding surfaced 3 consistent patterns.
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.1),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              Research method: qualitative analysis of Reddit threads from{" "}
+              <span style={{ color: "#4e7a30", fontWeight: 400 }}>
+                r/productivity
+              </span>
+              ,{" "}
+              <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/ADHD</span>,
+              and{" "}
+              <span style={{ color: "#4e7a30", fontWeight: 400 }}>
+                r/pomodoro
+              </span>{" "}
+              — 47 threads, 200+ comments. Thematic coding surfaced 3 consistent
+              patterns.
             </p>
             {/* Affinity map placeholder */}
-            <div className="cs-reveal" style={{ ...reveal(0.15), height: "180px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Affinity map / thematic coding visual (placeholder)</span>
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                height: "180px",
+                background: "#e8e2d8",
+                borderRadius: "12px",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 300,
+                  color: "#b8b0a2",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Affinity map / thematic coding visual (placeholder)
+              </span>
             </div>
-            <p className="cs-reveal" style={{ ...reveal(0.2), fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 400, color: "#9aaf7a", textAlign: "center" }}>
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.2),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "12px",
+                fontWeight: 400,
+                color: "#9aaf7a",
+                textAlign: "center",
+              }}
+            >
               Flip each card to read the full insight ↓
             </p>
             {/* Flip cards */}
-            <div className="cs-reveal flex gap-3" style={{ ...reveal(0.25), minHeight: "140px" }}>
+            <div
+              className="cs-reveal flex gap-3"
+              style={{ ...reveal(0.25), minHeight: "140px" }}
+            >
               {INSIGHT_CARDS.map((card, i) => (
                 <div
                   key={i}
-                  style={{ flex: 1, perspective: "800px", cursor: "pointer", height: "140px" }}
+                  style={{
+                    flex: 1,
+                    perspective: "800px",
+                    cursor: "pointer",
+                    height: "140px",
+                  }}
                   onClick={() => setFlipped(flipped === i ? null : i)}
                 >
-                  <div style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", transition: "transform 0.5s ease", transform: flipped === i ? "rotateY(180deg)" : "rotateY(0deg)" }}>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      position: "relative",
+                      transformStyle: "preserve-3d",
+                      transition: "transform 0.5s ease",
+                      transform:
+                        flipped === i ? "rotateY(180deg)" : "rotateY(0deg)",
+                    }}
+                  >
                     {/* Front */}
-                    <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "16px", gap: "6px" }}>
-                      <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>{card.frontSub}</span>
-                      <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "16px", fontWeight: 700, color: "#2d4a1e", textAlign: "center", lineHeight: 1.3 }}>{card.front}</p>
-                      <span style={{ fontSize: "10px", color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>click to reveal →</span>
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        backfaceVisibility: "hidden",
+                        background: "#ffffff",
+                        border: "0.5px solid rgba(154,175,122,0.3)",
+                        borderRadius: "12px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "16px",
+                        gap: "6px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: 500,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
+                          color: "#9aaf7a",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {card.frontSub}
+                      </span>
+                      <p
+                        style={{
+                          fontFamily: "'Playfair Display', Georgia, serif",
+                          fontSize: "16px",
+                          fontWeight: 700,
+                          color: "#2d4a1e",
+                          textAlign: "center",
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {card.front}
+                      </p>
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          color: "#b8b0a2",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        click to reveal →
+                      </span>
                     </div>
                     {/* Back */}
-                    <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "rgba(200,219,160,0.15)", border: "0.5px solid rgba(107,143,78,0.4)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
-                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#5a7040", textAlign: "center", lineHeight: 1.6 }}>{card.back}</p>
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        backfaceVisibility: "hidden",
+                        transform: "rotateY(180deg)",
+                        background: "rgba(200,219,160,0.15)",
+                        border: "0.5px solid rgba(107,143,78,0.4)",
+                        borderRadius: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "16px",
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 300,
+                          color: "#5a7040",
+                          textAlign: "center",
+                          lineHeight: 1.6,
+                        }}
+                      >
+                        {card.back}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -397,127 +778,554 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             </div>
           </section>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+              margin: "40px 0",
+            }}
+          />
 
           {/* ── Define ── */}
           <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Define")}</div>
-            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Define")}
+            </div>
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0.05),
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#2d4a1e",
+              }}
+            >
               Three design problems
             </h2>
-            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
-              The research converged on three root problems — each pointing toward the same design direction.
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.1),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              The research converged on three root problems — each pointing
+              toward the same design direction.
             </p>
             {/* Problem framework placeholder */}
-            <div className="cs-reveal" style={{ ...reveal(0.15), height: "160px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Problem framework visual (placeholder)</span>
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                height: "160px",
+                background: "#e8e2d8",
+                borderRadius: "12px",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 300,
+                  color: "#b8b0a2",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Problem framework visual (placeholder)
+              </span>
             </div>
             {/* Design problems — each with cs-reveal for scroll reveal effect */}
             <div className="flex flex-col gap-3" style={{ marginTop: "8px" }}>
               {DEFINE_PROBLEMS.map((p, i) => (
-                <div key={p.num} className="cs-reveal" style={{ ...reveal(i * 0.12), background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "16px 18px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
-                  <span style={{ fontSize: "10px", fontWeight: 500, color: "#9aaf7a", minWidth: "20px", marginTop: "3px", fontFamily: "Inter, sans-serif" }}>{p.num}</span>
+                <div
+                  key={p.num}
+                  className="cs-reveal"
+                  style={{
+                    ...reveal(i * 0.12),
+                    background: "#ffffff",
+                    border: "0.5px solid rgba(154,175,122,0.3)",
+                    borderRadius: "12px",
+                    padding: "16px 18px",
+                    display: "flex",
+                    gap: "14px",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 500,
+                      color: "#9aaf7a",
+                      minWidth: "20px",
+                      marginTop: "3px",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {p.num}
+                  </span>
                   <div className="flex flex-col gap-1.5">
-                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e" }}>{p.problem}</p>
-                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>{p.desc}</p>
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "#2d4a1e",
+                      }}
+                    >
+                      {p.problem}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 300,
+                        color: "#5a7040",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {p.desc}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
             {/* Design brief */}
-            <div className="cs-reveal" style={{ ...reveal(0.36), marginTop: "8px", borderLeft: "2.5px solid rgba(107,143,78,0.4)", paddingLeft: "16px" }}>
-              <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", marginBottom: "6px", fontFamily: "Inter, sans-serif" }}>Design Brief</p>
-              <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "16px", fontWeight: 700, fontStyle: "italic", color: "#2d4a1e", lineHeight: 1.5 }}>
-                "Design a focus tool where the reward is part of the experience — not external to it."
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.36),
+                marginTop: "8px",
+                borderLeft: "2.5px solid rgba(107,143,78,0.4)",
+                paddingLeft: "16px",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  color: "#9aaf7a",
+                  marginBottom: "6px",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Design Brief
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  color: "#2d4a1e",
+                  lineHeight: 1.5,
+                }}
+              >
+                "Design a focus tool where the reward is part of the experience
+                — not external to it."
               </p>
             </div>
           </section>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+              margin: "40px 0",
+            }}
+          />
 
           {/* ── Develop ── */}
           <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Develop")}</div>
-            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Develop")}
+            </div>
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0.05),
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#2d4a1e",
+              }}
+            >
               From brief to build
             </h2>
-            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
-              The brief pointed toward a single-screen app: timer, pond, and fish inventory all visible at once. No navigation, no dashboards — just the act of focusing and its reward in the same frame.
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.1),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              The brief pointed toward a single-screen app: timer, pond, and
+              fish inventory all visible at once. No navigation, no dashboards —
+              just the act of focusing and its reward in the same frame.
             </p>
             {/* IA + Visual direction cards */}
             <div className="cs-reveal flex gap-3" style={{ ...reveal(0.15) }}>
               {[
-                { label: "Information Architecture", value: "Single screen — timer + pond + fish inventory. No navigation required." },
-                { label: "Visual Direction", value: "Pixel art, 16-bit palette. Warm earth tones. Intentionally nostalgic and low-stimulation." },
+                {
+                  label: "Information Architecture",
+                  value:
+                    "Single screen — timer + pond + fish inventory. No navigation required.",
+                },
+                {
+                  label: "Visual Direction",
+                  value:
+                    "Pixel art, 16-bit palette. Warm earth tones. Intentionally nostalgic and low-stimulation.",
+                },
               ].map((item) => (
-                <div key={item.label} style={{ flex: 1, background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "14px 16px" }}>
-                  <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", marginBottom: "6px", fontFamily: "Inter, sans-serif" }}>{item.label}</p>
-                  <p style={{ fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6, fontFamily: "Inter, sans-serif" }}>{item.value}</p>
+                <div
+                  key={item.label}
+                  style={{
+                    flex: 1,
+                    background: "#ffffff",
+                    border: "0.5px solid rgba(154,175,122,0.3)",
+                    borderRadius: "12px",
+                    padding: "14px 16px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      color: "#9aaf7a",
+                      marginBottom: "6px",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {item.label}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 300,
+                      color: "#5a7040",
+                      lineHeight: 1.6,
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {item.value}
+                  </p>
                 </div>
               ))}
             </div>
 
-            <h3 className="cs-reveal" style={{ ...reveal(0.2), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e", marginTop: "8px" }}>
+            <h3
+              className="cs-reveal"
+              style={{
+                ...reveal(0.2),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                marginTop: "8px",
+              }}
+            >
               Iteration — drag to compare
             </h3>
-            <p className="cs-reveal" style={{ ...reveal(0.25), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
-              Three rounds of iteration. Drag the slider to compare the first wireframe with the final hi-fi:
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.25),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              Three rounds of iteration. Drag the slider to compare the first
+              wireframe with the final hi-fi:
             </p>
 
             {/* Before/After slider */}
             <div
               ref={sliderRef}
               className="cs-reveal"
-              style={{ ...reveal(0.3), position: "relative", height: "260px", borderRadius: "12px", overflow: "hidden", border: "0.5px solid rgba(154,175,122,0.3)", userSelect: "none", cursor: "col-resize" }}
+              style={{
+                ...reveal(0.3),
+                position: "relative",
+                height: "260px",
+                borderRadius: "12px",
+                overflow: "hidden",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+                userSelect: "none",
+                cursor: "col-resize",
+              }}
             >
               {/* Before */}
-              <div style={{ position: "absolute", inset: 0, background: "#e8e2d8", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Before</span>
-                <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Round 1 wireframe (placeholder)</span>
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "#e8e2d8",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    color: "#b8b0a2",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  Before
+                </span>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 300,
+                    color: "#b8b0a2",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  Round 1 wireframe (placeholder)
+                </span>
               </div>
               {/* After */}
-              <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 ${100 - sliderPos}% 0 0)`, background: "#f8f6f0", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6b8f4e", fontFamily: "Inter, sans-serif" }}>After</span>
-                <span style={{ fontSize: "12px", fontWeight: 300, color: "#6b8f4e", fontFamily: "Inter, sans-serif" }}>Final hi-fi (placeholder)</span>
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  clipPath: `inset(0 ${100 - sliderPos}% 0 0)`,
+                  background: "#f8f6f0",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    color: "#6b8f4e",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  After
+                </span>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 300,
+                    color: "#6b8f4e",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  Final hi-fi (placeholder)
+                </span>
               </div>
               {/* Drag handle */}
               <div
-                style={{ position: "absolute", top: 0, bottom: 0, left: `${sliderPos}%`, width: "2px", background: "#6b8f4e", transform: "translateX(-50%)", cursor: "ew-resize" }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: `${sliderPos}%`,
+                  width: "2px",
+                  background: "#6b8f4e",
+                  transform: "translateX(-50%)",
+                  cursor: "ew-resize",
+                }}
                 onMouseDown={startSliderDrag}
               >
-                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "28px", height: "28px", borderRadius: "50%", background: "#6b8f4e", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(107,143,78,0.3)" }}>
-                  <span style={{ color: "#fff", fontSize: "10px", lineHeight: 1, fontFamily: "Inter, sans-serif" }}>⟺</span>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    background: "#6b8f4e",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 2px 8px rgba(107,143,78,0.3)",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "#fff",
+                      fontSize: "10px",
+                      lineHeight: 1,
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    ⟺
+                  </span>
                 </div>
               </div>
             </div>
 
-            <h3 className="cs-reveal" style={{ ...reveal(0), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e", marginTop: "8px" }}>
+            <h3
+              className="cs-reveal"
+              style={{
+                ...reveal(0),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                marginTop: "8px",
+              }}
+            >
               Design outcome — annotated
             </h3>
-            <p className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.05),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
               Click any numbered point to read the design decision behind it:
             </p>
 
             {/* Annotated screen viewer */}
             <div
               className="cs-reveal"
-              style={{ ...reveal(0.1), position: "relative", height: "280px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)" }}
+              style={{
+                ...reveal(0.1),
+                position: "relative",
+                height: "280px",
+                background: "#e8e2d8",
+                borderRadius: "12px",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+              }}
             >
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Hi-fi timer focus state (placeholder)</span>
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 300,
+                    color: "#b8b0a2",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  Hi-fi timer focus state (placeholder)
+                </span>
               </div>
               {FISHDORO_ANNOTATIONS.map((ann) => (
-                <div key={ann.id} style={{ position: "absolute", left: `${ann.x}%`, top: `${ann.y}%`, transform: "translate(-50%, -50%)", zIndex: 10 }}>
+                <div
+                  key={ann.id}
+                  style={{
+                    position: "absolute",
+                    left: `${ann.x}%`,
+                    top: `${ann.y}%`,
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 10,
+                  }}
+                >
                   <button
-                    style={{ width: "22px", height: "22px", borderRadius: "50%", background: activeAnnotation === ann.id ? "#6b8f4e" : "#ffffff", border: "1.5px solid #6b8f4e", color: activeAnnotation === ann.id ? "#ffffff" : "#6b8f4e", fontSize: "10px", fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif", transition: "background 0.2s, color 0.2s" }}
-                    onClick={() => setActiveAnnotation(activeAnnotation === ann.id ? null : ann.id)}
+                    style={{
+                      width: "22px",
+                      height: "22px",
+                      borderRadius: "50%",
+                      background:
+                        activeAnnotation === ann.id ? "#6b8f4e" : "#ffffff",
+                      border: "1.5px solid #6b8f4e",
+                      color:
+                        activeAnnotation === ann.id ? "#ffffff" : "#6b8f4e",
+                      fontSize: "10px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontFamily: "Inter, sans-serif",
+                      transition: "background 0.2s, color 0.2s",
+                    }}
+                    onClick={() =>
+                      setActiveAnnotation(
+                        activeAnnotation === ann.id ? null : ann.id,
+                      )
+                    }
                   >
                     {ann.id}
                   </button>
                   {activeAnnotation === ann.id && (
-                    <div style={{ position: "absolute", left: "50%", ...(ann.y > 55 ? { bottom: "calc(100% + 8px)" } : { top: "calc(100% + 8px)" }), transform: "translateX(-50%)", zIndex: 20, background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.4)", borderRadius: "10px", padding: "10px 14px", width: "200px", pointerEvents: "none", boxShadow: "0 4px 16px rgba(45,74,30,0.08)" }}>
-                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 500, color: "#2d4a1e", marginBottom: "4px" }}>{ann.label}</p>
-                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#5a7040", lineHeight: 1.5 }}>{ann.desc}</p>
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: "50%",
+                        ...(ann.y > 55
+                          ? { bottom: "calc(100% + 8px)" }
+                          : { top: "calc(100% + 8px)" }),
+                        transform: "translateX(-50%)",
+                        zIndex: 20,
+                        background: "#ffffff",
+                        border: "0.5px solid rgba(154,175,122,0.4)",
+                        borderRadius: "10px",
+                        padding: "10px 14px",
+                        width: "200px",
+                        pointerEvents: "none",
+                        boxShadow: "0 4px 16px rgba(45,74,30,0.08)",
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 500,
+                          color: "#2d4a1e",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        {ann.label}
+                      </p>
+                      <p
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 300,
+                          color: "#5a7040",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {ann.desc}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -525,54 +1333,204 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             </div>
 
             {/* Figma vs Build placeholder */}
-            <div className="cs-reveal" style={{ ...reveal(0.15), height: "200px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Figma vs Build side-by-side (placeholder)</span>
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                height: "200px",
+                background: "#e8e2d8",
+                borderRadius: "12px",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 300,
+                  color: "#b8b0a2",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Figma vs Build side-by-side (placeholder)
+              </span>
             </div>
           </section>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+              margin: "40px 0",
+            }}
+          />
 
           {/* ── Validation ── */}
           <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Validation")}</div>
-            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Validation")}
+            </div>
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0.05),
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#2d4a1e",
+              }}
+            >
               Testing & open questions
             </h2>
-            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
-              Core build is functional. Currently running informal user testing (n=3 sessions) with people who actively use Pomodoro systems.
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.1),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              Core build is functional. Currently running informal user testing
+              (n=3 sessions) with people who actively use Pomodoro systems.
             </p>
-            <div className="cs-reveal" style={{ ...reveal(0.15), background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "18px" }}>
-              <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#9aaf7a", marginBottom: "12px", fontFamily: "Inter, sans-serif" }}>Questions still open</p>
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                background: "#ffffff",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+                borderRadius: "12px",
+                padding: "18px",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "#9aaf7a",
+                  marginBottom: "12px",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Questions still open
+              </p>
               <div className="flex flex-col gap-3">
                 {[
-                  "Does the fishing mechanic actually reduce the guilt spiral effect, or does it introduce new pressure to \"complete\" sessions?",
+                  'Does the fishing mechanic actually reduce the guilt spiral effect, or does it introduce new pressure to "complete" sessions?',
                   "Is the pixel art aesthetic accessible to users who don't have nostalgia for that era?",
                   "How do extended sessions (4+ hours) feel? Does fish accumulation stay meaningful or start to feel hollow?",
                 ].map((q, i) => (
                   <div key={i} className="flex gap-3 items-start">
-                    <span style={{ fontSize: "10px", color: "#9aaf7a", marginTop: "2px", minWidth: "14px", fontFamily: "Inter, sans-serif" }}>→</span>
-                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>{q}</p>
+                    <span
+                      style={{
+                        fontSize: "10px",
+                        color: "#9aaf7a",
+                        marginTop: "2px",
+                        minWidth: "14px",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
+                      →
+                    </span>
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 300,
+                        color: "#5a7040",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {q}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           </section>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+              margin: "40px 0",
+            }}
+          />
 
           {/* ── Key Takeaways ── */}
           <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Key Takeaways")}</div>
-            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Key Takeaways")}
+            </div>
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0.05),
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#2d4a1e",
+              }}
+            >
               4 things this project taught me
             </h2>
             <div className="flex flex-col gap-3">
               {KEY_TAKEAWAYS.map((item, i) => (
-                <div key={item.num} className="cs-reveal" style={{ ...reveal(i * 0.1), background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "16px 18px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
-                  <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "rgba(154,175,122,0.5)", minWidth: "28px", lineHeight: 1 }}>{item.num}</span>
+                <div
+                  key={item.num}
+                  className="cs-reveal"
+                  style={{
+                    ...reveal(i * 0.1),
+                    background: "#ffffff",
+                    border: "0.5px solid rgba(154,175,122,0.3)",
+                    borderRadius: "12px",
+                    padding: "16px 18px",
+                    display: "flex",
+                    gap: "14px",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontSize: "20px",
+                      fontWeight: 700,
+                      color: "rgba(154,175,122,0.5)",
+                      minWidth: "28px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {item.num}
+                  </span>
                   <div className="flex flex-col gap-1.5">
-                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e" }}>{item.title}</p>
-                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>{item.desc}</p>
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "#2d4a1e",
+                      }}
+                    >
+                      {item.title}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 300,
+                        color: "#5a7040",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {item.desc}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -656,21 +1614,48 @@ function ProjectPage({
             <button
               onClick={() => setSelectedCase(null)}
               className="text-[14px] font-normal select-none transition-colors duration-150"
-              style={{ color: "#9aaf7a", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "Inter, sans-serif" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#6b8f4e"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#9aaf7a"; }}
+              style={{
+                color: "#9aaf7a",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                fontFamily: "Inter, sans-serif",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "#6b8f4e";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "#9aaf7a";
+              }}
             >
               Project
             </button>
-            <span className="text-[14px] font-normal select-none" style={{ color: "#9aaf7a" }}>/</span>
-            <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>Fishdoro</span>
+            <span
+              className="text-[14px] font-normal select-none"
+              style={{ color: "#9aaf7a" }}
+            >
+              /
+            </span>
+            <span
+              className="text-[14px] font-medium select-none"
+              style={{ color: "#2d4a1e" }}
+            >
+              Fishdoro
+            </span>
           </>
         ) : (
           <>
-            <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>
+            <span
+              className="text-[14px] font-medium select-none"
+              style={{ color: "#2d4a1e" }}
+            >
               Project
             </span>
-            <span className="text-[14px] font-normal select-none" style={{ color: "#9aaf7a" }}>
+            <span
+              className="text-[14px] font-normal select-none"
+              style={{ color: "#9aaf7a" }}
+            >
               My works
             </span>
           </>
@@ -700,7 +1685,11 @@ function ProjectPage({
                       if (p.caseStudy) {
                         setSelectedCase(p.caseStudy);
                         setHoveredCard(null);
-                        window.dispatchEvent(new CustomEvent("project-cursor", { detail: { active: false } }));
+                        window.dispatchEvent(
+                          new CustomEvent("project-cursor", {
+                            detail: { active: false },
+                          }),
+                        );
                       }
                     }}
                     onMouseEnter={(e) => {
@@ -974,7 +1963,10 @@ function AboutPage({
       {/* Window chrome / topbar */}
       <div
         className="flex items-center gap-3 px-6 py-3 shrink-0"
-        style={{ borderBottom: "0.5px solid rgba(154,175,122,0.2)", background: "#FAF7F2" }}
+        style={{
+          borderBottom: "0.5px solid rgba(154,175,122,0.2)",
+          background: "#FAF7F2",
+        }}
       >
         <div className="flex items-center gap-[5px]">
           <button
@@ -995,8 +1987,14 @@ function AboutPage({
               <line x1="7" y1="1" x2="1" y2="7" />
             </svg>
           </button>
-          <span className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]" title="Minimize" />
-          <span className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]" title="Maximize" />
+          <span
+            className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]"
+            title="Minimize"
+          />
+          <span
+            className="w-[10px] h-[10px] rounded-full bg-[#D9D9D9]"
+            title="Maximize"
+          />
         </div>
         <span
           className="text-[14px] font-medium select-none"
@@ -1015,7 +2013,6 @@ function AboutPage({
       {/* Scrollable body */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="max-w-[640px] mx-auto px-8 py-12 flex flex-col gap-10">
-
           {/* ── Quote ── */}
           <div className="flex flex-col gap-4">
             <p
@@ -1030,20 +2027,31 @@ function AboutPage({
             >
               <p
                 className="text-[18px] italic leading-[1.5] select-none"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, color: "#2d4a1e" }}
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontWeight: 700,
+                  color: "#2d4a1e",
+                }}
               >
-                "Design is not just what it looks like and feels like. Design is how it works."
+                "Design is not just what it looks like and feels like. Design is
+                how it works."
               </p>
             </blockquote>
             <p
               className="text-[14px] font-light leading-[1.7] select-none"
               style={{ color: "#5a7040" }}
             >
-              They remind me that design lives in how people experience it, and that's what eventually led me to UI/UX.
+              They remind me that design lives in how people experience it, and
+              that's what eventually led me to UI/UX.
             </p>
           </div>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+            }}
+          />
 
           {/* ── Bio ── */}
           <div className="flex flex-col gap-3">
@@ -1051,40 +2059,64 @@ function AboutPage({
               className="text-[16px] font-medium leading-[1.6] select-none"
               style={{ color: "#2d4a1e" }}
             >
-              Hi, I'm Fitri Zahwa Januarita, a former illustrator and animator who found a new purpose in UI/UX design.
+              Hi, I'm Fitri Zahwa Januarita, a former illustrator and animator
+              who found a new purpose in UI/UX design.
             </p>
             <p
               className="text-[14px] font-light leading-[1.8] select-none"
               style={{ color: "#5a7040" }}
             >
-              I've been drawing since I was a kid and even earned from it in high school. But over time, something felt missing — the joy of creating started to fade. I wanted my work to matter again. That's when I discovered UI/UX. It changed how I see design — not just as aesthetics, but as clarity, connection, and impact.
+              I've been drawing since I was a kid and even earned from it in
+              high school. But over time, something felt missing — the joy of
+              creating started to fade. I wanted my work to matter again. That's
+              when I discovered UI/UX. It changed how I see design — not just as
+              aesthetics, but as clarity, connection, and impact.
             </p>
             <p
               className="text-[14px] font-light leading-[1.8] select-none"
               style={{ color: "#5a7040" }}
             >
-              My attention to detail, which once slowed me down, now helps me craft thoughtful and meaningful experiences. I design from real-life struggles. My projects,{" "}
-              <strong className="font-medium" style={{ color: "#2d4a1e" }}>Nabu</strong>{" "}
+              My attention to detail, which once slowed me down, now helps me
+              craft thoughtful and meaningful experiences. I design from
+              real-life struggles. My projects,{" "}
+              <strong className="font-medium" style={{ color: "#2d4a1e" }}>
+                Nabu
+              </strong>{" "}
               (a finance tracker) and{" "}
-              <strong className="font-medium" style={{ color: "#2d4a1e" }}>Fishdoro</strong>{" "}
-              (a cozy focus timer), are built to help people facing challenges similar to mine.
+              <strong className="font-medium" style={{ color: "#2d4a1e" }}>
+                Fishdoro
+              </strong>{" "}
+              (a cozy focus timer), are built to help people facing challenges
+              similar to mine.
             </p>
             <p
               className="text-[14px] font-light leading-[1.8] select-none"
               style={{ color: "#5a7040" }}
             >
-              I still tell stories, only now they're about users, their needs, and how design can make their lives better.
+              I still tell stories, only now they're about users, their needs,
+              and how design can make their lives better.
             </p>
           </div>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+            }}
+          />
 
           {/* ── Experience ── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
               <span
                 className="inline-block text-[12px] font-normal select-none"
-                style={{ color: "#4e7a30", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "5px 16px" }}
+                style={{
+                  color: "#4e7a30",
+                  background: "rgba(200,219,160,0.25)",
+                  border: "1px solid rgba(107,143,78,0.35)",
+                  borderRadius: "99px",
+                  padding: "5px 16px",
+                }}
               >
                 Experience
               </span>
@@ -1102,14 +2134,25 @@ function AboutPage({
             </div>
           </div>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+            }}
+          />
 
           {/* ── Organization ── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
               <span
                 className="inline-block text-[12px] font-normal select-none"
-                style={{ color: "#4e7a30", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "5px 16px" }}
+                style={{
+                  color: "#4e7a30",
+                  background: "rgba(200,219,160,0.25)",
+                  border: "1px solid rgba(107,143,78,0.35)",
+                  borderRadius: "99px",
+                  padding: "5px 16px",
+                }}
               >
                 Organization
               </span>
@@ -1127,14 +2170,25 @@ function AboutPage({
             </div>
           </div>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+            }}
+          />
 
           {/* ── Courses & Certifications ── */}
           <div className="flex flex-col gap-7">
             <div className="flex justify-center">
               <span
                 className="inline-block text-[12px] font-normal select-none"
-                style={{ color: "#4e7a30", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "5px 16px" }}
+                style={{
+                  color: "#4e7a30",
+                  background: "rgba(200,219,160,0.25)",
+                  border: "1px solid rgba(107,143,78,0.35)",
+                  borderRadius: "99px",
+                  padding: "5px 16px",
+                }}
               >
                 Courses, Training & Certifications
               </span>
@@ -1152,7 +2206,12 @@ function AboutPage({
             </div>
           </div>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+            }}
+          />
 
           {/* ── Testimonials ── */}
           <div className="flex flex-col gap-5">
@@ -1170,13 +2229,30 @@ function AboutPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col gap-3 cursor-pointer select-none transition-all duration-200"
-                  style={{ background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "16px 18px", textDecoration: "none" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(107,143,78,0.5)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(154,175,122,0.3)"; }}
+                  style={{
+                    background: "#ffffff",
+                    border: "0.5px solid rgba(154,175,122,0.3)",
+                    borderRadius: "12px",
+                    padding: "16px 18px",
+                    textDecoration: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(107,143,78,0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(154,175,122,0.3)";
+                  }}
                 >
                   <div className="flex gap-0.5">
                     {[...Array(t.stars)].map((_, i) => (
-                      <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 20 20" style={{ fill: "#e8b94a" }}>
+                      <svg
+                        key={i}
+                        className="w-3.5 h-3.5"
+                        viewBox="0 0 20 20"
+                        style={{ fill: "#e8b94a" }}
+                      >
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     ))}
@@ -1190,19 +2266,50 @@ function AboutPage({
                   <div className="flex items-center gap-[10px]">
                     <div
                       className="flex items-center justify-center shrink-0"
-                      style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#e8dfd4", border: "0.5px solid rgba(154,175,122,0.3)" }}
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "50%",
+                        background: "#e8dfd4",
+                        border: "0.5px solid rgba(154,175,122,0.3)",
+                      }}
                     >
-                      <span className="text-[12px] font-medium select-none" style={{ color: "#6b8f4e" }}>
+                      <span
+                        className="text-[12px] font-medium select-none"
+                        style={{ color: "#6b8f4e" }}
+                      >
                         {t.initial}
                       </span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>{t.name}</span>
-                      <span className="text-[12px] font-light select-none" style={{ color: "#9aaf7a" }}>{t.flag} {t.country}</span>
+                      <span
+                        className="text-[14px] font-medium select-none"
+                        style={{ color: "#2d4a1e" }}
+                      >
+                        {t.name}
+                      </span>
+                      <span
+                        className="text-[12px] font-light select-none"
+                        style={{ color: "#9aaf7a" }}
+                      >
+                        {t.flag} {t.country}
+                      </span>
                     </div>
                     <div className="ml-auto flex items-center gap-1">
-                      <span className="text-[12px] font-light" style={{ color: "#9aaf7a" }}>via Fiverr</span>
-                      <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="#9aaf7a" strokeWidth="1.5" strokeLinecap="round">
+                      <span
+                        className="text-[12px] font-light"
+                        style={{ color: "#9aaf7a" }}
+                      >
+                        via Fiverr
+                      </span>
+                      <svg
+                        className="w-3 h-3"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        stroke="#9aaf7a"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      >
                         <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" />
                       </svg>
                     </div>
@@ -1215,18 +2322,45 @@ function AboutPage({
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-3 transition-all duration-200"
-              style={{ borderRadius: "99px", border: "1px solid rgba(107,143,78,0.35)", color: "#9aaf7a", fontSize: "14px", fontWeight: 300, textDecoration: "none" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(200,219,160,0.15)"; (e.currentTarget as HTMLElement).style.color = "#4e7a30"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "#9aaf7a"; }}
+              style={{
+                borderRadius: "99px",
+                border: "1px solid rgba(107,143,78,0.35)",
+                color: "#9aaf7a",
+                fontSize: "14px",
+                fontWeight: 300,
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background =
+                  "rgba(200,219,160,0.15)";
+                (e.currentTarget as HTMLElement).style.color = "#4e7a30";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background =
+                  "transparent";
+                (e.currentTarget as HTMLElement).style.color = "#9aaf7a";
+              }}
             >
               <span>See all reviews on Fiverr</span>
-              <svg className="w-3.5 h-3.5" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <svg
+                className="w-3.5 h-3.5"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              >
                 <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" />
               </svg>
             </a>
           </div>
 
-          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "0.5px solid rgba(154,175,122,0.25)",
+            }}
+          />
 
           {/* ── Read ── */}
           <div className="flex flex-col gap-4">
@@ -1241,15 +2375,36 @@ function AboutPage({
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between px-5 py-4 overflow-hidden transition-all duration-200"
-              style={{ borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", background: "#ffffff", textDecoration: "none" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(107,143,78,0.5)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(154,175,122,0.3)"; }}
+              style={{
+                borderRadius: "12px",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+                background: "#ffffff",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(107,143,78,0.5)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(154,175,122,0.3)";
+              }}
             >
               <div className="flex items-center gap-3">
                 <span className="text-[20px]">📚</span>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>Fitri's Garden</span>
-                  <span className="text-[12px] font-light select-none" style={{ color: "#9aaf7a" }}>Reading list & notes</span>
+                  <span
+                    className="text-[14px] font-medium select-none"
+                    style={{ color: "#2d4a1e" }}
+                  >
+                    Fitri's Garden
+                  </span>
+                  <span
+                    className="text-[12px] font-light select-none"
+                    style={{ color: "#9aaf7a" }}
+                  >
+                    Reading list & notes
+                  </span>
                 </div>
               </div>
               <span style={{ color: "#9aaf7a", fontSize: "18px" }}>↗</span>
@@ -1665,13 +2820,25 @@ function VisitorGalleryPage({
               <line x1="7" y1="1" x2="1" y2="7" />
             </svg>
           </button>
-          <span className="w-[10px] h-[10px] rounded-full bg-[#FEBC2E]" title="Minimize" />
-          <span className="w-[10px] h-[10px] rounded-full bg-[#28C840]" title="Maximize" />
+          <span
+            className="w-[10px] h-[10px] rounded-full bg-[#FEBC2E]"
+            title="Minimize"
+          />
+          <span
+            className="w-[10px] h-[10px] rounded-full bg-[#28C840]"
+            title="Maximize"
+          />
         </div>
-        <span className="ml-4 text-[14px] font-medium select-none" style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}>
+        <span
+          className="ml-4 text-[14px] font-medium select-none"
+          style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}
+        >
           Visitor Gallery
         </span>
-        <span className="ml-3 text-[14px] font-normal select-none" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
+        <span
+          className="ml-3 text-[14px] font-normal select-none"
+          style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}
+        >
           Bloomed with love 🌿
         </span>
         <div className="ml-auto">
@@ -1744,7 +2911,10 @@ function VisitorGalleryPage({
             </div>
             <p
               className="text-[11px] tracking-widest uppercase font-medium select-none"
-              style={{ color: "#9aaf7a", fontFamily: "'Source Code Pro', monospace" }}
+              style={{
+                color: "#9aaf7a",
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}
             >
               Growing the garden…
             </p>
@@ -1847,16 +3017,41 @@ function VisitorGalleryPage({
                       transform: "translateX(-50%)",
                     }}
                   >
-                    <p className="text-[12px] font-medium select-none leading-tight" style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}>
+                    <p
+                      className="text-[12px] font-medium select-none leading-tight"
+                      style={{
+                        color: "#2d4a1e",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
                       {bloom.flowerName}
                     </p>
-                    <p className="text-[10px] select-none mt-0.5" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
+                    <p
+                      className="text-[10px] select-none mt-0.5"
+                      style={{
+                        color: "#9aaf7a",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
                       by {bloom.name}
                     </p>
-                    <p className="text-[10px] select-none mt-0.5" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
+                    <p
+                      className="text-[10px] select-none mt-0.5"
+                      style={{
+                        color: "#9aaf7a",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
                       {bloom.date}
                     </p>
-                    <p className="text-[12px] italic select-none mt-1.5 pt-1.5 leading-relaxed" style={{ color: "#5a7040", fontFamily: "Inter, sans-serif", borderTop: "0.5px solid rgba(154,175,122,0.2)" }}>
+                    <p
+                      className="text-[12px] italic select-none mt-1.5 pt-1.5 leading-relaxed"
+                      style={{
+                        color: "#5a7040",
+                        fontFamily: "Inter, sans-serif",
+                        borderTop: "0.5px solid rgba(154,175,122,0.2)",
+                      }}
+                    >
                       {bloom.message}
                     </p>
                   </div>
@@ -1879,28 +3074,71 @@ function VisitorGalleryPage({
                   borderRadius: "10px",
                   padding: "10px 12px",
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(107,143,78,0.5)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(154,175,122,0.3)"; }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(107,143,78,0.5)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(154,175,122,0.3)";
+                }}
               >
                 <div className="flex gap-2.5 items-start">
                   <div className="shrink-0 w-10 flex items-end justify-center">
                     <FlowerSvg type={bloom.flower} size={48} />
                   </div>
                   <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                    <p className="text-[12px] font-normal leading-tight" style={{ color: "#2d4a1e", fontFamily: "Inter, sans-serif" }}>
+                    <p
+                      className="text-[12px] font-normal leading-tight"
+                      style={{
+                        color: "#2d4a1e",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
                       {bloom.flowerName}
                     </p>
-                    <p className="text-[10px]" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>
+                    <p
+                      className="text-[10px]"
+                      style={{
+                        color: "#9aaf7a",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
                       by {bloom.name}
                     </p>
-                    <p className="text-[12px] leading-relaxed mt-0.5" style={{ color: "#5a7040", fontFamily: "Inter, sans-serif" }}>
+                    <p
+                      className="text-[12px] leading-relaxed mt-0.5"
+                      style={{
+                        color: "#5a7040",
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
                       {bloom.message}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-end justify-between pt-1.5 mt-0.5" style={{ borderTop: "0.5px solid rgba(154,175,122,0.15)" }}>
-                  <p className="text-[10px]" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>{bloom.date}</p>
-                  <p className="text-[10px]" style={{ color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>No. {bloom.num}</p>
+                <div
+                  className="flex items-end justify-between pt-1.5 mt-0.5"
+                  style={{ borderTop: "0.5px solid rgba(154,175,122,0.15)" }}
+                >
+                  <p
+                    className="text-[10px]"
+                    style={{
+                      color: "#9aaf7a",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {bloom.date}
+                  </p>
+                  <p
+                    className="text-[10px]"
+                    style={{
+                      color: "#9aaf7a",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    No. {bloom.num}
+                  </p>
                 </div>
               </div>
             );
@@ -1911,25 +3149,49 @@ function VisitorGalleryPage({
       {/* ── Footer stats ───────────────────────────────────────────────── */}
       <div
         className="shrink-0 flex items-stretch mt-3"
-        style={{ borderTop: "0.5px solid rgba(154,175,122,0.2)", background: "#FAF7F2" }}
+        style={{
+          borderTop: "0.5px solid rgba(154,175,122,0.2)",
+          background: "#FAF7F2",
+        }}
       >
         <div className="flex items-center gap-3 px-5 py-3 flex-1">
           <span className="text-xl opacity-70">🌿</span>
           <div>
             <p
               className="leading-none select-none"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#2d4a1e",
+              }}
             >
               {totalCount ?? blooms.length}
             </p>
-            <p className="mt-0.5 select-none" style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", fontWeight: 300, color: "#9aaf7a" }}>
+            <p
+              className="mt-0.5 select-none"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "10px",
+                fontWeight: 300,
+                color: "#9aaf7a",
+              }}
+            >
               Blooms planted so far
             </p>
           </div>
         </div>
         <div className="w-px" style={{ background: "rgba(154,175,122,0.2)" }} />
         <div className="flex items-center px-5 py-3 flex-1">
-          <p className="leading-relaxed select-none" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#9aaf7a" }}>
+          <p
+            className="leading-relaxed select-none"
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "12px",
+              fontWeight: 300,
+              color: "#9aaf7a",
+            }}
+          >
             Every flower here was planted
             <br />
             by a visitor with a kind heart.
@@ -1938,7 +3200,15 @@ function VisitorGalleryPage({
         <div className="w-px" style={{ background: "rgba(154,175,122,0.2)" }} />
         <div className="flex items-center gap-2 px-5 py-3 flex-1">
           <span className="text-base">🦋</span>
-          <p className="select-none" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#9aaf7a" }}>
+          <p
+            className="select-none"
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "12px",
+              fontWeight: 300,
+              color: "#9aaf7a",
+            }}
+          >
             Hover a bloom
             <br />
             to read its story
@@ -2861,7 +4131,7 @@ export default function ForceGraph() {
 
         // "Fitri Zahwa" text below circle
         const name = txt(d.label, {
-          size: 15,
+          size: 14,
           weight: 700,
           fill: "#3D3128",
           dy: 66,
@@ -2908,7 +4178,7 @@ export default function ForceGraph() {
         // ── Number label (above circle) ───────────────────────────────────
         const numEl = el("text") as SVGTextElement;
         numEl.setAttribute("font-family", "Inter, system-ui, sans-serif");
-        numEl.setAttribute("font-size", "11");
+        numEl.setAttribute("font-size", "12");
         numEl.setAttribute("font-weight", "500");
         numEl.setAttribute("fill", "#B0A898");
         numEl.setAttribute("text-anchor", "middle");
@@ -2933,7 +4203,7 @@ export default function ForceGraph() {
         // ── Description (below title, hidden by default) ──────────────────
         const desc = el("text") as SVGTextElement;
         desc.setAttribute("font-family", "Inter, system-ui, sans-serif");
-        desc.setAttribute("font-size", "11");
+        desc.setAttribute("font-size", "12");
         desc.setAttribute("font-weight", "400");
         desc.setAttribute("fill", "#8B7E74");
         desc.setAttribute("text-anchor", "middle");
