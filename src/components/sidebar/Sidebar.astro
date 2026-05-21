@@ -6,61 +6,88 @@ import StatusWidget from "./StatusWidget.tsx";
 ---
 
 <!--
-  Sidebar card layout (non-scrollable, viewport-fitted):
-  - aside:         h-full overflow-hidden  → clips any overflow, no scroll
-  - inner wrapper: flex-1 min-h-0          → allows flex children to shrink below content size
-  - ① ②:          shrink-0               → Avatar + Introduction never shrink
-  - ③:             flex-1 min-h-0          → fills remaining space, can compress
-  - bottom group:  mt-auto shrink-0        → always sticks to bottom
+  Sidebar — shared across all pages
+  Width: 240px desktop / 220px tablet / full-width bottom bar mobile
 -->
 <aside
-  class="w-[288px] shrink-0 h-full flex flex-col overflow-hidden rounded-2xl"
-  style="background:#FFFDF9; box-shadow: 0 2px 16px rgba(139,110,74,0.08), 0 1px 4px rgba(139,110,74,0.06);"
+  class="sidebar shrink-0 h-full flex flex-col overflow-hidden"
+  style="
+    width: 240px;
+    background: #ffffff;
+    border-right: 0.5px solid rgba(154,175,122,0.25);
+  "
 >
-  <div class="flex flex-col flex-1 min-h-0 px-6 py-7 gap-5">
-    <!-- ① Logo — fixed size -->
-    <div class="shrink-0">
+  <!-- Scrollable section (everything except footer) -->
+  <div
+    class="sidebar-scroll flex-1 overflow-y-auto"
+    style="padding: 20px 16px 0; scrollbar-width: none;"
+  >
+    <!-- Avatar -->
+    <div style="margin-bottom: 12px;">
       <Avatar />
     </div>
 
-    <!-- ② Introduction — fixed size -->
-    <div class="flex flex-col gap-2 shrink-0">
-      <div>
-        <h1
-          class="text-[32px] font-bold leading-tight font-display tracking-tight"
-          style="color:#000000"
-        >
-          Fitri Zahwa
-        </h1>
-        <!-- Subtitle: 16px Source Code Pro, secondary color -->
-        <p
-          class="text-base font-normal mt-2 leading-snug font-mono"
-          style="color:#6D6D6D"
-        >
-          UI/UX Designer,<br />Illustrator, Pixel Artist
-        </p>
-      </div>
-      <p
-        class="text-base leading-relaxed font-normal mt-1"
-        style="color:#6D6D6D"
-      >
-        I am a designer who loves building delightful software that solves
-        real&nbsp;problems.
-      </p>
+    <!-- Name -->
+    <h1
+      style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #2d4a1e;
+        line-height: 1.2;
+        margin-bottom: 4px;
+      "
+    >
+      Fitri Zahwa
+    </h1>
+
+    <!-- Role -->
+    <p
+      style="
+        font-family: 'Inter', sans-serif;
+        font-size: 10px;
+        font-weight: 400;
+        color: #6b8f4e;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      "
+    >
+      UI/UX Designer · Illustrator · Pixel Artist
+    </p>
+
+    <!-- Bio -->
+    <p
+      style="
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 300;
+        color: #5a7040;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      "
+    >
+      I am a designer who loves building delightful software that solves real&nbsp;problems.
+    </p>
+
+    <!-- Nav (EXPLORE) -->
+    <div style="margin-bottom: 16px;">
+      <NavMenu />
     </div>
 
-    <!-- ③ Explore + bottom — fills all leftover space -->
-    <div class="flex flex-col flex-1 min-h-0">
-      <!-- Explore card: sits at top of this section -->
-      <div class="shrink-0">
-        <NavMenu />
-      </div>
+    <!-- FIND ME AT -->
+    <SocialLinks />
+  </div>
 
-      <!-- Bottom group: SocialLinks + StatusWidget pushed to bottom -->
-      <div class="mt-auto shrink-0 flex flex-col gap-5 pt-5">
-        <SocialLinks />
-        <StatusWidget client:load />
-      </div>
-    </div>
+  <!-- Footer — sticky bottom -->
+  <div
+    class="sidebar-footer shrink-0"
+    style="
+      padding: 12px 16px;
+      border-top: 0.5px solid rgba(154,175,122,0.2);
+      background: #ffffff;
+    "
+  >
+    <StatusWidget client:load />
   </div>
 </aside>

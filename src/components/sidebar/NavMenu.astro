@@ -46,43 +46,68 @@ const navItems = [
 ---
 
 <nav aria-label="Explore navigation">
-  <div class="bg-[#F3F0EB] rounded-xl p-4">
-    <p
-      class="text-[11px] font-semibold tracking-[0.15em] uppercase mb-3"
-      style="color:#9B8F83"
-    >
-      Explore
-    </p>
-    <div class="flex flex-col gap-0.5">
-      {
-        navItems.map((item) => (
-          <a
-            href={item.pageTrigger ? "javascript:void(0)" : item.href}
-            target={item.external ? "_blank" : undefined}
-            rel={item.external ? "noopener noreferrer" : undefined}
-            data-nav-id={item.id}
-            data-page-trigger={item.pageTrigger ?? undefined}
-            class="nav-link group flex items-center justify-between px-2.5 py-2 rounded-lg text-[14px] transition-all duration-200 hover:bg-white hover:shadow-sm"
-            style="color:#6D6D6D"
-          >
-            <span class="flex items-center gap-2">
-              <span
-                class="nav-icon transition-colors duration-200 flex items-center opacity-60"
-                set:html={item.icon}
-              />
-              <span>{item.label}</span>
-            </span>
+  <!-- Section label -->
+  <p
+    style="
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9aaf7a;
+      margin-bottom: 6px;
+      padding: 0 2px;
+    "
+  >
+    Explore
+  </p>
+  <div style="display: flex; flex-direction: column; gap: 2px;">
+    {
+      navItems.map((item) => (
+        <a
+          href={item.pageTrigger ? "javascript:void(0)" : item.href}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener noreferrer" : undefined}
+          data-nav-id={item.id}
+          data-page-trigger={item.pageTrigger ?? undefined}
+          class="nav-link"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.15s ease;
+            color: #5a7040;
+          "
+        >
+          <span style="display: flex; align-items: center; gap: 8px;">
             <span
-              class="nav-arrow transition-colors duration-200 flex items-center"
-              style="color:#D1D5DB"
-              aria-hidden="true"
+              class="nav-icon"
+              style="display: flex; align-items: center; color: #9aaf7a; opacity: 0.7;"
+              set:html={item.icon}
+            />
+            <span
+              style="
+                font-family: 'Inter', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+              "
             >
-              <Icon name="mage:arrow-right" class="w-3 h-3" />
+              {item.label}
             </span>
-          </a>
-        ))
-      }
-    </div>
+          </span>
+          <span
+            class="nav-arrow"
+            style="display: flex; align-items: center; color: #9aaf7a;"
+            aria-hidden="true"
+          >
+            <Icon name="mage:arrow-right" class="w-3 h-3" />
+          </span>
+        </a>
+      ))
+    }
   </div>
 </nav>
 
@@ -91,16 +116,19 @@ const navItems = [
     document.querySelectorAll(".nav-link").forEach((link) => {
       const el = link as HTMLElement;
       const isActive = el.dataset.navId === id;
-      el.classList.toggle("bg-white", isActive);
-      el.classList.toggle("shadow-sm", isActive);
-      el.classList.toggle("font-medium", isActive);
-      el.style.color = isActive ? "#3D3128" : "#6D6D6D";
+      if (isActive) {
+        el.style.background = "rgba(200,219,160,0.35)";
+        el.style.color = "#2d4a1e";
+      } else {
+        el.style.background = "";
+        el.style.color = "#5a7040";
+      }
       const arrow = el.querySelector(".nav-arrow") as HTMLElement | null;
-      if (arrow) arrow.style.color = isActive ? "#8FAF7E" : "#D1D5DB";
+      if (arrow) arrow.style.color = isActive ? "#6b8f4e" : "#9aaf7a";
       const icon = el.querySelector(".nav-icon") as HTMLElement | null;
       if (icon) {
-        icon.style.opacity = isActive ? "1" : "0.5";
-        icon.style.color = isActive ? "#7A9E72" : "inherit";
+        icon.style.opacity = isActive ? "1" : "0.7";
+        icon.style.color = isActive ? "#6b8f4e" : "#9aaf7a";
       }
     });
   }
@@ -114,6 +142,23 @@ const navItems = [
 
   // Home is active on load
   setActive("home");
+
+  // Hover states
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    const el = link as HTMLElement;
+    el.addEventListener("mouseenter", () => {
+      if (!el.style.background || el.style.background === "") {
+        el.style.background = "rgba(200,219,160,0.15)";
+      }
+    });
+    el.addEventListener("mouseleave", () => {
+      const isActive = el.style.background === "rgba(200, 219, 160, 0.35)" ||
+                       el.style.background === "rgba(200,219,160,0.35)";
+      if (!isActive) {
+        el.style.background = "";
+      }
+    });
+  });
 
   // Page trigger clicks (project, about, gallery)
   document.querySelectorAll("[data-page-trigger]").forEach((el) => {
