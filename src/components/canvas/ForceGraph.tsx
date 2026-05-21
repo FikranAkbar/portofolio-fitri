@@ -137,15 +137,20 @@ const LOCATION_ICON_PATH =
   "M18.2961 4.63699C17.4832 3.78975 16.5074 3.11561 15.4274 2.65509C14.3473 2.19457 13.1853 1.95715 12.0111 1.95715C10.837 1.95715 9.67495 2.19457 8.59489 2.65509C7.51482 3.11561 6.53902 3.78975 5.72613 4.63699C4.19613 6.63699 3.72613 9.63698 4.58613 12.717C5.46613 16.047 7.81612 18.457 9.70612 20.387L10.6261 21.387C10.8048 21.5766 11.0188 21.7295 11.2561 21.837C11.4938 21.9426 11.751 21.9971 12.0111 21.9971C12.2712 21.9971 12.5284 21.9426 12.7661 21.837C12.999 21.7313 13.2095 21.582 13.3861 21.397L14.3161 20.397C16.2061 18.467 18.5561 16.057 19.4361 12.727C20.2461 9.63699 19.8261 6.63699 18.2961 4.63699ZM12.0061 12.887C11.3178 12.887 10.645 12.6829 10.0727 12.3005C9.50046 11.9181 9.05442 11.3746 8.79102 10.7387C8.52763 10.1029 8.45872 9.40314 8.59299 8.72809C8.72727 8.05303 9.0587 7.43295 9.54539 6.94626C10.0321 6.45957 10.6521 6.12814 11.3272 5.99387C12.0023 5.85959 12.702 5.9285 13.3379 6.19189C13.9738 6.45529 14.5172 6.90132 14.8996 7.4736C15.282 8.04589 15.4861 8.7187 15.4861 9.40698C15.4861 9.86351 15.396 10.3156 15.221 10.7372C15.046 11.1589 14.7895 11.5418 14.4663 11.8642C14.143 12.1865 13.7593 12.4419 13.3371 12.6157C12.915 12.7895 12.4627 12.8783 12.0061 12.877V12.887Z";
 
 // ─── Project Page Overlay ────────────────────────────────────────────────────
-const PROJECT_ITEMS = [
+const PROJECT_ITEMS: Array<{
+  num: string; title: string; desc: string;
+  tags: string[]; role: string; team: string;
+  timeframe: string; caseStudy?: string;
+}> = [
   {
     num: "01",
-    title: "Title",
-    desc: "Desc",
-    tags: ["Tag 1", "Tag 2", "Tag 3"],
-    role: "Placeholder Role",
-    team: "Placeholder Team",
-    timeframe: "Jan 2025 - Present",
+    title: "Fishdoro",
+    desc: "A Pomodoro timer redesigned as a pixel art fishing mini-game. Completing focus sessions means catching pixel fish.",
+    tags: ["UX Design", "Development", "Pixel Art"],
+    role: "UI/UX Designer · Developer",
+    team: "Solo Project",
+    timeframe: "2024 – Present",
+    caseStudy: "fishdoro",
   },
   {
     num: "02",
@@ -176,6 +181,411 @@ const PROJECT_ITEMS = [
   },
 ];
 
+const INSIGHT_CARDS = [
+  {
+    frontSub: "Insight 01",
+    front: "The Guilt Spiral",
+    back: "Missing even one Pomodoro often leads to abandoning the system entirely. \"If I missed one, why bother?\" — a pattern repeated across 23 threads.",
+  },
+  {
+    frontSub: "Insight 02",
+    front: "Decoupled Rewards",
+    back: "External rewards (checking phone, getting coffee) physically break focus state. The reward dismantles the very thing it was meant to celebrate.",
+  },
+  {
+    frontSub: "Insight 03",
+    front: "Progress Hunger",
+    back: "Users want time to feel like space, not subtraction. \"25:00 → 0:00 feels like losing time, not gaining anything.\" They want to see growth.",
+  },
+];
+
+const DEFINE_PROBLEMS = [
+  { num: "01", problem: "No ceremony at the end", desc: "Focus sessions end abruptly. There's no acknowledgment that you finished something difficult. The timer just... stops." },
+  { num: "02", problem: "Rewards are external and interruptive", desc: "Treating yourself to something after focus means leaving the focused state. The reward itself becomes the distraction." },
+  { num: "03", problem: "Abstract numbers don't feel like progress", desc: "Watching 25:00 count down to 0 maps to subtraction, not accomplishment. It doesn't feel like building anything." },
+];
+
+const FISHDORO_ANNOTATIONS = [
+  { id: 1, x: 28, y: 32, label: "Focus timer", desc: "25-minute countdown embedded in the pond scene — not separate from it. Time as an environment, not a number." },
+  { id: 2, x: 70, y: 48, label: "Live pond", desc: "Fish swim in real time. Each completed session adds one to your pond. The reward is always visible." },
+  { id: 3, x: 50, y: 78, label: "Session controls", desc: "Single-tap start/pause. No menus. Intentionally one-screen — everything needed is always present." },
+  { id: 4, x: 16, y: 62, label: "Catch counter", desc: "Session count shown as fish caught, not abstract numbers. Growth feels tangible." },
+];
+
+const KEY_TAKEAWAYS = [
+  { num: "01", title: "Constraints are creative fuel", desc: "Pixel art's 16×16 grid forced every design decision to be intentional. If it doesn't fit, it doesn't ship — and that's a feature, not a bug." },
+  { num: "02", title: "Emotional design > feature completeness", desc: "One well-crafted micro-interaction (the fish catch animation) was more impactful than all the settings screens I initially planned." },
+  { num: "03", title: "Building is the best form of user research", desc: "Making Fishdoro forced me to actually use a Pomodoro system. I found failure modes in week one that six months of interviews might have missed." },
+  { num: "04", title: "The tool is the prototype", desc: "Shipping a rough Electron build early revealed desktop UX patterns — window behavior, tray interactions, keyboard shortcuts — that no Figma prototype could surface." },
+];
+
+function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [flipped, setFlipped] = useState<number | null>(null);
+  const [sliderPos, setSliderPos] = useState(50);
+  const [activeAnnotation, setActiveAnnotation] = useState<number | null>(null);
+
+  // Scroll progress bar — attached to .cs-content, NOT window
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const max = el.scrollHeight - el.clientHeight;
+      setProgress(max > 0 ? el.scrollTop / max : 0);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Scroll reveal — IntersectionObserver rooted to .cs-content, NOT window
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const targets = el.querySelectorAll(".cs-reveal");
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const t = e.target as HTMLElement;
+            t.style.opacity = "1";
+            t.style.transform = "translateY(0)";
+          }
+        });
+      },
+      { root: el, threshold: 0.1, rootMargin: "0px 0px -10px 0px" }
+    );
+    targets.forEach((t) => obs.observe(t));
+    return () => obs.disconnect();
+  }, []);
+
+  function startSliderDrag(e: React.MouseEvent) {
+    e.preventDefault();
+    const container = sliderRef.current;
+    if (!container) return;
+    const onMove = (mv: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      const p = ((mv.clientX - rect.left) / rect.width) * 100;
+      setSliderPos(Math.min(92, Math.max(8, p)));
+    };
+    const onUp = () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  }
+
+  const sectionPill = (label: string) => (
+    <div>
+      <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase" as const, letterSpacing: "0.14em", color: "#9aaf7a", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "3px 12px" }}>
+        {label}
+      </span>
+    </div>
+  );
+
+  const reveal = (delay = 0): React.CSSProperties => ({
+    opacity: 0,
+    transform: "translateY(16px)",
+    transition: `opacity 0.5s ${delay}s, transform 0.5s ${delay}s`,
+  });
+
+  return (
+    <div className="flex flex-col flex-1 overflow-hidden">
+      {/* Progress bar — attached to scroll content, not window */}
+      <div style={{ height: "2px", background: "rgba(154,175,122,0.15)", flexShrink: 0 }}>
+        <div style={{ height: "100%", width: `${progress * 100}%`, background: "linear-gradient(90deg, #9aaf7a, #6b8f4e)", transition: "width 80ms linear" }} />
+      </div>
+
+      {/* Scrollable content — max-width 640px, same as About Me */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide" style={{ padding: "40px 24px" }}>
+        <div style={{ maxWidth: "640px", margin: "0 auto" }}>
+
+          {/* ── Hero ── */}
+          <div className="cs-reveal flex flex-col gap-3" style={reveal(0)}>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.14em", color: "#9aaf7a", background: "rgba(200,219,160,0.25)", border: "1px solid rgba(107,143,78,0.35)", borderRadius: "99px", padding: "3px 12px" }}>Case Study</span>
+              <span style={{ fontSize: "10px", fontWeight: 400, color: "#9aaf7a" }}>Electron · HTML · CSS · JS</span>
+            </div>
+            <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "28px", fontWeight: 700, fontStyle: "italic", color: "#2d4a1e", lineHeight: 1.2 }}>
+              Fishdoro
+            </h1>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "16px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>
+              A Pomodoro timer redesigned as a pixel art fishing mini-game. Every completed focus session catches a fish — the reward is embedded in the act of focusing, not external to it.
+            </p>
+            <div className="flex items-center gap-6 flex-wrap" style={{ borderTop: "0.5px solid rgba(154,175,122,0.25)", paddingTop: "14px" }}>
+              {[
+                { label: "Role", value: "UI/UX Designer · Developer" },
+                { label: "Stack", value: "Electron · HTML/CSS/JS" },
+                { label: "Status", value: "In Development" },
+              ].map((m) => (
+                <div key={m.label} className="flex flex-col gap-0.5">
+                  <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>{m.label}</span>
+                  <span style={{ fontSize: "12px", fontWeight: 400, color: "#5a7040", fontFamily: "Inter, sans-serif" }}>{m.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Hero image placeholder */}
+          <div className="cs-reveal" style={{ ...reveal(0.1), marginTop: "24px", height: "260px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Timer screen — mid-session (hero placeholder)</span>
+          </div>
+
+          <div style={{ height: "48px" }} />
+
+          {/* ── Background ── */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Background")}</div>
+            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+              The productivity paradox
+            </h2>
+            <div className="cs-reveal" style={{ ...reveal(0.1), borderLeft: "2.5px solid rgba(107,143,78,0.4)", paddingLeft: "16px" }}>
+              <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "16px", fontWeight: 700, fontStyle: "italic", color: "#2d4a1e", lineHeight: 1.5 }}>
+                "What if the reward was part of the focus itself?"
+              </p>
+            </div>
+            <p className="cs-reveal" style={{ ...reveal(0.15), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              Most productivity apps promise to help you focus. In practice, they add cognitive overhead — more notifications, more dashboards, more decisions. The tool becomes the distraction.
+            </p>
+            <p className="cs-reveal" style={{ ...reveal(0.2), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              Fishdoro started with a single question: <span style={{ color: "#2d4a1e", fontWeight: 500 }}>what if the reward mechanism was built into the timer itself</span> — not a badge you check later, but something that happens in real time as you focus?
+            </p>
+          </section>
+
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+
+          {/* ── Discover ── */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Discover")}</div>
+            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+              What are people actually struggling with?
+            </h2>
+            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              Research method: qualitative analysis of Reddit threads from <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/productivity</span>, <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/ADHD</span>, and <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/pomodoro</span> — 47 threads, 200+ comments. Thematic coding surfaced 3 consistent patterns.
+            </p>
+            {/* Affinity map placeholder */}
+            <div className="cs-reveal" style={{ ...reveal(0.15), height: "180px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Affinity map / thematic coding visual (placeholder)</span>
+            </div>
+            <p className="cs-reveal" style={{ ...reveal(0.2), fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 400, color: "#9aaf7a", textAlign: "center" }}>
+              Flip each card to read the full insight ↓
+            </p>
+            {/* Flip cards */}
+            <div className="cs-reveal flex gap-3" style={{ ...reveal(0.25), minHeight: "140px" }}>
+              {INSIGHT_CARDS.map((card, i) => (
+                <div
+                  key={i}
+                  style={{ flex: 1, perspective: "800px", cursor: "pointer", height: "140px" }}
+                  onClick={() => setFlipped(flipped === i ? null : i)}
+                >
+                  <div style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", transition: "transform 0.5s ease", transform: flipped === i ? "rotateY(180deg)" : "rotateY(0deg)" }}>
+                    {/* Front */}
+                    <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "16px", gap: "6px" }}>
+                      <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", fontFamily: "Inter, sans-serif" }}>{card.frontSub}</span>
+                      <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "16px", fontWeight: 700, color: "#2d4a1e", textAlign: "center", lineHeight: 1.3 }}>{card.front}</p>
+                      <span style={{ fontSize: "10px", color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>click to reveal →</span>
+                    </div>
+                    {/* Back */}
+                    <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "rgba(200,219,160,0.15)", border: "0.5px solid rgba(107,143,78,0.4)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#5a7040", textAlign: "center", lineHeight: 1.6 }}>{card.back}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+
+          {/* ── Define ── */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Define")}</div>
+            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+              Three design problems
+            </h2>
+            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              The research converged on three root problems — each pointing toward the same design direction.
+            </p>
+            {/* Problem framework placeholder */}
+            <div className="cs-reveal" style={{ ...reveal(0.15), height: "160px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Problem framework visual (placeholder)</span>
+            </div>
+            {/* Design problems — each with cs-reveal for scroll reveal effect */}
+            <div className="flex flex-col gap-3" style={{ marginTop: "8px" }}>
+              {DEFINE_PROBLEMS.map((p, i) => (
+                <div key={p.num} className="cs-reveal" style={{ ...reveal(i * 0.12), background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "16px 18px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
+                  <span style={{ fontSize: "10px", fontWeight: 500, color: "#9aaf7a", minWidth: "20px", marginTop: "3px", fontFamily: "Inter, sans-serif" }}>{p.num}</span>
+                  <div className="flex flex-col gap-1.5">
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e" }}>{p.problem}</p>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>{p.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Design brief */}
+            <div className="cs-reveal" style={{ ...reveal(0.36), marginTop: "8px", borderLeft: "2.5px solid rgba(107,143,78,0.4)", paddingLeft: "16px" }}>
+              <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", marginBottom: "6px", fontFamily: "Inter, sans-serif" }}>Design Brief</p>
+              <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "16px", fontWeight: 700, fontStyle: "italic", color: "#2d4a1e", lineHeight: 1.5 }}>
+                "Design a focus tool where the reward is part of the experience — not external to it."
+              </p>
+            </div>
+          </section>
+
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+
+          {/* ── Develop ── */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Develop")}</div>
+            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+              From brief to build
+            </h2>
+            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              The brief pointed toward a single-screen app: timer, pond, and fish inventory all visible at once. No navigation, no dashboards — just the act of focusing and its reward in the same frame.
+            </p>
+            {/* IA + Visual direction cards */}
+            <div className="cs-reveal flex gap-3" style={{ ...reveal(0.15) }}>
+              {[
+                { label: "Information Architecture", value: "Single screen — timer + pond + fish inventory. No navigation required." },
+                { label: "Visual Direction", value: "Pixel art, 16-bit palette. Warm earth tones. Intentionally nostalgic and low-stimulation." },
+              ].map((item) => (
+                <div key={item.label} style={{ flex: 1, background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "14px 16px" }}>
+                  <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#9aaf7a", marginBottom: "6px", fontFamily: "Inter, sans-serif" }}>{item.label}</p>
+                  <p style={{ fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6, fontFamily: "Inter, sans-serif" }}>{item.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="cs-reveal" style={{ ...reveal(0.2), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e", marginTop: "8px" }}>
+              Iteration — drag to compare
+            </h3>
+            <p className="cs-reveal" style={{ ...reveal(0.25), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              Three rounds of iteration. Drag the slider to compare the first wireframe with the final hi-fi:
+            </p>
+
+            {/* Before/After slider */}
+            <div
+              ref={sliderRef}
+              className="cs-reveal"
+              style={{ ...reveal(0.3), position: "relative", height: "260px", borderRadius: "12px", overflow: "hidden", border: "0.5px solid rgba(154,175,122,0.3)", userSelect: "none", cursor: "col-resize" }}
+            >
+              {/* Before */}
+              <div style={{ position: "absolute", inset: 0, background: "#e8e2d8", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Before</span>
+                <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Round 1 wireframe (placeholder)</span>
+              </div>
+              {/* After */}
+              <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 ${100 - sliderPos}% 0 0)`, background: "#f8f6f0", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                <span style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6b8f4e", fontFamily: "Inter, sans-serif" }}>After</span>
+                <span style={{ fontSize: "12px", fontWeight: 300, color: "#6b8f4e", fontFamily: "Inter, sans-serif" }}>Final hi-fi (placeholder)</span>
+              </div>
+              {/* Drag handle */}
+              <div
+                style={{ position: "absolute", top: 0, bottom: 0, left: `${sliderPos}%`, width: "2px", background: "#6b8f4e", transform: "translateX(-50%)", cursor: "ew-resize" }}
+                onMouseDown={startSliderDrag}
+              >
+                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "28px", height: "28px", borderRadius: "50%", background: "#6b8f4e", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(107,143,78,0.3)" }}>
+                  <span style={{ color: "#fff", fontSize: "10px", lineHeight: 1, fontFamily: "Inter, sans-serif" }}>⟺</span>
+                </div>
+              </div>
+            </div>
+
+            <h3 className="cs-reveal" style={{ ...reveal(0), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e", marginTop: "8px" }}>
+              Design outcome — annotated
+            </h3>
+            <p className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              Click any numbered point to read the design decision behind it:
+            </p>
+
+            {/* Annotated screen viewer */}
+            <div
+              className="cs-reveal"
+              style={{ ...reveal(0.1), position: "relative", height: "280px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)" }}
+            >
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Hi-fi timer focus state (placeholder)</span>
+              </div>
+              {FISHDORO_ANNOTATIONS.map((ann) => (
+                <div key={ann.id} style={{ position: "absolute", left: `${ann.x}%`, top: `${ann.y}%`, transform: "translate(-50%, -50%)", zIndex: 10 }}>
+                  <button
+                    style={{ width: "22px", height: "22px", borderRadius: "50%", background: activeAnnotation === ann.id ? "#6b8f4e" : "#ffffff", border: "1.5px solid #6b8f4e", color: activeAnnotation === ann.id ? "#ffffff" : "#6b8f4e", fontSize: "10px", fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif", transition: "background 0.2s, color 0.2s" }}
+                    onClick={() => setActiveAnnotation(activeAnnotation === ann.id ? null : ann.id)}
+                  >
+                    {ann.id}
+                  </button>
+                  {activeAnnotation === ann.id && (
+                    <div style={{ position: "absolute", left: "50%", ...(ann.y > 55 ? { bottom: "calc(100% + 8px)" } : { top: "calc(100% + 8px)" }), transform: "translateX(-50%)", zIndex: 20, background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.4)", borderRadius: "10px", padding: "10px 14px", width: "200px", pointerEvents: "none", boxShadow: "0 4px 16px rgba(45,74,30,0.08)" }}>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 500, color: "#2d4a1e", marginBottom: "4px" }}>{ann.label}</p>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 300, color: "#5a7040", lineHeight: 1.5 }}>{ann.desc}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Figma vs Build placeholder */}
+            <div className="cs-reveal" style={{ ...reveal(0.15), height: "200px", background: "#e8e2d8", borderRadius: "12px", border: "0.5px solid rgba(154,175,122,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: "12px", fontWeight: 300, color: "#b8b0a2", fontFamily: "Inter, sans-serif" }}>Figma vs Build side-by-side (placeholder)</span>
+            </div>
+          </section>
+
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+
+          {/* ── Validation ── */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Validation")}</div>
+            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+              Testing & open questions
+            </h2>
+            <p className="cs-reveal" style={{ ...reveal(0.1), fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 300, color: "#5a7040", lineHeight: 1.7 }}>
+              Core build is functional. Currently running informal user testing (n=3 sessions) with people who actively use Pomodoro systems.
+            </p>
+            <div className="cs-reveal" style={{ ...reveal(0.15), background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "18px" }}>
+              <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#9aaf7a", marginBottom: "12px", fontFamily: "Inter, sans-serif" }}>Questions still open</p>
+              <div className="flex flex-col gap-3">
+                {[
+                  "Does the fishing mechanic actually reduce the guilt spiral effect, or does it introduce new pressure to \"complete\" sessions?",
+                  "Is the pixel art aesthetic accessible to users who don't have nostalgia for that era?",
+                  "How do extended sessions (4+ hours) feel? Does fish accumulation stay meaningful or start to feel hollow?",
+                ].map((q, i) => (
+                  <div key={i} className="flex gap-3 items-start">
+                    <span style={{ fontSize: "10px", color: "#9aaf7a", marginTop: "2px", minWidth: "14px", fontFamily: "Inter, sans-serif" }}>→</span>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>{q}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <hr style={{ border: "none", borderTop: "0.5px solid rgba(154,175,122,0.25)", margin: "40px 0" }} />
+
+          {/* ── Key Takeaways ── */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>{sectionPill("Key Takeaways")}</div>
+            <h2 className="cs-reveal" style={{ ...reveal(0.05), fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "#2d4a1e" }}>
+              4 things this project taught me
+            </h2>
+            <div className="flex flex-col gap-3">
+              {KEY_TAKEAWAYS.map((item, i) => (
+                <div key={item.num} className="cs-reveal" style={{ ...reveal(i * 0.1), background: "#ffffff", border: "0.5px solid rgba(154,175,122,0.3)", borderRadius: "12px", padding: "16px 18px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
+                  <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "rgba(154,175,122,0.5)", minWidth: "28px", lineHeight: 1 }}>{item.num}</span>
+                  <div className="flex flex-col gap-1.5">
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 500, color: "#2d4a1e" }}>{item.title}</p>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 300, color: "#5a7040", lineHeight: 1.6 }}>{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <div style={{ height: "40px" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProjectPage({
   onClose,
   origin,
@@ -187,6 +597,7 @@ function ProjectPage({
 }) {
   const [closing, setClosing] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [selectedCase, setSelectedCase] = useState<string | null>(null);
 
   function handleClose() {
     setClosing(true);
@@ -240,148 +651,165 @@ function ProjectPage({
             title="Maximize"
           />
         </div>
-        <span
-          className="text-[14px] font-medium select-none"
-          style={{ color: "#2d4a1e" }}
-        >
-          Project
-        </span>
-        <span
-          className="text-[14px] font-normal select-none"
-          style={{ color: "#9aaf7a" }}
-        >
-          My works
-        </span>
+        {selectedCase ? (
+          <>
+            <button
+              onClick={() => setSelectedCase(null)}
+              className="text-[14px] font-normal select-none transition-colors duration-150"
+              style={{ color: "#9aaf7a", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "Inter, sans-serif" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#6b8f4e"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#9aaf7a"; }}
+            >
+              Project
+            </button>
+            <span className="text-[14px] font-normal select-none" style={{ color: "#9aaf7a" }}>/</span>
+            <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>Fishdoro</span>
+          </>
+        ) : (
+          <>
+            <span className="text-[14px] font-medium select-none" style={{ color: "#2d4a1e" }}>
+              Project
+            </span>
+            <span className="text-[14px] font-normal select-none" style={{ color: "#9aaf7a" }}>
+              My works
+            </span>
+          </>
+        )}
       </div>
 
-      {/* Scrollable cards grid */}
-      <div className="overflow-y-auto px-6 py-5 scrollbar-hide flex-1">
-        {/* Two independent columns — align-items: start behaviour: each col is its own flex column */}
-        <div className="flex gap-4 items-start">
-          {[0, 1].map((col) => (
-            <div key={col} className="flex flex-col gap-4 flex-1">
-              {PROJECT_ITEMS.filter((_, i) => i % 2 === col).map((p) => (
-                <article
-                  key={p.num}
-                  className="overflow-hidden transition-all duration-200"
-                  style={{
-                    background: "#ffffff",
-                    border: "0.5px solid rgba(154,175,122,0.3)",
-                    borderRadius: "12px",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor =
-                      "rgba(107,143,78,0.5)";
-                    setHoveredCard(p.num);
-                    window.dispatchEvent(
-                      new CustomEvent("project-cursor", {
-                        detail: { active: true },
-                      }),
-                    );
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor =
-                      "rgba(154,175,122,0.3)";
-                    setHoveredCard(null);
-                    window.dispatchEvent(
-                      new CustomEvent("project-cursor", {
-                        detail: { active: false },
-                      }),
-                    );
-                  }}
-                >
-                  {/* Cover image area */}
-                  <div
-                    className="w-full overflow-hidden flex items-center justify-center"
+      {/* Content area: case study or project grid */}
+      {selectedCase === "fishdoro" ? (
+        <FishdoroCaseStudy onBack={() => setSelectedCase(null)} />
+      ) : (
+        <div className="overflow-y-auto px-6 py-5 scrollbar-hide flex-1">
+          {/* Two independent columns — align-items: start behaviour: each col is its own flex column */}
+          <div className="flex gap-4 items-start">
+            {[0, 1].map((col) => (
+              <div key={col} className="flex flex-col gap-4 flex-1">
+                {PROJECT_ITEMS.filter((_, i) => i % 2 === col).map((p) => (
+                  <article
+                    key={p.num}
+                    className="overflow-hidden transition-all duration-200"
                     style={{
-                      height: "200px",
-                      background: "#e8e2d8",
-                      flexShrink: 0,
+                      background: "#ffffff",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      borderRadius: "12px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => { if (p.caseStudy) setSelectedCase(p.caseStudy); }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "rgba(107,143,78,0.5)";
+                      setHoveredCard(p.num);
+                      window.dispatchEvent(
+                        new CustomEvent("project-cursor", {
+                          detail: { active: true },
+                        }),
+                      );
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "rgba(154,175,122,0.3)";
+                      setHoveredCard(null);
+                      window.dispatchEvent(
+                        new CustomEvent("project-cursor", {
+                          detail: { active: false },
+                        }),
+                      );
                     }}
                   >
-                    <span
-                      className="text-[12px] font-light select-none tracking-wide"
-                      style={{ color: "#b8b0a2" }}
+                    {/* Cover image area */}
+                    <div
+                      className="w-full overflow-hidden flex items-center justify-center"
+                      style={{
+                        height: "200px",
+                        background: "#e8e2d8",
+                        flexShrink: 0,
+                      }}
                     >
-                      Cover Image
-                    </span>
-                  </div>
-
-                  {/* Card body — always visible */}
-                  <div className="px-4 pt-[14px] pb-[14px] flex flex-col gap-[6px]">
-                    <div className="flex items-start justify-between gap-[10px]">
-                      <h2
-                        className="text-[16px] font-medium leading-[1.3] select-none"
-                        style={{ color: "#2d4a1e" }}
+                      <span
+                        className="text-[12px] font-light select-none tracking-wide"
+                        style={{ color: "#b8b0a2" }}
                       >
-                        {p.title}
-                      </h2>
-                      <div className="flex gap-[5px] flex-wrap shrink-0">
-                        {p.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[12px] font-normal rounded-full px-[10px] py-[3px] whitespace-nowrap select-none"
-                            style={{
-                              color: "#4e7a30",
-                              background: "rgba(200,219,160,0.3)",
-                              border: "0.5px solid rgba(107,143,78,0.3)",
-                            }}
-                          >
-                            {tag}
-                          </span>
+                        Cover Image
+                      </span>
+                    </div>
+
+                    {/* Card body — always visible */}
+                    <div className="px-4 pt-[14px] pb-[14px] flex flex-col gap-[6px]">
+                      <div className="flex items-start justify-between gap-[10px]">
+                        <h2
+                          className="text-[16px] font-medium leading-[1.3] select-none"
+                          style={{ color: "#2d4a1e" }}
+                        >
+                          {p.title}
+                        </h2>
+                        <div className="flex gap-[5px] flex-wrap shrink-0">
+                          {p.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-[12px] font-normal rounded-full px-[10px] py-[3px] whitespace-nowrap select-none"
+                              style={{
+                                color: "#4e7a30",
+                                background: "rgba(200,219,160,0.3)",
+                                border: "0.5px solid rgba(107,143,78,0.3)",
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <p
+                        className="text-[14px] font-light leading-[1.5] select-none"
+                        style={{ color: "#5a7040" }}
+                      >
+                        {p.desc}
+                      </p>
+                    </div>
+
+                    {/* Expanded section — hover expand (behavior preserved) */}
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${hoveredCard === p.num ? "max-h-52 opacity-100" : "max-h-0 opacity-0"}`}
+                    >
+                      <hr
+                        className="mx-4"
+                        style={{
+                          border: "none",
+                          borderTop: "0.5px solid rgba(154,175,122,0.25)",
+                          marginBottom: "12px",
+                        }}
+                      />
+                      <div className="px-4 pb-4 flex flex-col gap-3">
+                        {[
+                          { label: "Role", value: p.role },
+                          { label: "Team", value: p.team },
+                          { label: "Timeframe", value: p.timeframe },
+                        ].map((row) => (
+                          <div key={row.label} className="flex items-start">
+                            <span
+                              className="text-[10px] font-medium uppercase tracking-[0.1em] shrink-0 select-none"
+                              style={{ color: "#9aaf7a", width: "80px" }}
+                            >
+                              {row.label}
+                            </span>
+                            <span
+                              className="text-[14px] font-light select-none"
+                              style={{ color: "#5a7040" }}
+                            >
+                              {row.value}
+                            </span>
+                          </div>
                         ))}
                       </div>
                     </div>
-                    <p
-                      className="text-[14px] font-light leading-[1.5] select-none"
-                      style={{ color: "#5a7040" }}
-                    >
-                      {p.desc}
-                    </p>
-                  </div>
-
-                  {/* Expanded section — hover expand (behavior preserved) */}
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${hoveredCard === p.num ? "max-h-52 opacity-100" : "max-h-0 opacity-0"}`}
-                  >
-                    <hr
-                      className="mx-4"
-                      style={{
-                        border: "none",
-                        borderTop: "0.5px solid rgba(154,175,122,0.25)",
-                        marginBottom: "12px",
-                      }}
-                    />
-                    <div className="px-4 pb-4 flex flex-col gap-3">
-                      {[
-                        { label: "Role", value: p.role },
-                        { label: "Team", value: p.team },
-                        { label: "Timeframe", value: p.timeframe },
-                      ].map((row) => (
-                        <div key={row.label} className="flex items-start">
-                          <span
-                            className="text-[10px] font-medium uppercase tracking-[0.1em] shrink-0 select-none"
-                            style={{ color: "#9aaf7a", width: "80px" }}
-                          >
-                            {row.label}
-                          </span>
-                          <span
-                            className="text-[14px] font-light select-none"
-                            style={{ color: "#5a7040" }}
-                          >
-                            {row.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          ))}
+                  </article>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
