@@ -186,105 +186,178 @@ const PROJECT_ITEMS: Array<{
   },
 ];
 
-const INSIGHT_CARDS = [
+const SLIDER_PAIRS: Array<{
+  label: string;
+  issue: string;
+  before: string;
+  after: string;
+  why: string;
+}> = [
   {
-    frontSub: "Insight 01",
-    front: "The Guilt Spiral",
-    back: 'Missing even one Pomodoro often leads to abandoning the system entirely. "If I missed one, why bother?" — a pattern repeated across 23 threads.',
+    label: "Homepage Buttons",
+    issue: "Inconsistent button widths created unclear visual hierarchy",
+    before: "/assets/Fishdoro-SS/LoFi-Home-Before.png",
+    after: "/assets/Fishdoro-SS/LoFi-Home-After.png",
+    why: "Cleaner hierarchy creates a more polished first impression",
   },
   {
-    frontSub: "Insight 02",
-    front: "Decoupled Rewards",
-    back: "External rewards (checking phone, getting coffee) physically break focus state. The reward dismantles the very thing it was meant to celebrate.",
+    label: "Timer Customization Placement",
+    issue: "Users expected timer settings on the setup screen, not elsewhere",
+    before: "/assets/Fishdoro-SS/LoFi-Session-Setup-Before.png",
+    after: "/assets/Fishdoro-SS/LoFi-Session-Setup-After.png",
+    why: "Matches the mental model users already bring to Pomodoro apps",
   },
   {
-    frontSub: "Insight 03",
-    front: "Progress Hunger",
-    back: 'Users want time to feel like space, not subtraction. "25:00 → 0:00 feels like losing time, not gaining anything." They want to see growth.',
+    label: "Bait Icon vs Start Button",
+    issue: "The bait icon was visually competing with the primary CTA",
+    before: "/assets/Fishdoro-SS/LoFi-Session-Settings-Before.png",
+    after: "/assets/Fishdoro-SS/LoFi-Session-Settings-After.png",
+    why: "Primary CTAs must be visually dominant — only one thing should say 'press me'",
+  },
+  {
+    label: "Copy Consistency",
+    issue: "'Catch Log' and 'Work Report' broke the fishing theme",
+    before: "/assets/Fishdoro-SS/LoFi-Catch-Log-Before.png",
+    after: "/assets/Fishdoro-SS/LoFi-Catch-Log-After.png",
+    why: "A unified fishing theme strengthens Fishdoro's product identity",
   },
 ];
 
-const DEFINE_PROBLEMS = [
+const INSIGHT_CARDS = [
   {
-    num: "01",
-    problem: "No ceremony at the end",
-    desc: "Focus sessions end abruptly. There's no acknowledgment that you finished something difficult. The timer just... stops.",
+    quote:
+      '"I stopped being strict about timing. Sometimes 25 min is futile, sometimes I need 45. I interrupt just as I start to focus."',
+    source: "↑ 105 · r/productivity",
+    insightNum: "Insight 01",
+    title: "Rigidity breaks flow",
+    desc: "The classic 25/5 cycle doesn't adapt to how people actually work. Many users described interrupting deep focus just because the timer said so — and never getting back into it.",
+    confidence: "High confidence",
+    confColor: "#6b8f4e",
   },
   {
-    num: "02",
-    problem: "Rewards are external and interruptive",
-    desc: "Treating yourself to something after focus means leaving the focused state. The reward itself becomes the distraction.",
+    quote:
+      '"Quit chasing perfect streaks like a mobile game; you\'re supposed to work and not obsess over productivity."',
+    source: "↑ 105 · r/productivity",
+    insightNum: "Insight 02",
+    title: "Gamification can backfire",
+    desc: 'Points, leaderboards, and streaks create pressure instead of motivation. Users described feeling like they were "gaming the system" rather than actually working.',
+    confidence: "High confidence",
+    confColor: "#6b8f4e",
   },
   {
-    num: "03",
-    problem: "Abstract numbers don't feel like progress",
-    desc: "Watching 25:00 count down to 0 maps to subtraction, not accomplishment. It doesn't feel like building anything.",
+    quote:
+      '"Gamification can go beyond badges and points. Good games have clear goals and spark curiosity, like a simulation with a purpose."',
+    source: "↑ 8 · r/gamification",
+    insightNum: "Insight 03",
+    title: "Novelty fades without discovery",
+    desc: 'Apps that felt exciting at first became boring once users had "seen everything." What kept people engaged was unpredictability — not knowing what comes next.',
+    confidence: "Medium confidence",
+    confColor: "#c07830",
+  },
+];
+
+const PROBLEM_CARDS: Array<{
+  badge: string;
+  badgeColor: string;
+  badgeBg: string;
+  borderColor: string;
+  name: string;
+  desc: string;
+  sourceText: string;
+}> = [
+  {
+    badge: "Flexibility",
+    badgeColor: "#4e7a30",
+    badgeBg: "rgba(200,219,160,0.3)",
+    borderColor: "#8aad5a",
+    name: "Flexibility Problem",
+    desc: "Pomodoro's rigid 25/5 structure works for some people, but breaks focus for others. A tool that forces a break at exactly 25 minutes is a tool that prioritizes its own logic over the user's momentum.",
+    sourceText: "Rigidity breaks flow",
+  },
+  {
+    badge: "Motivation",
+    badgeColor: "#9a5a10",
+    badgeBg: "rgba(240,200,138,0.3)",
+    borderColor: "#e0a050",
+    name: "Motivation Problem",
+    desc: "Most gamified productivity apps treat rewards as external pressure — streaks you can't break, leaderboards that compare you to others. This shifts the goal from doing meaningful work to maintaining a score.",
+    sourceText: "Gamification can backfire",
+  },
+  {
+    badge: "Retention",
+    badgeColor: "#7a58a8",
+    badgeBg: "rgba(216,200,232,0.3)",
+    borderColor: "#b098d0",
+    name: "Retention Problem",
+    desc: "Apps feel exciting at first, then predictable, then invisible. Without a sense of discovery or progression, there's no reason to come back. The app becomes just another notification to dismiss.",
+    sourceText: "Novelty fades without discovery",
   },
 ];
 
 const FISHDORO_ANNOTATIONS = [
   {
     id: 1,
-    x: 28,
-    y: 32,
-    label: "Focus timer",
-    desc: "25-minute countdown embedded in the pond scene — not separate from it. Time as an environment, not a number.",
+    x: 72,
+    y: 85,
+    label: "Full-width CTA",
+    desc: "Full-width CTA added after testing — matches the mental model of one clear action to start.",
+    insight: "Solves: Flexibility problem",
   },
   {
     id: 2,
-    x: 70,
-    y: 48,
-    label: "Live pond",
-    desc: "Fish swim in real time. Each completed session adds one to your pond. The reward is always visible.",
+    x: 30,
+    y: 25,
+    label: "Duration input",
+    desc: "Custom duration input added here — users who need 45-minute sessions shouldn't have to fight the tool.",
+    insight: "Solves: Flexibility problem",
   },
   {
     id: 3,
     x: 50,
-    y: 78,
-    label: "Session controls",
-    desc: "Single-tap start/pause. No menus. Intentionally one-screen — everything needed is always present.",
-  },
-  {
-    id: 4,
-    x: 16,
-    y: 62,
-    label: "Catch counter",
-    desc: "Session count shown as fish caught, not abstract numbers. Growth feels tangible.",
+    y: 50,
+    label: "Pixel art scene",
+    desc: "Pixel art fishing scene sets the emotional register before the user does anything. If this feels cozy in the first 2 seconds, the whole session feels different.",
+    insight: "Solves: Retention problem",
   },
 ];
 
 const KEY_TAKEAWAYS = [
   {
     num: "01",
-    title: "Constraints are creative fuel",
-    desc: "Pixel art's 16×16 grid forced every design decision to be intentional. If it doesn't fit, it doesn't ship — and that's a feature, not a bug.",
+    title: "The problem is more interesting than the solution.",
+    desc: 'The most valuable part of this project wasn\'t designing the fishing mechanic — it was discovering that people quit Pomodoro not because of laziness, but because of rigidity. That reframe changed everything. Instead of asking "how do I make a timer more fun?", the real question became "how do I make a timer that gets out of the user\'s way?" The difference between those two questions produced a fundamentally different design.',
   },
   {
     num: "02",
-    title: "Emotional design > feature completeness",
-    desc: "One well-crafted micro-interaction (the fish catch animation) was more impactful than all the settings screens I initially planned.",
+    title: "Designing something you build yourself changes how you think.",
+    desc: "Building Fishdoro in code taught me that design decisions have weight. A button position that takes five seconds to move in Figma might take an hour to re-implement in the actual interface — and that asymmetry forces you to be more intentional early. I started catching interaction problems in wireframes that I previously would have only noticed in prototypes, because I could mentally simulate how they'd feel to implement.",
   },
   {
     num: "03",
-    title: "Building is the best form of user research",
-    desc: "Making Fishdoro forced me to actually use a Pomodoro system. I found failure modes in week one that six months of interviews might have missed.",
+    title: "Gamification is a hypothesis, not a feature.",
+    desc: "Going into this project, I assumed that a fishing metaphor would naturally make focusing more enjoyable. What I learned from early walkthroughs is that the metaphor only works if the reward feels earned, not just given. The moment a fish appeared too easily, it stopped feeling like a reward and started feeling like noise. That's a principle I'd apply to any project involving behavioral mechanics: the value of a reward is inseparable from the effort that precedes it.",
   },
   {
     num: "04",
-    title: "The tool is the prototype",
-    desc: "Shipping a rough Electron build early revealed desktop UX patterns — window behavior, tray interactions, keyboard shortcuts — that no Figma prototype could surface.",
+    title: "Knowing what you don't know is a design skill.",
+    desc: "Fishdoro hasn't gone through structured usability testing yet. I know the questions I need to answer — does the metaphor land? does the reward frequency work in real sessions? — but I don't have the answers yet. Sitting with that uncertainty honestly, rather than filling it with assumptions, is something this project taught me to do better.",
   },
 ];
 
 function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const sliderRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [flipped, setFlipped] = useState<number | null>(null);
-  const [sliderPos, setSliderPos] = useState(50);
+  const [sliderPositions, setSliderPositions] = useState([50, 50, 50, 50]);
+  const sliderRef0 = useRef<HTMLDivElement>(null);
+  const sliderRef1 = useRef<HTMLDivElement>(null);
+  const sliderRef2 = useRef<HTMLDivElement>(null);
+  const sliderRef3 = useRef<HTMLDivElement>(null);
+  const sliderRefs = [sliderRef0, sliderRef1, sliderRef2, sliderRef3];
   const [activeAnnotation, setActiveAnnotation] = useState<number | null>(null);
+  const [lhHovered, setLhHovered] = useState<number | null>(null);
 
-  // Scroll progress bar — attached to .cs-content, NOT window
+  // Scroll progress bar — attached to scroll container, NOT window
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -296,7 +369,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Scroll reveal — IntersectionObserver rooted to .cs-content, NOT window
+  // Scroll reveal — IntersectionObserver rooted to scroll container, NOT window
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -317,14 +390,18 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
     return () => obs.disconnect();
   }, []);
 
-  function startSliderDrag(e: React.MouseEvent) {
+  function startSliderDrag(e: React.MouseEvent, idx: number) {
     e.preventDefault();
-    const container = sliderRef.current;
+    const container = sliderRefs[idx].current;
     if (!container) return;
     const onMove = (mv: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const p = ((mv.clientX - rect.left) / rect.width) * 100;
-      setSliderPos(Math.min(92, Math.max(8, p)));
+      setSliderPositions((prev) => {
+        const n = [...prev];
+        n[idx] = Math.min(92, Math.max(8, p));
+        return n;
+      });
     };
     const onUp = () => {
       window.removeEventListener("mousemove", onMove);
@@ -360,9 +437,35 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
     transition: `opacity 0.5s ${delay}s, transform 0.5s ${delay}s`,
   });
 
+  const hr = () => (
+    <hr
+      style={{
+        border: "none",
+        borderTop: "0.5px solid rgba(154,175,122,0.25)",
+        margin: "40px 0",
+      }}
+    />
+  );
+
+  const body = (text: string, delay = 0) => (
+    <p
+      className="cs-reveal"
+      style={{
+        ...reveal(delay),
+        fontFamily: "Inter, sans-serif",
+        fontSize: "16px",
+        fontWeight: 300,
+        color: "#5a7040",
+        lineHeight: 1.7,
+      }}
+    >
+      {text}
+    </p>
+  );
+
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
-      {/* Progress bar — attached to scroll content, not window */}
+      {/* Progress bar */}
       <div
         style={{
           height: "2px",
@@ -380,64 +483,115 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
         />
       </div>
 
-      {/* Scrollable content — max-width 640px, same as About Me */}
+      {/* Scrollable content */}
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto scrollbar-hide"
         style={{ padding: "40px 24px" }}
       >
         <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-          {/* ── Hero ── */}
-          <div className="cs-reveal flex flex-col gap-3" style={reveal(0)}>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.14em",
-                  color: "#9aaf7a",
-                  background: "rgba(200,219,160,0.25)",
-                  border: "1px solid rgba(107,143,78,0.35)",
-                  borderRadius: "99px",
-                  padding: "3px 12px",
-                }}
-              >
-                Case Study
-              </span>
-              <span
-                style={{ fontSize: "10px", fontWeight: 400, color: "#9aaf7a" }}
-              >
-                Electron · HTML · CSS · JS
-              </span>
+          {/* ══════════════════════════════════════════
+              SECTION 1 — HEADER
+          ══════════════════════════════════════════ */}
+          <header className="cs-reveal flex flex-col gap-4" style={reveal(0)}>
+            {/* Tags */}
+            <div className="flex flex-wrap gap-[6px]">
+              {["UI/UX", "Pixel Art", "Gamification", "Personal Project"].map(
+                (t) => (
+                  <span
+                    key={t}
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      color: "#4e7a30",
+                      background: "rgba(200,219,160,0.25)",
+                      border: "0.5px solid rgba(107,143,78,0.3)",
+                      borderRadius: "99px",
+                      padding: "3px 10px",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    {t}
+                  </span>
+                ),
+              )}
             </div>
+
+            {/* Title */}
             <h1
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "28px",
+                fontSize: "30px",
                 fontWeight: 700,
                 fontStyle: "italic",
                 color: "#2d4a1e",
                 lineHeight: 1.2,
               }}
             >
-              Fishdoro
+              Fishdoro — A Focus Tool That Feels Like Play
             </h1>
+
+            {/* Subtitle */}
+            <p
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "18px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.6,
+              }}
+            >
+              A Pomodoro timer reimagined as a cozy fishing mini-game, where
+              completing a focus session means catching a tiny pixel fish. It
+              started as a question: can a productivity tool feel genuinely
+              delightful instead of just efficient?
+            </p>
+
+            {/* Opening paragraphs */}
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
                 fontSize: "16px",
                 fontWeight: 300,
                 color: "#5a7040",
-                lineHeight: 1.6,
+                lineHeight: 1.7,
               }}
             >
-              A Pomodoro timer redesigned as a pixel art fishing mini-game.
-              Every completed focus session catches a fish — the reward is
-              embedded in the act of focusing, not external to it.
+              Productivity tools have a paradox: the apps designed to help you
+              focus are often the reason you stop using them. Pomodoro timers
+              are everywhere — minimal, functional, and nearly identical. Most
+              of them work fine in theory. But people keep quitting them.
             </p>
+            <p
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "16px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              I wanted to understand why. And then I wanted to build something
+              different.
+            </p>
+            <p
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "16px",
+                fontWeight: 300,
+                color: "#5a7040",
+                lineHeight: 1.7,
+              }}
+            >
+              This case study documents the research, design decisions, and
+              build process behind that question.
+            </p>
+
+            {/* Meta row */}
             <div
-              className="flex items-center gap-6 flex-wrap"
+              className="flex items-start gap-6 flex-wrap"
               style={{
                 borderTop: "0.5px solid rgba(154,175,122,0.25)",
                 paddingTop: "14px",
@@ -445,13 +599,13 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             >
               {[
                 { label: "Role", value: "UI/UX Designer · Developer" },
-                { label: "Stack", value: "Electron · HTML/CSS/JS" },
-                { label: "Status", value: "In Development" },
+                { label: "Type", value: "Personal exploration project" },
+                { label: "Stack", value: "Electron · HTML · CSS · JS" },
               ].map((m) => (
                 <div key={m.label} className="flex flex-col gap-0.5">
                   <span
                     style={{
-                      fontSize: "10px",
+                      fontSize: "12px",
                       fontWeight: 500,
                       textTransform: "uppercase",
                       letterSpacing: "0.1em",
@@ -463,7 +617,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   </span>
                   <span
                     style={{
-                      fontSize: "12px",
+                      fontSize: "14px",
                       fontWeight: 400,
                       color: "#5a7040",
                       fontFamily: "Inter, sans-serif",
@@ -474,115 +628,36 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 </div>
               ))}
             </div>
-          </div>
+          </header>
 
           {/* Hero image */}
           <div
             className="cs-reveal"
             style={{
               ...reveal(0.1),
-              marginTop: "24px",
+              marginTop: "20px",
               borderRadius: "12px",
               overflow: "hidden",
               border: "0.5px solid rgba(154,175,122,0.3)",
+              background: "#e8e2d8",
             }}
           >
             <img
               src="/assets/Fishdoro-SS/Hero.jpg"
-              alt="Fishdoro — hero"
+              alt="Fishdoro — hero screenshot"
               style={{
                 width: "100%",
-                height: "260px",
-                objectFit: "cover",
+                height: "auto",
                 display: "block",
               }}
             />
           </div>
 
-          <div style={{ height: "48px" }} />
+          {hr()}
 
-          {/* ── Background ── */}
-          <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>
-              {sectionPill("Background")}
-            </div>
-            <h2
-              className="cs-reveal"
-              style={{
-                ...reveal(0.05),
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "20px",
-                fontWeight: 700,
-                color: "#2d4a1e",
-              }}
-            >
-              The productivity paradox
-            </h2>
-            <div
-              className="cs-reveal"
-              style={{
-                ...reveal(0.1),
-                borderLeft: "2.5px solid rgba(107,143,78,0.4)",
-                paddingLeft: "16px",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: "16px",
-                  fontWeight: 700,
-                  fontStyle: "italic",
-                  color: "#2d4a1e",
-                  lineHeight: 1.5,
-                }}
-              >
-                "What if the reward was part of the focus itself?"
-              </p>
-            </div>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.15),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
-              }}
-            >
-              Most productivity apps promise to help you focus. In practice,
-              they add cognitive overhead — more notifications, more dashboards,
-              more decisions. The tool becomes the distraction.
-            </p>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.2),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
-              }}
-            >
-              Fishdoro started with a single question:{" "}
-              <span style={{ color: "#2d4a1e", fontWeight: 500 }}>
-                what if the reward mechanism was built into the timer itself
-              </span>{" "}
-              — not a badge you check later, but something that happens in real
-              time as you focus?
-            </p>
-          </section>
-
-          <hr
-            style={{
-              border: "none",
-              borderTop: "0.5px solid rgba(154,175,122,0.25)",
-              margin: "40px 0",
-            }}
-          />
-
-          {/* ── Discover ── */}
+          {/* ══════════════════════════════════════════
+              SECTION 2 — DISCOVER
+          ══════════════════════════════════════════ */}
           <section className="flex flex-col gap-4">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Discover")}
@@ -591,43 +666,30 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               className="cs-reveal"
               style={{
                 ...reveal(0.05),
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "20px",
-                fontWeight: 700,
-                color: "#2d4a1e",
-              }}
-            >
-              What are people actually struggling with?
-            </h2>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.1),
                 fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
+                fontSize: "22px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                lineHeight: 1.3,
               }}
             >
-              Research method: qualitative analysis of Reddit threads from{" "}
-              <span style={{ color: "#4e7a30", fontWeight: 400 }}>
-                r/productivity
-              </span>
-              ,{" "}
-              <span style={{ color: "#4e7a30", fontWeight: 400 }}>r/ADHD</span>,
-              and{" "}
-              <span style={{ color: "#4e7a30", fontWeight: 400 }}>
-                r/pomodoro
-              </span>{" "}
-              — 47 threads, 200+ comments. Thematic coding surfaced 3 consistent
-              patterns.
-            </p>
+              The Process — Discover → Define → Develop
+            </h2>
+            {body(
+              "To understand the problem before designing a solution, I turned to Reddit — a space where people talk honestly about their productivity habits, frustrations, and tool preferences. I analyzed threads across three areas: general Pomodoro discussions, opinions on gamification in productivity apps, and user reviews of competitor apps like Forest.",
+              0.1,
+            )}
+            {body(
+              "To make sense of the patterns, I used thematic coding — grouping recurring comments into themes, then assigning confidence levels based on how often each theme appeared across different threads.",
+              0.15,
+            )}
+            {body("Three insights emerged consistently:", 0.2)}
+
             {/* Affinity map */}
             <div
               className="cs-reveal"
               style={{
-                ...reveal(0.15),
+                ...reveal(0.25),
                 borderRadius: "12px",
                 overflow: "hidden",
                 border: "0.5px solid rgba(154,175,122,0.3)",
@@ -639,12 +701,14 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 style={{ width: "100%", height: "auto", display: "block" }}
               />
             </div>
+
+            {/* Flip hint */}
             <p
               className="cs-reveal"
               style={{
-                ...reveal(0.2),
+                ...reveal(0.3),
                 fontFamily: "Inter, sans-serif",
-                fontSize: "12px",
+                fontSize: "14px",
                 fontWeight: 400,
                 color: "#9aaf7a",
                 textAlign: "center",
@@ -652,11 +716,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             >
               Flip each card to read the full insight ↓
             </p>
+
             {/* Flip cards */}
-            <div
-              className="cs-reveal flex gap-3"
-              style={{ ...reveal(0.25), minHeight: "140px" }}
-            >
+            <div className="cs-reveal flex gap-3" style={{ ...reveal(0.35) }}>
               {INSIGHT_CARDS.map((card, i) => (
                 <div
                   key={i}
@@ -664,7 +726,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                     flex: 1,
                     perspective: "800px",
                     cursor: "pointer",
-                    height: "140px",
+                    height: "160px",
                   }}
                   onClick={() => setFlipped(flipped === i ? null : i)}
                 >
@@ -679,7 +741,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                         flipped === i ? "rotateY(180deg)" : "rotateY(0deg)",
                     }}
                   >
-                    {/* Front */}
+                    {/* Front — Reddit quote */}
                     <div
                       style={{
                         position: "absolute",
@@ -690,9 +752,60 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                         borderRadius: "12px",
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "center",
                         justifyContent: "center",
-                        padding: "16px",
+                        padding: "14px",
+                        gap: "8px",
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 300,
+                          fontStyle: "italic",
+                          color: "#5a7040",
+                          lineHeight: 1.55,
+                          flex: 1,
+                        }}
+                      >
+                        {card.quote}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            fontWeight: 400,
+                            color: "#9aaf7a",
+                            fontFamily: "Inter, sans-serif",
+                          }}
+                        >
+                          {card.source}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            color: "#b8b0a2",
+                            fontFamily: "Inter, sans-serif",
+                          }}
+                        >
+                          flip →
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Back — Insight */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        backfaceVisibility: "hidden",
+                        transform: "rotateY(180deg)",
+                        background: "#ffffff",
+                        border: "0.5px solid rgba(107,143,78,0.4)",
+                        borderRadius: "12px",
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: "14px",
                         gap: "6px",
                       }}
                     >
@@ -706,167 +819,276 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                           fontFamily: "Inter, sans-serif",
                         }}
                       >
-                        {card.frontSub}
+                        {card.insightNum}
                       </span>
                       <p
                         style={{
-                          fontFamily: "'Playfair Display', Georgia, serif",
-                          fontSize: "16px",
-                          fontWeight: 700,
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          fontWeight: 500,
                           color: "#2d4a1e",
-                          textAlign: "center",
                           lineHeight: 1.3,
                         }}
                       >
-                        {card.front}
+                        {card.title}
                       </p>
-                      <span
-                        style={{
-                          fontSize: "10px",
-                          color: "#b8b0a2",
-                          fontFamily: "Inter, sans-serif",
-                        }}
-                      >
-                        click to reveal →
-                      </span>
-                    </div>
-                    {/* Back */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        backfaceVisibility: "hidden",
-                        transform: "rotateY(180deg)",
-                        background: "rgba(200,219,160,0.15)",
-                        border: "0.5px solid rgba(107,143,78,0.4)",
-                        borderRadius: "12px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "16px",
-                      }}
-                    >
                       <p
                         style={{
                           fontFamily: "Inter, sans-serif",
                           fontSize: "12px",
                           fontWeight: 300,
                           color: "#5a7040",
-                          textAlign: "center",
-                          lineHeight: 1.6,
+                          lineHeight: 1.55,
+                          flex: 1,
                         }}
                       >
-                        {card.back}
+                        {card.desc}
                       </p>
+                      <div className="flex items-center gap-[5px]">
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: "6px",
+                            height: "6px",
+                            borderRadius: "50%",
+                            background: card.confColor,
+                            flexShrink: 0,
+                          }}
+                        />
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            fontWeight: 500,
+                            color: card.confColor,
+                            fontFamily: "Inter, sans-serif",
+                          }}
+                        >
+                          {card.confidence}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+
+            {/* Insight blocks */}
+            {[
+              {
+                title: "Insight 1 — Rigidity breaks flow",
+                body: "The classic 25/5 cycle doesn't adapt to how people actually work. Many users described interrupting deep focus just because the timer said so — and never getting back into it.",
+                conf: "Confidence: High — appeared across nearly every thread discussing Pomodoro",
+                confColor: "#6b8f4e",
+              },
+              {
+                title: "Insight 2 — Gamification can backfire",
+                body: 'Points, leaderboards, and streaks create pressure instead of motivation. Users described feeling like they were "gaming the system" rather than actually working.',
+                conf: "Confidence: High — consistent across gamification and Forest discussions",
+                confColor: "#6b8f4e",
+              },
+              {
+                title: "Insight 3 — Novelty fades without discovery",
+                body: 'Apps that felt exciting at first became boring once users had "seen everything." What kept people engaged was unpredictability — not knowing what comes next.',
+                conf: "Confidence: Medium — appeared in several threads but less universally",
+                confColor: "#c07830",
+              },
+            ].map((ins, i) => (
+              <div
+                key={i}
+                className="cs-reveal"
+                style={{
+                  ...reveal(i * 0.05),
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  padding: "14px 16px",
+                  background: "#ffffff",
+                  borderRadius: "10px",
+                  border: "0.5px solid rgba(154,175,122,0.3)",
+                }}
+              >
+                <h3
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    color: "#2d4a1e",
+                  }}
+                >
+                  {ins.title}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "16px",
+                    fontWeight: 300,
+                    color: "#5a7040",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {ins.body}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "11px",
+                    fontWeight: 400,
+                    fontStyle: "italic",
+                    color: ins.confColor,
+                  }}
+                >
+                  {ins.conf}
+                </p>
+              </div>
+            ))}
+
+            {/* Bridge */}
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                borderLeft: "2.5px solid rgba(107,143,78,0.4)",
+                paddingLeft: "16px",
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: 300,
+                  color: "#5a7040",
+                  lineHeight: 1.7,
+                  fontStyle: "italic",
+                }}
+              >
+                These three patterns became the foundation for every major
+                decision in Fishdoro.
+              </p>
+            </div>
           </section>
 
-          <hr
-            style={{
-              border: "none",
-              borderTop: "0.5px solid rgba(154,175,122,0.25)",
-              margin: "40px 0",
-            }}
-          />
+          {hr()}
 
-          {/* ── Define ── */}
+          {/* ══════════════════════════════════════════
+              SECTION 3 — DEFINE
+          ══════════════════════════════════════════ */}
           <section className="flex flex-col gap-4">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Define")}
             </div>
-            <h2
-              className="cs-reveal"
-              style={{
-                ...reveal(0.05),
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "20px",
-                fontWeight: 700,
-                color: "#2d4a1e",
-              }}
-            >
-              Three design problems
-            </h2>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.1),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
-              }}
-            >
-              The research converged on three root problems — each pointing
-              toward the same design direction.
-            </p>
-            {/* Design problems — each with cs-reveal for scroll reveal effect */}
-            <div className="flex flex-col gap-3" style={{ marginTop: "8px" }}>
-              {DEFINE_PROBLEMS.map((p, i) => (
+            {body(
+              "The research pointed to one core tension: people don't quit Pomodoro because they lack discipline. They quit because the tools don't adapt to how they actually work.",
+              0.05,
+            )}
+            {body(
+              "From the three insights, three design problems emerged:",
+              0.1,
+            )}
+
+            {/* Problem cards */}
+            <div className="flex flex-col gap-4" style={{ marginTop: "4px" }}>
+              {PROBLEM_CARDS.map((p, i) => (
                 <div
-                  key={p.num}
+                  key={p.name}
                   className="cs-reveal"
                   style={{
                     ...reveal(i * 0.12),
                     background: "#ffffff",
                     border: "0.5px solid rgba(154,175,122,0.3)",
+                    borderTop: `4px solid ${p.borderColor}`,
                     borderRadius: "12px",
-                    padding: "16px 18px",
+                    padding: "18px 16px",
                     display: "flex",
-                    gap: "14px",
-                    alignItems: "flex-start",
+                    flexDirection: "column",
+                    gap: "0",
                   }}
                 >
                   <span
                     style={{
+                      display: "inline-block",
                       fontSize: "10px",
                       fontWeight: 500,
-                      color: "#9aaf7a",
-                      minWidth: "20px",
-                      marginTop: "3px",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      borderRadius: "99px",
+                      padding: "3px 10px",
+                      width: "fit-content",
+                      background: p.badgeBg,
+                      color: p.badgeColor,
                       fontFamily: "Inter, sans-serif",
                     }}
                   >
-                    {p.num}
+                    {p.badge}
                   </span>
-                  <div className="flex flex-col gap-1.5">
-                    <p
+                  <h3
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "18px",
+                      fontWeight: 500,
+                      color: "#2d4a1e",
+                      marginTop: "10px",
+                      marginBottom: "6px",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {p.name}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: 300,
+                      color: "#5a7040",
+                      lineHeight: 1.7,
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {p.desc}
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      paddingTop: "10px",
+                      borderTop: "0.5px solid rgba(154,175,122,0.2)",
+                    }}
+                  >
+                    <span
                       style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
+                        fontSize: "10px",
                         fontWeight: 500,
-                        color: "#2d4a1e",
+                        color: "#9aaf7a",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        fontFamily: "Inter, sans-serif",
                       }}
                     >
-                      {p.problem}
-                    </p>
-                    <p
+                      From insight:
+                    </span>
+                    <span
                       style={{
-                        fontFamily: "Inter, sans-serif",
                         fontSize: "14px",
                         fontWeight: 300,
                         color: "#5a7040",
-                        lineHeight: 1.6,
+                        fontFamily: "Inter, sans-serif",
                       }}
                     >
-                      {p.desc}
-                    </p>
+                      {p.sourceText}
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
+
             {/* Design brief */}
             <div
               className="cs-reveal"
               style={{
                 ...reveal(0.36),
-                marginTop: "8px",
-                borderLeft: "2.5px solid rgba(107,143,78,0.4)",
-                paddingLeft: "16px",
+                marginTop: "4px",
+                borderTop: "0.5px solid rgba(154,175,122,0.25)",
+                paddingTop: "16px",
               }}
             >
               <p
@@ -874,302 +1096,351 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   fontSize: "10px",
                   fontWeight: 500,
                   textTransform: "uppercase",
-                  letterSpacing: "0.1em",
+                  letterSpacing: "0.12em",
                   color: "#9aaf7a",
-                  marginBottom: "6px",
+                  marginBottom: "8px",
                   fontFamily: "Inter, sans-serif",
                 }}
               >
-                Design Brief
+                Design brief
               </p>
-              <p
+              <div
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: "16px",
-                  fontWeight: 700,
-                  fontStyle: "italic",
-                  color: "#2d4a1e",
-                  lineHeight: 1.5,
+                  borderLeft: "2.5px solid rgba(107,143,78,0.4)",
+                  paddingLeft: "16px",
                 }}
               >
-                "Design a focus tool where the reward is part of the experience
-                — not external to it."
-              </p>
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "16px",
+                    fontWeight: 300,
+                    color: "#5a7040",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  Build a timer that bends to the user's rhythm, rewards focus
+                  without pressuring it, and gives people a small reason to come
+                  back tomorrow. That brief became Fishdoro.
+                </p>
+              </div>
             </div>
           </section>
 
-          <hr
-            style={{
-              border: "none",
-              borderTop: "0.5px solid rgba(154,175,122,0.25)",
-              margin: "40px 0",
-            }}
-          />
+          {hr()}
 
-          {/* ── Develop ── */}
+          {/* ══════════════════════════════════════════
+              SECTION 4 — DEVELOP
+          ══════════════════════════════════════════ */}
           <section className="flex flex-col gap-4">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Develop")}
             </div>
+
+            {/* 4a: Structure first */}
             <h2
               className="cs-reveal"
               style={{
                 ...reveal(0.05),
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "20px",
-                fontWeight: 700,
+                fontFamily: "Inter, sans-serif",
+                fontSize: "22px",
+                fontWeight: 500,
                 color: "#2d4a1e",
+                lineHeight: 1.3,
               }}
             >
-              From brief to build
+              Structure first — IA and user flows
             </h2>
-            <p
+            {body(
+              "Before any visual work, I mapped the entire experience as an Information Architecture and a set of core user flows — from starting a session, customizing duration, managing breaks, receiving fish rewards, viewing the fishing log, and adjusting settings.",
+              0.1,
+            )}
+            {body(
+              "The goal was to keep navigation invisible. In a tool people use while trying to focus, every extra decision is friction. Every path through the app needed to feel obvious without thinking.",
+              0.15,
+            )}
+
+            {/* 4b: Visual direction */}
+            <h2
               className="cs-reveal"
               style={{
-                ...reveal(0.1),
+                ...reveal(0.2),
                 fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
+                fontSize: "22px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                lineHeight: 1.3,
+                marginTop: "8px",
               }}
             >
-              The brief pointed toward a single-screen app: timer, pond, and
-              fish inventory all visible at once. No navigation, no dashboards —
-              just the act of focusing and its reward in the same frame.
-            </p>
-            {/* IA + Visual direction cards */}
-            <div className="cs-reveal flex gap-3" style={{ ...reveal(0.15) }}>
-              {[
-                {
-                  label: "Information Architecture",
-                  value:
-                    "Single screen — timer + pond + fish inventory. No navigation required.",
-                },
-                {
-                  label: "Visual Direction",
-                  value:
-                    "Pixel art, 16-bit palette. Warm earth tones. Intentionally nostalgic and low-stimulation.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.label}
+              Visual direction — cozy by design
+            </h2>
+            {body(
+              "The visual language came from a simple premise: if focusing feels like fishing, the app should look like the world you're fishing in. I built a moodboard around pixel art, warm earth tones, soft light, and retro-game UI references — things that feel familiar and calming rather than clinical and optimized.",
+              0.25,
+            )}
+            {body(
+              "The aim was a specific emotional register: delightful enough to make you smile when you open it, quiet enough to disappear once you start working.",
+              0.3,
+            )}
+
+            {/* Moodboard */}
+            <div
+              className="cs-reveal flex flex-col gap-[6px]"
+              style={reveal(0.35)}
+            >
+              <div
+                style={{
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  border: "0.5px solid rgba(154,175,122,0.3)",
+                  background: "#e8e2d8",
+                }}
+              >
+                <img
+                  src="/assets/Fishdoro-SS/Moodboard.png"
+                  alt="Fishdoro moodboard"
                   style={{
-                    flex: 1,
-                    background: "#ffffff",
-                    border: "0.5px solid rgba(154,175,122,0.3)",
-                    borderRadius: "12px",
-                    padding: "14px 16px",
+                    width: "100%",
+                    height: "auto",
+                    display: "block",
                   }}
-                >
+                />
+              </div>
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "11px",
+                  fontWeight: 300,
+                  color: "#9aaf7a",
+                  textAlign: "center",
+                  fontStyle: "italic",
+                }}
+              >
+                Moodboard — pixel art, warm tones, retro-game UI references
+              </p>
+            </div>
+
+            {/* 4c: Lo-fi to hi-fi */}
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "22px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                lineHeight: 1.3,
+                marginTop: "8px",
+              }}
+            >
+              Lo-fi to hi-fi — designing by iteration
+            </h2>
+            {body(
+              "I started with loose sketches, moved into lo-fi wireframes, and ran informal walkthroughs with a few people to catch early friction before investing in visual polish. The feedback surfaced five specific issues worth iterating on — inconsistent button hierarchy, timer customization in the wrong place, a bait icon that looked like a primary CTA, fish rewards that felt too random, and copy that broke the fishing theme.",
+              0.05,
+            )}
+            {body(
+              "Each issue had a clear fix, and each fix was traceable back to a principle from the research: rewards should feel earned, not random. The interface should match the mental model users bring to it. The fishing theme should be consistent, not decorative.",
+              0.1,
+            )}
+
+            {/* Before/After sliders — 4 pairs */}
+            <div className="cs-reveal flex flex-col gap-6" style={reveal(0.15)}>
+              {SLIDER_PAIRS.map((pair, idx) => (
+                <div key={idx} className="flex flex-col gap-2">
                   <p
                     style={{
-                      fontSize: "10px",
-                      fontWeight: 500,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      color: "#9aaf7a",
-                      marginBottom: "6px",
                       fontFamily: "Inter, sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      color: "#2d4a1e",
                     }}
                   >
-                    {item.label}
+                    {pair.label}
                   </p>
                   <p
                     style={{
-                      fontSize: "14px",
-                      fontWeight: 300,
-                      color: "#5a7040",
-                      lineHeight: 1.6,
                       fontFamily: "Inter, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 300,
+                      color: "#9aaf7a",
+                      fontStyle: "italic",
                     }}
                   >
-                    {item.value}
+                    "{pair.issue}"
+                  </p>
+                  <div
+                    ref={sliderRefs[idx]}
+                    style={{
+                      position: "relative",
+                      height: "420px",
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      userSelect: "none",
+                      cursor: "col-resize",
+                      background: "#e8e2d8",
+                    }}
+                  >
+                    {/* Before */}
+                    <div style={{ position: "absolute", inset: 0 }}>
+                      <img
+                        src={pair.before}
+                        alt={`Before — ${pair.label}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: "top",
+                          display: "block",
+                        }}
+                      />
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          left: "12px",
+                          fontSize: "10px",
+                          fontWeight: 500,
+                          color: "#fff",
+                          background: "rgba(0,0,0,0.35)",
+                          borderRadius: "99px",
+                          padding: "2px 8px",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        Before
+                      </span>
+                    </div>
+                    {/* After */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        clipPath: `inset(0 ${100 - sliderPositions[idx]}% 0 0)`,
+                      }}
+                    >
+                      <img
+                        src={pair.after}
+                        alt={`After — ${pair.label}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: "top",
+                          display: "block",
+                        }}
+                      />
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "12px",
+                          fontSize: "10px",
+                          fontWeight: 500,
+                          color: "#fff",
+                          background: "rgba(0,0,0,0.35)",
+                          borderRadius: "99px",
+                          padding: "2px 8px",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        After
+                      </span>
+                    </div>
+                    {/* Handle */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        left: `${sliderPositions[idx]}%`,
+                        width: "2px",
+                        background: "#6b8f4e",
+                        transform: "translateX(-50%)",
+                        cursor: "ew-resize",
+                      }}
+                      onMouseDown={(e) => startSliderDrag(e, idx)}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          width: "28px",
+                          height: "28px",
+                          borderRadius: "50%",
+                          background: "#6b8f4e",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          boxShadow: "0 2px 8px rgba(107,143,78,0.3)",
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: "#fff",
+                            fontSize: "10px",
+                            fontFamily: "Inter, sans-serif",
+                          }}
+                        >
+                          ⟺
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 300,
+                      color: "#9aaf7a",
+                    }}
+                  >
+                    → {pair.why}
                   </p>
                 </div>
               ))}
             </div>
 
-            <h3
-              className="cs-reveal"
-              style={{
-                ...reveal(0.2),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "#2d4a1e",
-                marginTop: "8px",
-              }}
-            >
-              Iteration — drag to compare
-            </h3>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.25),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
-              }}
-            >
-              Three rounds of iteration. Drag the slider to compare the first
-              wireframe with the final hi-fi:
-            </p>
-
-            {/* Before/After slider */}
-            <div
-              ref={sliderRef}
-              className="cs-reveal"
-              style={{
-                ...reveal(0.3),
-                position: "relative",
-                height: "360px",
-                borderRadius: "12px",
-                overflow: "hidden",
-                border: "0.5px solid rgba(154,175,122,0.3)",
-                userSelect: "none",
-                cursor: "col-resize",
-                background: "#1a1a2e",
-              }}
-            >
-              {/* Before — lo-fi */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src="/assets/Fishdoro-SS/LoFi-Home-Before.png"
-                  alt="Lo-fi wireframe"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    width: "auto",
-                    height: "auto",
-                    display: "block",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              {/* After — hi-fi */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  clipPath: `inset(0 ${100 - sliderPos}% 0 0)`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "#1a1a2e",
-                }}
-              >
-                <img
-                  src="/assets/Fishdoro-SS/HiFi-Home.png"
-                  alt="Hi-fi home screen"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    width: "auto",
-                    height: "auto",
-                    display: "block",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              {/* Drag handle */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  bottom: 0,
-                  left: `${sliderPos}%`,
-                  width: "2px",
-                  background: "#6b8f4e",
-                  transform: "translateX(-50%)",
-                  cursor: "ew-resize",
-                }}
-                onMouseDown={startSliderDrag}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    width: "28px",
-                    height: "28px",
-                    borderRadius: "50%",
-                    background: "#6b8f4e",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    boxShadow: "0 2px 8px rgba(107,143,78,0.3)",
-                  }}
-                >
-                  <span
-                    style={{
-                      color: "#fff",
-                      fontSize: "10px",
-                      lineHeight: 1,
-                      fontFamily: "Inter, sans-serif",
-                    }}
-                  >
-                    ⟺
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <h3
+            {/* 4d: Hi-fi screens */}
+            <h2
               className="cs-reveal"
               style={{
                 ...reveal(0),
                 fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
+                fontSize: "22px",
                 fontWeight: 500,
                 color: "#2d4a1e",
+                lineHeight: 1.3,
                 marginTop: "8px",
               }}
             >
-              Design outcome — annotated
-            </h3>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.05),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
-              }}
-            >
-              Click any numbered point to read the design decision behind it:
-            </p>
+              Hi-fi screens
+            </h2>
+            {body(
+              "Once the structure was solid, I layered in all the visual elements — pixel art, animations, and the core cast → wait → catch loop.",
+              0.05,
+            )}
 
-            {/* Annotated screen viewer */}
+            {/* Annotated full-width timer */}
             <div
               className="cs-reveal"
               style={{
                 ...reveal(0.1),
                 position: "relative",
                 borderRadius: "12px",
+                overflow: "hidden",
                 border: "0.5px solid rgba(154,175,122,0.3)",
-                background: "#1a1a2e",
               }}
             >
               <img
                 src="/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png"
-                alt="Hi-fi focus session"
+                alt="Fishdoro focus timer — annotated"
                 style={{ width: "100%", height: "auto", display: "block" }}
               />
-              {/* Hotspot overlay — positioned relative to natural image size */}
               {FISHDORO_ANNOTATIONS.map((ann) => (
                 <div
                   key={ann.id}
@@ -1187,10 +1458,10 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       height: "22px",
                       borderRadius: "50%",
                       background:
-                        activeAnnotation === ann.id ? "#6b8f4e" : "#ffffff",
-                      border: "1.5px solid #6b8f4e",
+                        activeAnnotation === ann.id ? "#4e7a30" : "#faf7f2",
+                      border: "2px solid rgba(250,247,242,0.8)",
                       color:
-                        activeAnnotation === ann.id ? "#ffffff" : "#6b8f4e",
+                        activeAnnotation === ann.id ? "#faf7f2" : "#4e7a30",
                       fontSize: "10px",
                       fontWeight: 600,
                       cursor: "pointer",
@@ -1245,63 +1516,89 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                           fontWeight: 300,
                           color: "#5a7040",
                           lineHeight: 1.5,
+                          marginBottom: "4px",
                         }}
                       >
                         {ann.desc}
                       </p>
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: 500,
+                          color: "#9aaf7a",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {ann.insight}
+                      </span>
                     </div>
                   )}
                 </div>
               ))}
             </div>
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.12),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "12px",
+                fontWeight: 300,
+                color: "#9aaf7a",
+                textAlign: "center",
+                fontStyle: "italic",
+              }}
+            >
+              Click the numbered circles to see design decisions
+            </p>
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.13),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "11px",
+                fontWeight: 300,
+                color: "#9aaf7a",
+                textAlign: "center",
+                fontStyle: "italic",
+              }}
+            >
+              Focus timer — cast → wait → catch
+            </p>
 
-            {/* Hi-fi screen grid */}
+            {/* 2-col: Home + Reward reveal */}
             <div
               className="cs-reveal"
               style={{
                 ...reveal(0.15),
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: "10px",
+                gap: "12px",
               }}
             >
               {[
                 {
-                  src: "/assets/Fishdoro-SS/HiFi-Session-Setup.png",
-                  caption: "Session setup",
+                  src: "/assets/Fishdoro-SS/HiFi-Home.png",
+                  alt: "Home screen",
+                  caption: "Home screen",
                 },
                 {
-                  src: "/assets/Fishdoro-SS/HiFi-Catch-Log.png",
-                  caption: "Catch log",
-                },
-                {
-                  src: "/assets/Fishdoro-SS/HiFi-Session-Setting.png",
-                  caption: "Session settings",
-                },
-                {
-                  src: "/assets/Fishdoro-SS/HiFi-Catch-Report.png",
-                  caption: "Catch report",
+                  src: "/assets/Fishdoro-SS/HiFi-Get-Fish-Timer-Finish.png",
+                  alt: "Reward reveal",
+                  caption: "Reward reveal — the pixel fish",
                 },
               ].map((s) => (
-                <div
-                  key={s.src}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "4px",
-                  }}
-                >
+                <div key={s.src} className="flex flex-col gap-[6px]">
                   <div
                     style={{
                       borderRadius: "10px",
                       overflow: "hidden",
                       border: "0.5px solid rgba(154,175,122,0.3)",
-                      background: "#1a1a2e",
+                      background: "#e8e2d8",
                     }}
                   >
                     <img
                       src={s.src}
-                      alt={s.caption}
+                      alt={s.alt}
                       style={{
                         width: "100%",
                         height: "auto",
@@ -1311,12 +1608,12 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   </div>
                   <p
                     style={{
-                      fontSize: "10px",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "11px",
                       fontWeight: 300,
                       color: "#9aaf7a",
                       textAlign: "center",
                       fontStyle: "italic",
-                      fontFamily: "Inter, sans-serif",
                     }}
                   >
                     {s.caption}
@@ -1324,193 +1621,521 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 </div>
               ))}
             </div>
-          </section>
 
-          <hr
-            style={{
-              border: "none",
-              borderTop: "0.5px solid rgba(154,175,122,0.25)",
-              margin: "40px 0",
-            }}
-          />
-
-          {/* ── Validation ── */}
-          <section className="flex flex-col gap-4">
-            <div className="cs-reveal" style={reveal(0)}>
-              {sectionPill("Validation")}
-            </div>
-            <h2
-              className="cs-reveal"
-              style={{
-                ...reveal(0.05),
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "20px",
-                fontWeight: 700,
-                color: "#2d4a1e",
-              }}
-            >
-              Testing & open questions
-            </h2>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.1),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#5a7040",
-                lineHeight: 1.7,
-              }}
-            >
-              Core build is functional. Currently running informal user testing
-              (n=3 sessions) with people who actively use Pomodoro systems.
-            </p>
+            {/* 3-col: Session Setup + Session Setting + App Setting */}
             <div
               className="cs-reveal"
               style={{
-                ...reveal(0.15),
-                background: "#ffffff",
-                border: "0.5px solid rgba(154,175,122,0.3)",
-                borderRadius: "12px",
-                padding: "18px",
+                ...reveal(0.2),
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: "12px",
               }}
             >
+              {[
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Session-Setup.png",
+                  alt: "Session setup",
+                  caption: "Session setup",
+                },
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Session-Setting.png",
+                  alt: "Session settings",
+                  caption: "Session settings",
+                },
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-App-Setting.png",
+                  alt: "App settings",
+                  caption: "App settings",
+                },
+              ].map((s) => (
+                <div key={s.src} className="flex flex-col gap-[6px]">
+                  <div
+                    style={{
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      background: "#e8e2d8",
+                    }}
+                  >
+                    <img
+                      src={s.src}
+                      alt={s.alt}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                      }}
+                    />
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 300,
+                      color: "#9aaf7a",
+                      textAlign: "center",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {s.caption}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* 2-col: Catch Log + Catch Report */}
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.25),
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "12px",
+              }}
+            >
+              {[
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Catch-Log.png",
+                  alt: "Fishing log",
+                  caption: "Fishing log",
+                },
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Catch-Report.png",
+                  alt: "Catch report",
+                  caption: "Catch report",
+                },
+              ].map((s) => (
+                <div key={s.src} className="flex flex-col gap-[6px]">
+                  <div
+                    style={{
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      background: "#e8e2d8",
+                    }}
+                  >
+                    <img
+                      src={s.src}
+                      alt={s.alt}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                      }}
+                    />
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 300,
+                      color: "#9aaf7a",
+                      textAlign: "center",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {s.caption}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* 2-col: Break State */}
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.3),
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "12px",
+              }}
+            >
+              <div className="flex flex-col gap-[6px]">
+                <div
+                  style={{
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                    border: "0.5px solid rgba(154,175,122,0.3)",
+                    background: "#e8e2d8",
+                  }}
+                >
+                  <img
+                    src="/assets/Fishdoro-SS/HiFi-Break-State.png"
+                    alt="Break state"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      display: "block",
+                    }}
+                  />
+                </div>
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "11px",
+                    fontWeight: 300,
+                    color: "#9aaf7a",
+                    textAlign: "center",
+                    fontStyle: "italic",
+                  }}
+                >
+                  Break state — a different pace
+                </p>
+              </div>
+            </div>
+
+            {/* 4e: What's built so far */}
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "22px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                lineHeight: 1.3,
+                marginTop: "8px",
+              }}
+            >
+              What's built so far
+            </h2>
+            {body(
+              "Fishdoro is currently in active development. The core experience — home screen, session selection, focus timer, reward reveal, and report — is functional. The fishing logic, transitions, and reward reveal work as intended, and the experience already feels meaningfully different from a standard Pomodoro timer.",
+              0.05,
+            )}
+            {body(
+              "What remains is the craft layer: completing the full pixel art asset set, refining animations, and polishing transitions. These are not design unknowns — the decisions are made, the execution is in progress.",
+              0.1,
+            )}
+
+            {/* 4f: The build as a design signal */}
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "22px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                lineHeight: 1.3,
+              }}
+            >
+              The build as a design signal
+            </h2>
+            {body(
+              "One aspect of this project worth noting: Fishdoro is being built entirely by the designer, using Electron, HTML, CSS, and JavaScript. This was never the plan — it emerged from necessity and curiosity. But it changed how I design.",
+              0.2,
+            )}
+            {body(
+              "When you're the one implementing your own decisions, you stop making design choices that are easy to draw but hard to build. You develop instincts for the gap between how something looks in Figma and how it feels when you actually interact with it. That gap, it turns out, is where most of the interesting design problems live.",
+              0.25,
+            )}
+
+            {/* Lo-fi vs Hi-fi fade — inline */}
+            <div className="cs-reveal flex flex-col gap-3" style={reveal(0.3)}>
               <p
                 style={{
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "10px",
                   fontWeight: 500,
                   textTransform: "uppercase",
                   letterSpacing: "0.12em",
                   color: "#9aaf7a",
-                  marginBottom: "12px",
-                  fontFamily: "Inter, sans-serif",
                 }}
               >
-                Questions still open
+                From wireframe to final design
               </p>
-              <div className="flex flex-col gap-3">
+              <h3
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: 500,
+                  color: "#2d4a1e",
+                }}
+              >
+                Hover to see where it started
+              </h3>
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 300,
+                  color: "#5a7040",
+                  lineHeight: 1.6,
+                }}
+              >
+                The hi-fi screens above are the result of the full process —
+                from lo-fi sketch to final pixel art.
+              </p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                }}
+              >
                 {[
-                  'Does the fishing mechanic actually reduce the guilt spiral effect, or does it introduce new pressure to "complete" sessions?',
-                  "Is the pixel art aesthetic accessible to users who don't have nostalgia for that era?",
-                  "How do extended sessions (4+ hours) feel? Does fish accumulation stay meaningful or start to feel hollow?",
-                ].map((q, i) => (
-                  <div key={i} className="flex gap-3 items-start">
-                    <span
+                  {
+                    label: "Home Screen",
+                    hifi: "/assets/Fishdoro-SS/HiFi-Home.png",
+                    lofi: "/assets/Fishdoro-SS/LoFi-Home.png",
+                  },
+                  {
+                    label: "Focus Timer",
+                    hifi: "/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png",
+                    lofi: "/assets/Fishdoro-SS/LoFi-Pomodoro-Session.png",
+                  },
+                ].map((pair, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      position: "relative",
+                      aspectRatio: "416 / 592",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={() => setLhHovered(i)}
+                    onMouseLeave={() => setLhHovered(null)}
+                  >
+                    {/* Hi-fi (bottom layer) */}
+                    <img
+                      src={pair.hifi}
+                      alt={`${pair.label} — final design`}
                       style={{
-                        fontSize: "10px",
-                        color: "#9aaf7a",
-                        marginTop: "2px",
-                        minWidth: "14px",
-                        fontFamily: "Inter, sans-serif",
+                        position: "absolute",
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                    {/* Lo-fi (top layer, fades out on hover) */}
+                    <img
+                      src={pair.lofi}
+                      alt={`${pair.label} — lo-fi wireframe`}
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                        opacity: lhHovered === i ? 0 : 1,
+                        transition: "opacity 0.4s ease",
+                      }}
+                    />
+                    {/* Top label */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        background:
+                          "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 100%)",
+                        padding: "10px 14px",
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
                     >
-                      →
-                    </span>
-                    <p
-                      style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
-                        fontWeight: 300,
-                        color: "#5a7040",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {q}
-                    </p>
+                      <span
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 500,
+                          color: "#fff",
+                        }}
+                      >
+                        {pair.label}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 300,
+                          color: "rgba(255,255,255,0.8)",
+                        }}
+                      >
+                        {lhHovered === i ? "Lo-fi wireframe" : "Final design"}
+                      </span>
+                    </div>
+                    {/* Bottom hint */}
+                    {lhHovered !== i && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          background:
+                            "linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 100%)",
+                          padding: "10px 14px",
+                          textAlign: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "10px",
+                            fontWeight: 300,
+                            color: "rgba(255,255,255,0.7)",
+                          }}
+                        >
+                          Hover to reveal wireframe
+                        </span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
           </section>
 
-          <hr
-            style={{
-              border: "none",
-              borderTop: "0.5px solid rgba(154,175,122,0.25)",
-              margin: "40px 0",
-            }}
-          />
+          {hr()}
 
-          {/* ── Key Takeaways ── */}
+          {/* ══════════════════════════════════════════
+              SECTION 5 — VALIDATION
+          ══════════════════════════════════════════ */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Validation")}
+            </div>
+            {body(
+              "The current build has not yet gone through structured usability testing with external users. The informal walkthroughs during lo-fi helped shape the structure, but a proper validation round is planned once the full visual layer is complete.",
+              0.05,
+            )}
+            {body(
+              "The key questions I want to answer: Does the fishing metaphor land immediately, or does it need onboarding? Does the reward frequency feel satisfying or distracting during actual work sessions? And does the cozy aesthetic hold up across longer sessions, or does it become visual noise?",
+              0.1,
+            )}
+            {body(
+              "These are hypotheses, not conclusions — and that's the honest state of this project right now.",
+              0.15,
+            )}
+          </section>
+
+          {hr()}
+
+          {/* ══════════════════════════════════════════
+              SECTION 6 — KEY TAKEAWAYS
+          ══════════════════════════════════════════ */}
           <section className="flex flex-col gap-4">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Key Takeaways")}
             </div>
-            <h2
-              className="cs-reveal"
-              style={{
-                ...reveal(0.05),
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "20px",
-                fontWeight: 700,
-                color: "#2d4a1e",
-              }}
-            >
-              4 things this project taught me
-            </h2>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
               {KEY_TAKEAWAYS.map((item, i) => (
                 <div
                   key={item.num}
                   className="cs-reveal"
                   style={{
-                    ...reveal(i * 0.1),
+                    ...reveal(i * 0.08),
                     background: "#ffffff",
                     border: "0.5px solid rgba(154,175,122,0.3)",
                     borderRadius: "12px",
                     padding: "16px 18px",
                     display: "flex",
-                    gap: "14px",
-                    alignItems: "flex-start",
+                    flexDirection: "column",
+                    gap: "6px",
                   }}
                 >
-                  <span
+                  <p
                     style={{
                       fontFamily: "'Playfair Display', Georgia, serif",
-                      fontSize: "20px",
+                      fontSize: "22px",
                       fontWeight: 700,
                       color: "rgba(154,175,122,0.5)",
-                      minWidth: "28px",
                       lineHeight: 1,
                     }}
                   >
                     {item.num}
-                  </span>
-                  <div className="flex flex-col gap-1.5">
-                    <p
-                      style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "#2d4a1e",
-                      }}
-                    >
-                      {item.title}
-                    </p>
-                    <p
-                      style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
-                        fontWeight: 300,
-                        color: "#5a7040",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {item.desc}
-                    </p>
-                  </div>
+                  </p>
+                  <h3
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: 500,
+                      color: "#2d4a1e",
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: 300,
+                      color: "#5a7040",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {item.desc}
+                  </p>
                 </div>
               ))}
             </div>
           </section>
 
-          <div style={{ height: "40px" }} />
+          {hr()}
+
+          {/* ══════════════════════════════════════════
+              SECTION 7 — SIGNING OFF
+          ══════════════════════════════════════════ */}
+          <section className="flex flex-col gap-4">
+            {body(
+              "The question that started Fishdoro was simple: can a boring timer become something you actually want to open?",
+              0,
+            )}
+            {body(
+              "The honest answer, at this stage, is: I think so — but I'm not done proving it yet.",
+              0.05,
+            )}
+            {body(
+              "What I do know is that the research is solid, the design decisions are traceable, and the experience already feels different from everything else in this space. A tiny pixel fish as a reward for 25 minutes of focus sounds absurd on paper. But there's something about it that works — the same way fishing itself works. You're not guaranteed to catch anything. But the possibility keeps you patient.",
+              0.1,
+            )}
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.15),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "16px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                lineHeight: 1.6,
+              }}
+            >
+              That's the feeling Fishdoro is trying to bottle. The build
+              continues. 🎣
+            </p>
+            <p
+              className="cs-reveal"
+              style={{
+                ...reveal(0.2),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "10px",
+                fontWeight: 500,
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                color: "#9aaf7a",
+                marginTop: "8px",
+              }}
+            >
+              Process: Discover → Define → Develop
+            </p>
+          </section>
+
+          <div style={{ height: "48px" }} />
         </div>
       </div>
     </div>
   );
 }
-
 function ProjectPage({
   onClose,
   origin,
