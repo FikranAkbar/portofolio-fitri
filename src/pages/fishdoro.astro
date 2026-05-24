@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import AffinityMap from "../components/AffinityMap.astro";
 import FlipCards from "../components/FlipCards.astro";
 import ProblemFramework from "../components/ProblemFramework.astro";
 import BeforeAfterSliders from "../components/BeforeAfterSliders.astro";
@@ -48,14 +47,12 @@ import AnnotatedViewer from "../components/AnnotatedViewer.astro";
           </div>
 
           <!-- Title -->
-          <h1 class="cs-title">Fishdoro — A Focus Tool That Feels Like Play</h1>
+          <h1 class="cs-title">Fishdoro</h1>
 
           <!-- Subtitle -->
           <p class="cs-subtitle">
-            A Pomodoro timer reimagined as a cozy fishing mini-game, where
-            completing a focus session means catching a tiny pixel fish. It
-            started as a question: can a productivity tool feel genuinely
-            delightful instead of just efficient?
+            A cozy Pomodoro timer disguised as a fishing game. Complete a focus
+            session. Catch a fish. That's it.
           </p>
 
           <!-- Opening paragraphs -->
@@ -74,6 +71,15 @@ import AnnotatedViewer from "../components/AnnotatedViewer.astro";
             process behind that question.
           </p>
 
+          <!-- Hero image -->
+          <div class="cs-hero-img">
+            <img
+              src="/assets/Fishdoro-SS/Hero.jpg"
+              alt="Fishdoro — hero screenshot"
+              loading="eager"
+            />
+          </div>
+
           <!-- Meta row -->
           <div class="cs-meta-row">
             <div class="cs-meta-item">
@@ -89,21 +95,45 @@ import AnnotatedViewer from "../components/AnnotatedViewer.astro";
               <span class="cs-meta-value">Electron · HTML · CSS · JS</span>
             </div>
           </div>
-
-          <!-- Hero image -->
-          <div class="cs-hero-img">
-            <img
-              src="/assets/Fishdoro-SS/Hero.jpg"
-              alt="Fishdoro — hero screenshot"
-              loading="eager"
-            />
-          </div>
         </header>
 
         <hr class="cs-divider" />
 
         <!-- ═══════════════════════════════════════════════════════
-             SECTION 2 — DISCOVER
+             SECTION 2 — BACKGROUND
+        ═══════════════════════════════════════════════ -->
+        <section class="cs-section" id="background">
+          <div class="cs-section-pill">Background</div>
+          <h2 class="cs-section-title">The productivity paradox</h2>
+
+          <blockquote class="cs-blockquote">
+            “What if the reward was part of the focus itself?”
+          </blockquote>
+
+          <p class="cs-body">
+            Most productivity apps promise to help you focus. In practice, they
+            add cognitive overhead — more notifications, more dashboards, more
+            decisions. The tool becomes the distraction.
+          </p>
+          <p class="cs-body">
+            Fishdoro started with a single question: what if the reward
+            mechanism was built into the timer itself — not a badge you check
+            later, but something that happens in real time as you focus?
+          </p>
+
+          <h3 class="cs-subsection-title">What is Fishdoro?</h3>
+          <p class="cs-body">
+            Fishdoro is a Pomodoro timer reimagined as a cozy fishing mini-game.
+            Every completed focus session catches a pixel fish — the reward is
+            embedded in the act of focusing, not external to it. Built with
+            Electron, HTML, CSS, and JavaScript — entirely by the designer.
+          </p>
+        </section>
+
+        <hr class="cs-divider" />
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 3 — DISCOVER
         ═══════════════════════════════════════════════════════ -->
         <section class="cs-section" id="discover">
           <div class="cs-section-pill">Discover</div>
@@ -126,56 +156,9 @@ import AnnotatedViewer from "../components/AnnotatedViewer.astro";
           </p>
           <p class="cs-body">Three insights emerged consistently:</p>
 
-          <!-- Affinity Map component -->
-          <AffinityMap />
-
           <!-- Flip Cards — insight reveal -->
           <p class="cs-hint">Flip each card to read the full insight ↓</p>
           <FlipCards />
-
-          <!-- Insights expanded -->
-          <div class="cs-insight-block">
-            <h3 class="cs-insight-title">Insight 1 — Rigidity breaks flow</h3>
-            <p class="cs-body">
-              The classic 25/5 cycle doesn't adapt to how people actually work.
-              Many users described interrupting deep focus just because the
-              timer said so — and never getting back into it.
-            </p>
-            <p class="cs-confidence cs-confidence-high">
-              Confidence: High — appeared across nearly every thread discussing
-              Pomodoro
-            </p>
-          </div>
-
-          <div class="cs-insight-block">
-            <h3 class="cs-insight-title">
-              Insight 2 — Gamification can backfire
-            </h3>
-            <p class="cs-body">
-              Points, leaderboards, and streaks create pressure instead of
-              motivation. Users described feeling like they were "gaming the
-              system" rather than actually working.
-            </p>
-            <p class="cs-confidence cs-confidence-high">
-              Confidence: High — consistent across gamification and Forest
-              discussions
-            </p>
-          </div>
-
-          <div class="cs-insight-block">
-            <h3 class="cs-insight-title">
-              Insight 3 — Novelty fades without discovery
-            </h3>
-            <p class="cs-body">
-              Apps that felt exciting at first became boring once users had
-              "seen everything." What kept people engaged was unpredictability —
-              not knowing what comes next.
-            </p>
-            <p class="cs-confidence cs-confidence-medium">
-              Confidence: Medium — appeared in several threads but less
-              universally
-            </p>
-          </div>
 
           <div class="cs-bridge">
             These three patterns became the foundation for every major decision
@@ -560,7 +543,7 @@ import AnnotatedViewer from "../components/AnnotatedViewer.astro";
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background: #faf7f2;
+    background: #ffffff;
     overflow: hidden;
   }
 
@@ -693,7 +676,7 @@ import AnnotatedViewer from "../components/AnnotatedViewer.astro";
 
   /* Subtitle */
   .cs-subtitle {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 300;
     color: #5a7040;
     line-height: 1.6;
@@ -705,6 +688,28 @@ import AnnotatedViewer from "../components/AnnotatedViewer.astro";
     font-weight: 300;
     color: #5a7040;
     line-height: 1.7;
+  }
+
+  /* Background section — blockquote */
+  .cs-blockquote {
+    border-left: 2.5px solid rgba(107, 143, 78, 0.4);
+    padding-left: 16px;
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+    color: #5a7040;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Background section — subsection heading */
+  .cs-subsection-title {
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #2d4a1e;
+    margin-top: 24px;
+    margin-bottom: 8px;
   }
 
   /* Meta row */

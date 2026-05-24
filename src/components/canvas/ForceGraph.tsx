@@ -464,7 +464,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
   );
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden">
+    <div className="flex flex-col flex-1 overflow-hidden" style={{ background: "#ffffff" }}>
       {/* Progress bar */}
       <div
         style={{
@@ -530,23 +530,21 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 lineHeight: 1.2,
               }}
             >
-              Fishdoro — A Focus Tool That Feels Like Play
+              Fishdoro
             </h1>
 
             {/* Subtitle */}
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "18px",
+                fontSize: "16px",
                 fontWeight: 300,
                 color: "#5a7040",
                 lineHeight: 1.6,
               }}
             >
-              A Pomodoro timer reimagined as a cozy fishing mini-game, where
-              completing a focus session means catching a tiny pixel fish. It
-              started as a question: can a productivity tool feel genuinely
-              delightful instead of just efficient?
+              A cozy Pomodoro timer disguised as a fishing game. Complete a
+              focus session. Catch a fish. That’s it.
             </p>
 
             {/* Opening paragraphs */}
@@ -589,6 +587,28 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               build process behind that question.
             </p>
 
+            {/* Hero image */}
+            <div
+              className="cs-reveal"
+              style={{
+                ...reveal(0.1),
+                borderRadius: "12px",
+                overflow: "hidden",
+                border: "0.5px solid rgba(154,175,122,0.3)",
+                background: "#e8e2d8",
+              }}
+            >
+              <img
+                src="/assets/Fishdoro-SS/Hero.jpg"
+                alt="Fishdoro — hero screenshot"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                }}
+              />
+            </div>
+
             {/* Meta row */}
             <div
               className="flex items-start gap-6 flex-wrap"
@@ -630,33 +650,82 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             </div>
           </header>
 
-          {/* Hero image */}
-          <div
-            className="cs-reveal"
-            style={{
-              ...reveal(0.1),
-              marginTop: "20px",
-              borderRadius: "12px",
-              overflow: "hidden",
-              border: "0.5px solid rgba(154,175,122,0.3)",
-              background: "#e8e2d8",
-            }}
-          >
-            <img
-              src="/assets/Fishdoro-SS/Hero.jpg"
-              alt="Fishdoro — hero screenshot"
+          {hr()}
+
+          {/* ══════════════════════════════════════════
+              SECTION 2 — BACKGROUND
+          ══════════════════════════════════════════ */}
+          <section className="flex flex-col gap-4">
+            <div className="cs-reveal" style={reveal(0)}>
+              {sectionPill("Background")}
+            </div>
+            <h2
+              className="cs-reveal"
               style={{
-                width: "100%",
-                height: "auto",
-                display: "block",
+                ...reveal(0.05),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "22px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                lineHeight: 1.3,
               }}
-            />
-          </div>
+            >
+              The productivity paradox
+            </h2>
+            <blockquote
+              className="cs-reveal"
+              style={{
+                ...reveal(0.1),
+                borderLeft: "2.5px solid rgba(107,143,78,0.4)",
+                paddingLeft: "16px",
+                margin: 0,
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                  color: "#5a7040",
+                  lineHeight: 1.7,
+                }}
+              >
+                "What if the reward was part of the focus itself?"
+              </p>
+            </blockquote>
+            {body(
+              "Most productivity apps promise to help you focus. In practice, they add cognitive overhead — more notifications, more dashboards, more decisions. The tool becomes the distraction.",
+              0.15,
+            )}
+            {body(
+              "Fishdoro started with a single question: what if the reward mechanism was built into the timer itself — not a badge you check later, but something that happens in real time as you focus?",
+              0.2,
+            )}
+            <h3
+              className="cs-reveal"
+              style={{
+                ...reveal(0.25),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "18px",
+                fontWeight: 500,
+                color: "#2d4a1e",
+                marginTop: "24px",
+                marginBottom: 0,
+              }}
+            >
+              What is Fishdoro?
+            </h3>
+            {body(
+              "Fishdoro is a Pomodoro timer reimagined as a cozy fishing mini-game. Every completed focus session catches a pixel fish — the reward is embedded in the act of focusing, not external to it. Built with Electron, HTML, CSS, and JavaScript — entirely by the designer.",
+              0.3,
+            )}
+          </section>
 
           {hr()}
 
           {/* ══════════════════════════════════════════
-              SECTION 2 — DISCOVER
+              SECTION 3 — DISCOVER
           ══════════════════════════════════════════ */}
           <section className="flex flex-col gap-4">
             <div className="cs-reveal" style={reveal(0)}>
@@ -685,23 +754,6 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             )}
             {body("Three insights emerged consistently:", 0.2)}
 
-            {/* Affinity map */}
-            <div
-              className="cs-reveal"
-              style={{
-                ...reveal(0.25),
-                borderRadius: "12px",
-                overflow: "hidden",
-                border: "0.5px solid rgba(154,175,122,0.3)",
-              }}
-            >
-              <img
-                src="/assets/Fishdoro-SS/Affinity%20Mapping.png"
-                alt="Affinity mapping — thematic coding"
-                style={{ width: "100%", height: "auto", display: "block" }}
-              />
-            </div>
-
             {/* Flip hint */}
             <p
               className="cs-reveal"
@@ -726,14 +778,15 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                     flex: 1,
                     perspective: "800px",
                     cursor: "pointer",
-                    height: "160px",
+                    height: "auto",
+                    minHeight: "220px",
                   }}
                   onClick={() => setFlipped(flipped === i ? null : i)}
                 >
                   <div
                     style={{
                       width: "100%",
-                      height: "100%",
+                      minHeight: "220px",
                       position: "relative",
                       transformStyle: "preserve-3d",
                       transition: "transform 0.5s ease",
@@ -871,76 +924,6 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 </div>
               ))}
             </div>
-
-            {/* Insight blocks */}
-            {[
-              {
-                title: "Insight 1 — Rigidity breaks flow",
-                body: "The classic 25/5 cycle doesn't adapt to how people actually work. Many users described interrupting deep focus just because the timer said so — and never getting back into it.",
-                conf: "Confidence: High — appeared across nearly every thread discussing Pomodoro",
-                confColor: "#6b8f4e",
-              },
-              {
-                title: "Insight 2 — Gamification can backfire",
-                body: 'Points, leaderboards, and streaks create pressure instead of motivation. Users described feeling like they were "gaming the system" rather than actually working.',
-                conf: "Confidence: High — consistent across gamification and Forest discussions",
-                confColor: "#6b8f4e",
-              },
-              {
-                title: "Insight 3 — Novelty fades without discovery",
-                body: 'Apps that felt exciting at first became boring once users had "seen everything." What kept people engaged was unpredictability — not knowing what comes next.',
-                conf: "Confidence: Medium — appeared in several threads but less universally",
-                confColor: "#c07830",
-              },
-            ].map((ins, i) => (
-              <div
-                key={i}
-                className="cs-reveal"
-                style={{
-                  ...reveal(i * 0.05),
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  padding: "14px 16px",
-                  background: "#ffffff",
-                  borderRadius: "10px",
-                  border: "0.5px solid rgba(154,175,122,0.3)",
-                }}
-              >
-                <h3
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "16px",
-                    fontWeight: 500,
-                    color: "#2d4a1e",
-                  }}
-                >
-                  {ins.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "16px",
-                    fontWeight: 300,
-                    color: "#5a7040",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  {ins.body}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "11px",
-                    fontWeight: 400,
-                    fontStyle: "italic",
-                    color: ins.confColor,
-                  }}
-                >
-                  {ins.conf}
-                </p>
-              </div>
-            ))}
 
             {/* Bridge */}
             <div
