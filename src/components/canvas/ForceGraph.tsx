@@ -1683,13 +1683,13 @@ function ProjectPage({
                     }}
                     onClick={() => {
                       if (p.caseStudy) {
-                        setSelectedCase(p.caseStudy);
                         setHoveredCard(null);
                         window.dispatchEvent(
                           new CustomEvent("project-cursor", {
                             detail: { active: false },
                           }),
                         );
+                        window.location.href = `/${p.caseStudy}`;
                       }
                     }}
                     onMouseEnter={(e) => {
