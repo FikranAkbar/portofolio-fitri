@@ -1,6 +1,6 @@
 ---
 // LofiHifiFade.astro — no props needed
-// Default: lo-fi visible on top. Hover (desktop) / tap (mobile) reveals hi-fi underneath.
+// Default: hi-fi visible. Hover (desktop) / tap (mobile) fades in lo-fi wireframe on top.
 ---
 
 <section class="lh-section">
@@ -128,11 +128,11 @@
     display: block;
   }
 
-  /* Lo-fi layer (on top, fades out on hover/tap) */
+  /* Lo-fi layer (hidden by default, fades in on hover/tap) */
   .lh-lofi-layer {
     position: absolute;
     inset: 0;
-    opacity: 1;
+    opacity: 0;
     transition: opacity 0.4s ease;
   }
   .lh-lofi-layer img {
@@ -142,10 +142,10 @@
     display: block;
   }
 
-  /* Hover: fade lo-fi out to reveal hi-fi */
+  /* Hover: fade lo-fi in to reveal wireframe */
   .lh-card:hover .lh-lofi-layer,
   .lh-card.tapped .lh-lofi-layer {
-    opacity: 0;
+    opacity: 1;
   }
 
   /* Top label bar */

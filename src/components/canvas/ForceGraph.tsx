@@ -490,7 +490,12 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             <img
               src="/assets/Fishdoro-SS/Hero.jpg"
               alt="Fishdoro — hero"
-              style={{ width: "100%", height: "260px", objectFit: "cover", display: "block" }}
+              style={{
+                width: "100%",
+                height: "260px",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
           </div>
 
@@ -1030,11 +1035,26 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               }}
             >
               {/* Before — lo-fi */}
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <img
                   src="/assets/Fishdoro-SS/LoFi-Home-Before.png"
                   alt="Lo-fi wireframe"
-                  style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", display: "block", objectFit: "contain" }}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    width: "auto",
+                    height: "auto",
+                    display: "block",
+                    objectFit: "contain",
+                  }}
                 />
               </div>
               {/* After — hi-fi */}
@@ -1052,7 +1072,14 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 <img
                   src="/assets/Fishdoro-SS/HiFi-Home.png"
                   alt="Hi-fi home screen"
-                  style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", display: "block", objectFit: "contain" }}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    width: "auto",
+                    height: "auto",
+                    display: "block",
+                    objectFit: "contain",
+                  }}
                 />
               </div>
               {/* Drag handle */}
@@ -1239,20 +1266,59 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               }}
             >
               {[
-                { src: "/assets/Fishdoro-SS/HiFi-Session-Setup.png", caption: "Session setup" },
-                { src: "/assets/Fishdoro-SS/HiFi-Catch-Log.png", caption: "Catch log" },
-                { src: "/assets/Fishdoro-SS/HiFi-Session-Setting.png", caption: "Session settings" },
-                { src: "/assets/Fishdoro-SS/HiFi-Catch-Report.png", caption: "Catch report" },
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Session-Setup.png",
+                  caption: "Session setup",
+                },
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Catch-Log.png",
+                  caption: "Catch log",
+                },
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Session-Setting.png",
+                  caption: "Session settings",
+                },
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Catch-Report.png",
+                  caption: "Catch report",
+                },
               ].map((s) => (
-                <div key={s.src} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <div style={{ borderRadius: "10px", overflow: "hidden", border: "0.5px solid rgba(154,175,122,0.3)", background: "#1a1a2e" }}>
+                <div
+                  key={s.src}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                  }}
+                >
+                  <div
+                    style={{
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      background: "#1a1a2e",
+                    }}
+                  >
                     <img
                       src={s.src}
                       alt={s.caption}
-                      style={{ width: "100%", height: "auto", display: "block" }}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                      }}
                     />
                   </div>
-                  <p style={{ fontSize: "10px", fontWeight: 300, color: "#9aaf7a", textAlign: "center", fontStyle: "italic", fontFamily: "Inter, sans-serif" }}>
+                  <p
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 300,
+                      color: "#9aaf7a",
+                      textAlign: "center",
+                      fontStyle: "italic",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
                     {s.caption}
                   </p>
                 </div>
@@ -1807,13 +1873,13 @@ function TimelineItem({
     <div className="flex flex-col gap-[6px]">
       <div className="flex items-baseline justify-between gap-4">
         <p
-          className="text-[16px] font-medium select-none"
+          className="text-[18px] font-medium select-none"
           style={{ color: "#2d4a1e" }}
         >
           {company}
         </p>
         <span
-          className="text-[12px] font-light shrink-0 select-none"
+          className="text-[14px] font-light shrink-0 select-none"
           style={{ color: "#9aaf7a", whiteSpace: "nowrap" }}
         >
           {period}
@@ -1821,14 +1887,14 @@ function TimelineItem({
       </div>
       {role && (
         <p
-          className="text-[14px] font-light select-none"
+          className="text-[16px] font-light select-none"
           style={{ color: "#6b8f4e" }}
         >
           {role}
         </p>
       )}
       <p
-        className="text-[14px] font-light leading-[1.7] select-none"
+        className="text-[16px] font-light leading-[1.7] select-none"
         style={{ color: "#5a7040" }}
       >
         {desc}
@@ -1927,7 +1993,7 @@ function AboutPage({
               style={{ borderLeft: "2.5px solid rgba(107,143,78,0.4)" }}
             >
               <p
-                className="text-[18px] italic leading-[1.5] select-none"
+                className="text-[20px] italic leading-[1.5] select-none"
                 style={{
                   fontFamily: "'Playfair Display', Georgia, serif",
                   fontWeight: 700,
@@ -1939,7 +2005,7 @@ function AboutPage({
               </p>
             </blockquote>
             <p
-              className="text-[14px] font-light leading-[1.7] select-none"
+              className="text-[16px] font-light leading-[1.7] select-none"
               style={{ color: "#5a7040" }}
             >
               They remind me that design lives in how people experience it, and
@@ -1957,14 +2023,14 @@ function AboutPage({
           {/* ── Bio ── */}
           <div className="flex flex-col gap-3">
             <p
-              className="text-[16px] font-medium leading-[1.6] select-none"
+              className="text-[18px] font-medium leading-[1.6] select-none"
               style={{ color: "#2d4a1e" }}
             >
               Hi, I'm Fitri Zahwa Januarita, a former illustrator and animator
               who found a new purpose in UI/UX design.
             </p>
             <p
-              className="text-[14px] font-light leading-[1.8] select-none"
+              className="text-[16px] font-light leading-[1.8] select-none"
               style={{ color: "#5a7040" }}
             >
               I've been drawing since I was a kid and even earned from it in
@@ -1974,7 +2040,7 @@ function AboutPage({
               aesthetics, but as clarity, connection, and impact.
             </p>
             <p
-              className="text-[14px] font-light leading-[1.8] select-none"
+              className="text-[16px] font-light leading-[1.8] select-none"
               style={{ color: "#5a7040" }}
             >
               My attention to detail, which once slowed me down, now helps me
@@ -1991,7 +2057,7 @@ function AboutPage({
               similar to mine.
             </p>
             <p
-              className="text-[14px] font-light leading-[1.8] select-none"
+              className="text-[16px] font-light leading-[1.8] select-none"
               style={{ color: "#5a7040" }}
             >
               I still tell stories, only now they're about users, their needs,
@@ -2159,7 +2225,7 @@ function AboutPage({
                     ))}
                   </div>
                   <p
-                    className="text-[14px] font-light italic leading-[1.7] select-none"
+                    className="text-[16px] font-light italic leading-[1.7] select-none"
                     style={{ color: "#5a7040" }}
                   >
                     "{t.text}"
@@ -2184,13 +2250,13 @@ function AboutPage({
                     </div>
                     <div className="flex flex-col">
                       <span
-                        className="text-[14px] font-medium select-none"
+                        className="text-[16px] font-medium select-none"
                         style={{ color: "#2d4a1e" }}
                       >
                         {t.name}
                       </span>
                       <span
-                        className="text-[12px] font-light select-none"
+                        className="text-[14px] font-light select-none"
                         style={{ color: "#9aaf7a" }}
                       >
                         {t.flag} {t.country}
@@ -3128,7 +3194,7 @@ function VisitorGalleryPage({
                     }}
                   >
                     <p
-                      className="text-[12px] font-medium select-none leading-tight"
+                      className="text-[14px] font-medium select-none leading-tight"
                       style={{
                         color: "#2d4a1e",
                         fontFamily: "Inter, sans-serif",
@@ -3137,7 +3203,7 @@ function VisitorGalleryPage({
                       {bloom.flowerName}
                     </p>
                     <p
-                      className="text-[10px] select-none mt-0.5"
+                      className="text-[12px] select-none mt-0.5"
                       style={{
                         color: "#9aaf7a",
                         fontFamily: "Inter, sans-serif",
@@ -3146,7 +3212,7 @@ function VisitorGalleryPage({
                       by {bloom.name}
                     </p>
                     <p
-                      className="text-[10px] select-none mt-0.5"
+                      className="text-[12px] select-none mt-0.5"
                       style={{
                         color: "#9aaf7a",
                         fontFamily: "Inter, sans-serif",
@@ -3155,7 +3221,7 @@ function VisitorGalleryPage({
                       {bloom.date}
                     </p>
                     <p
-                      className="text-[12px] italic select-none mt-1.5 pt-1.5 leading-relaxed"
+                      className="text-[14px] italic select-none mt-1.5 pt-1.5 leading-relaxed"
                       style={{
                         color: "#5a7040",
                         fontFamily: "Inter, sans-serif",
@@ -3199,7 +3265,7 @@ function VisitorGalleryPage({
                   </div>
                   <div className="flex flex-col gap-0.5 flex-1 min-w-0">
                     <p
-                      className="text-[12px] font-normal leading-tight"
+                      className="text-[14px] font-normal leading-tight"
                       style={{
                         color: "#2d4a1e",
                         fontFamily: "Inter, sans-serif",
@@ -3208,7 +3274,7 @@ function VisitorGalleryPage({
                       {bloom.flowerName}
                     </p>
                     <p
-                      className="text-[10px]"
+                      className="text-[12px]"
                       style={{
                         color: "#9aaf7a",
                         fontFamily: "Inter, sans-serif",
@@ -3217,7 +3283,7 @@ function VisitorGalleryPage({
                       by {bloom.name}
                     </p>
                     <p
-                      className="text-[12px] leading-relaxed mt-0.5"
+                      className="text-[14px] leading-relaxed mt-0.5"
                       style={{
                         color: "#5a7040",
                         fontFamily: "Inter, sans-serif",
@@ -3232,7 +3298,7 @@ function VisitorGalleryPage({
                   style={{ borderTop: "0.5px solid rgba(154,175,122,0.15)" }}
                 >
                   <p
-                    className="text-[10px]"
+                    className="text-[12px]"
                     style={{
                       color: "#9aaf7a",
                       fontFamily: "Inter, sans-serif",
