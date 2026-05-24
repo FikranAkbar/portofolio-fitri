@@ -799,31 +799,6 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               The research converged on three root problems — each pointing
               toward the same design direction.
             </p>
-            {/* Problem framework placeholder */}
-            <div
-              className="cs-reveal"
-              style={{
-                ...reveal(0.15),
-                height: "160px",
-                background: "#e8e2d8",
-                borderRadius: "12px",
-                border: "0.5px solid rgba(154,175,122,0.3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "12px",
-                  fontWeight: 300,
-                  color: "#b8b0a2",
-                  fontFamily: "Inter, sans-serif",
-                }}
-              >
-                Problem framework visual (placeholder)
-              </span>
-            </div>
             {/* Design problems — each with cs-reveal for scroll reveal effect */}
             <div className="flex flex-col gap-3" style={{ marginTop: "8px" }}>
               {DEFINE_PROBLEMS.map((p, i) => (
@@ -1045,35 +1020,39 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               style={{
                 ...reveal(0.3),
                 position: "relative",
-                height: "260px",
+                height: "360px",
                 borderRadius: "12px",
                 overflow: "hidden",
                 border: "0.5px solid rgba(154,175,122,0.3)",
                 userSelect: "none",
                 cursor: "col-resize",
+                background: "#1a1a2e",
               }}
             >
-              {/* Before */}
-              <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+              {/* Before — lo-fi */}
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <img
                   src="/assets/Fishdoro-SS/LoFi-Home-Before.png"
                   alt="Lo-fi wireframe"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", display: "block", objectFit: "contain" }}
                 />
               </div>
-              {/* After */}
+              {/* After — hi-fi */}
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
                   clipPath: `inset(0 ${100 - sliderPos}% 0 0)`,
-                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "#1a1a2e",
                 }}
               >
                 <img
                   src="/assets/Fishdoro-SS/HiFi-Home.png"
                   alt="Hi-fi home screen"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", display: "block", objectFit: "contain" }}
                 />
               </div>
               {/* Drag handle */}
@@ -1153,24 +1132,17 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               style={{
                 ...reveal(0.1),
                 position: "relative",
-                height: "280px",
-                background: "#e8e2d8",
                 borderRadius: "12px",
                 border: "0.5px solid rgba(154,175,122,0.3)",
+                background: "#1a1a2e",
               }}
             >
               <img
                 src="/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png"
                 alt="Hi-fi focus session"
-                style={{
-                  position: "absolute",
-                  top: 0, left: 0, right: 0, bottom: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "12px",
-                }}
+                style={{ width: "100%", height: "auto", display: "block" }}
               />
+              {/* Hotspot overlay — positioned relative to natural image size */}
               {FISHDORO_ANNOTATIONS.map((ann) => (
                 <div
                   key={ann.id}
@@ -1273,11 +1245,11 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 { src: "/assets/Fishdoro-SS/HiFi-Catch-Report.png", caption: "Catch report" },
               ].map((s) => (
                 <div key={s.src} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <div style={{ borderRadius: "10px", overflow: "hidden", border: "0.5px solid rgba(154,175,122,0.3)" }}>
+                  <div style={{ borderRadius: "10px", overflow: "hidden", border: "0.5px solid rgba(154,175,122,0.3)", background: "#1a1a2e" }}>
                     <img
                       src={s.src}
                       alt={s.caption}
-                      style={{ width: "100%", height: "140px", objectFit: "cover", display: "block" }}
+                      style={{ width: "100%", height: "auto", display: "block" }}
                     />
                   </div>
                   <p style={{ fontSize: "10px", fontWeight: 300, color: "#9aaf7a", textAlign: "center", fontStyle: "italic", fontFamily: "Inter, sans-serif" }}>
