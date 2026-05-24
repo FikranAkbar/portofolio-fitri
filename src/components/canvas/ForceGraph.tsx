@@ -476,31 +476,22 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             </div>
           </div>
 
-          {/* Hero image placeholder */}
+          {/* Hero image */}
           <div
             className="cs-reveal"
             style={{
               ...reveal(0.1),
               marginTop: "24px",
-              height: "260px",
-              background: "#e8e2d8",
               borderRadius: "12px",
+              overflow: "hidden",
               border: "0.5px solid rgba(154,175,122,0.3)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
             }}
           >
-            <span
-              style={{
-                fontSize: "12px",
-                fontWeight: 300,
-                color: "#b8b0a2",
-                fontFamily: "Inter, sans-serif",
-              }}
-            >
-              Timer screen — mid-session (hero placeholder)
-            </span>
+            <img
+              src="/assets/Fishdoro-SS/Hero.jpg"
+              alt="Fishdoro — hero"
+              style={{ width: "100%", height: "260px", objectFit: "cover", display: "block" }}
+            />
           </div>
 
           <div style={{ height: "48px" }} />
@@ -627,30 +618,21 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               — 47 threads, 200+ comments. Thematic coding surfaced 3 consistent
               patterns.
             </p>
-            {/* Affinity map placeholder */}
+            {/* Affinity map */}
             <div
               className="cs-reveal"
               style={{
                 ...reveal(0.15),
-                height: "180px",
-                background: "#e8e2d8",
                 borderRadius: "12px",
+                overflow: "hidden",
                 border: "0.5px solid rgba(154,175,122,0.3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
               }}
             >
-              <span
-                style={{
-                  fontSize: "12px",
-                  fontWeight: 300,
-                  color: "#b8b0a2",
-                  fontFamily: "Inter, sans-serif",
-                }}
-              >
-                Affinity map / thematic coding visual (placeholder)
-              </span>
+              <img
+                src="/assets/Fishdoro-SS/Affinity%20Mapping.png"
+                alt="Affinity mapping — thematic coding"
+                style={{ width: "100%", height: "auto", display: "block" }}
+              />
             </div>
             <p
               className="cs-reveal"
@@ -1072,40 +1054,12 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               }}
             >
               {/* Before */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "#e8e2d8",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "10px",
-                    fontWeight: 500,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    color: "#b8b0a2",
-                    fontFamily: "Inter, sans-serif",
-                  }}
-                >
-                  Before
-                </span>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: 300,
-                    color: "#b8b0a2",
-                    fontFamily: "Inter, sans-serif",
-                  }}
-                >
-                  Round 1 wireframe (placeholder)
-                </span>
+              <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+                <img
+                  src="/assets/Fishdoro-SS/LoFi-Home-Before.png"
+                  alt="Lo-fi wireframe"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
               </div>
               {/* After */}
               <div
@@ -1113,36 +1067,14 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   position: "absolute",
                   inset: 0,
                   clipPath: `inset(0 ${100 - sliderPos}% 0 0)`,
-                  background: "#f8f6f0",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
+                  overflow: "hidden",
                 }}
               >
-                <span
-                  style={{
-                    fontSize: "10px",
-                    fontWeight: 500,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    color: "#6b8f4e",
-                    fontFamily: "Inter, sans-serif",
-                  }}
-                >
-                  After
-                </span>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: 300,
-                    color: "#6b8f4e",
-                    fontFamily: "Inter, sans-serif",
-                  }}
-                >
-                  Final hi-fi (placeholder)
-                </span>
+                <img
+                  src="/assets/Fishdoro-SS/HiFi-Home.png"
+                  alt="Hi-fi home screen"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
               </div>
               {/* Drag handle */}
               <div
@@ -1227,26 +1159,18 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 border: "0.5px solid rgba(154,175,122,0.3)",
               }}
             >
-              <div
+              <img
+                src="/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png"
+                alt="Hi-fi focus session"
                 style={{
                   position: "absolute",
-                  inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "12px",
                 }}
-              >
-                <span
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: 300,
-                    color: "#b8b0a2",
-                    fontFamily: "Inter, sans-serif",
-                  }}
-                >
-                  Hi-fi timer focus state (placeholder)
-                </span>
-              </div>
+              />
               {FISHDORO_ANNOTATIONS.map((ann) => (
                 <div
                   key={ann.id}
@@ -1332,30 +1256,35 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               ))}
             </div>
 
-            {/* Figma vs Build placeholder */}
+            {/* Hi-fi screen grid */}
             <div
               className="cs-reveal"
               style={{
                 ...reveal(0.15),
-                height: "200px",
-                background: "#e8e2d8",
-                borderRadius: "12px",
-                border: "0.5px solid rgba(154,175,122,0.3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "10px",
               }}
             >
-              <span
-                style={{
-                  fontSize: "12px",
-                  fontWeight: 300,
-                  color: "#b8b0a2",
-                  fontFamily: "Inter, sans-serif",
-                }}
-              >
-                Figma vs Build side-by-side (placeholder)
-              </span>
+              {[
+                { src: "/assets/Fishdoro-SS/HiFi-Session-Setup.png", caption: "Session setup" },
+                { src: "/assets/Fishdoro-SS/HiFi-Catch-Log.png", caption: "Catch log" },
+                { src: "/assets/Fishdoro-SS/HiFi-Session-Setting.png", caption: "Session settings" },
+                { src: "/assets/Fishdoro-SS/HiFi-Catch-Report.png", caption: "Catch report" },
+              ].map((s) => (
+                <div key={s.src} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <div style={{ borderRadius: "10px", overflow: "hidden", border: "0.5px solid rgba(154,175,122,0.3)" }}>
+                    <img
+                      src={s.src}
+                      alt={s.caption}
+                      style={{ width: "100%", height: "140px", objectFit: "cover", display: "block" }}
+                    />
+                  </div>
+                  <p style={{ fontSize: "10px", fontWeight: 300, color: "#9aaf7a", textAlign: "center", fontStyle: "italic", fontFamily: "Inter, sans-serif" }}>
+                    {s.caption}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -1683,13 +1612,13 @@ function ProjectPage({
                     }}
                     onClick={() => {
                       if (p.caseStudy) {
+                        setSelectedCase(p.caseStudy);
                         setHoveredCard(null);
                         window.dispatchEvent(
                           new CustomEvent("project-cursor", {
                             detail: { active: false },
                           }),
                         );
-                        window.location.href = `/${p.caseStudy}`;
                       }
                     }}
                     onMouseEnter={(e) => {
