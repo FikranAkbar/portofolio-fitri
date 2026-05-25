@@ -294,33 +294,6 @@ const PROBLEM_CARDS: Array<{
   },
 ];
 
-const FISHDORO_ANNOTATIONS = [
-  {
-    id: 1,
-    x: 72,
-    y: 85,
-    label: "Full-width CTA",
-    desc: "Full-width CTA added after testing — matches the mental model of one clear action to start.",
-    insight: "Solves: Flexibility problem",
-  },
-  {
-    id: 2,
-    x: 30,
-    y: 25,
-    label: "Duration input",
-    desc: "Custom duration input added here — users who need 45-minute sessions shouldn't have to fight the tool.",
-    insight: "Solves: Flexibility problem",
-  },
-  {
-    id: 3,
-    x: 50,
-    y: 50,
-    label: "Pixel art scene",
-    desc: "Pixel art fishing scene sets the emotional register before the user does anything. If this feels cozy in the first 2 seconds, the whole session feels different.",
-    insight: "Solves: Retention problem",
-  },
-];
-
 const KEY_TAKEAWAYS = [
   {
     num: "01",
@@ -354,8 +327,11 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
   const sliderRef2 = useRef<HTMLDivElement>(null);
   const sliderRef3 = useRef<HTMLDivElement>(null);
   const sliderRefs = [sliderRef0, sliderRef1, sliderRef2, sliderRef3];
-  const [activeAnnotation, setActiveAnnotation] = useState<number | null>(null);
   const [lhHovered, setLhHovered] = useState<number | null>(null);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(
+    null,
+  );
+  const [openTakeaway, setOpenTakeaway] = useState<number | null>(null);
 
   // Scroll progress bar — attached to scroll container, NOT window
   useEffect(() => {
@@ -388,6 +364,15 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
     );
     targets.forEach((t) => obs.observe(t));
     return () => obs.disconnect();
+  }, []);
+
+  // Lightbox — close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   function startSliderDrag(e: React.MouseEvent, idx: number) {
@@ -453,9 +438,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
       style={{
         ...reveal(delay),
         fontFamily: "Inter, sans-serif",
-        fontSize: "16px",
+        fontSize: "18px",
         fontWeight: 300,
-        color: "#5a7040",
+        color: "#1a1a1a",
         lineHeight: 1.7,
       }}
     >
@@ -464,7 +449,45 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
   );
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden" style={{ background: "#ffffff" }}>
+    <div
+      className="flex flex-col flex-1 overflow-hidden"
+      style={{ background: "#ffffff" }}
+    >
+      {/* Back button bar */}
+      <div
+        style={{
+          background: "#ffffff",
+          borderBottom: "0.5px solid rgba(0,0,0,0.08)",
+          padding: "12px 24px",
+          flexShrink: 0,
+        }}
+      >
+        <button
+          onClick={_onBack}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontFamily: "Inter, sans-serif",
+            fontSize: "14px",
+            fontWeight: 400,
+            color: "#1a1a1a",
+            padding: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.color = "#6b8f4e";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.color = "#1a1a1a";
+          }}
+        >
+          ← Back to projects
+        </button>
+      </div>
+
       {/* Progress bar */}
       <div
         style={{
@@ -523,10 +546,10 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             <h1
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "30px",
+                fontSize: "36px",
                 fontWeight: 700,
                 fontStyle: "italic",
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.2,
               }}
             >
@@ -537,9 +560,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "16px",
+                fontSize: "18px",
                 fontWeight: 300,
-                color: "#5a7040",
+                color: "#1a1a1a",
                 lineHeight: 1.6,
               }}
             >
@@ -551,9 +574,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "16px",
+                fontSize: "18px",
                 fontWeight: 300,
-                color: "#5a7040",
+                color: "#1a1a1a",
                 lineHeight: 1.7,
               }}
             >
@@ -565,9 +588,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "16px",
+                fontSize: "18px",
                 fontWeight: 300,
-                color: "#5a7040",
+                color: "#1a1a1a",
                 lineHeight: 1.7,
               }}
             >
@@ -577,9 +600,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "16px",
+                fontSize: "18px",
                 fontWeight: 300,
-                color: "#5a7040",
+                color: "#1a1a1a",
                 lineHeight: 1.7,
               }}
             >
@@ -601,11 +624,19 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               <img
                 src="/assets/Fishdoro-SS/Hero.jpg"
                 alt="Fishdoro — hero screenshot"
+                className="lb-trigger"
                 style={{
                   width: "100%",
                   height: "auto",
                   display: "block",
+                  cursor: "zoom-in",
                 }}
+                onClick={() =>
+                  setLightbox({
+                    src: "/assets/Fishdoro-SS/Hero.jpg",
+                    alt: "Fishdoro — hero screenshot",
+                  })
+                }
               />
             </div>
 
@@ -639,7 +670,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                     style={{
                       fontSize: "14px",
                       fontWeight: 400,
-                      color: "#5a7040",
+                      color: "#1a1a1a",
                       fontFamily: "Inter, sans-serif",
                     }}
                   >
@@ -666,7 +697,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
               }}
             >
@@ -684,10 +715,10 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               <p
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "18px",
                   fontWeight: 300,
                   fontStyle: "italic",
-                  color: "#5a7040",
+                  color: "#1a1a1a",
                   lineHeight: 1.7,
                 }}
               >
@@ -699,8 +730,12 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               0.15,
             )}
             {body(
-              "Fishdoro started with a single question: what if the reward mechanism was built into the timer itself — not a badge you check later, but something that happens in real time as you focus?",
+              "I wanted to understand why. And then I wanted to build something different.",
               0.2,
+            )}
+            {body(
+              "This case study documents the research, design decisions, and build process behind that question.",
+              0.25,
             )}
             <h3
               className="cs-reveal"
@@ -709,7 +744,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "18px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 marginTop: "24px",
                 marginBottom: 0,
               }}
@@ -738,7 +773,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
               }}
             >
@@ -816,7 +851,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                           fontSize: "12px",
                           fontWeight: 300,
                           fontStyle: "italic",
-                          color: "#5a7040",
+                          color: "#1a1a1a",
                           lineHeight: 1.55,
                           flex: 1,
                         }}
@@ -879,7 +914,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                           fontFamily: "Inter, sans-serif",
                           fontSize: "14px",
                           fontWeight: 500,
-                          color: "#2d4a1e",
+                          color: "#1a1a1a",
                           lineHeight: 1.3,
                         }}
                       >
@@ -890,7 +925,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                           fontFamily: "Inter, sans-serif",
                           fontSize: "12px",
                           fontWeight: 300,
-                          color: "#5a7040",
+                          color: "#1a1a1a",
                           lineHeight: 1.55,
                           flex: 1,
                         }}
@@ -939,7 +974,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   fontFamily: "Inter, sans-serif",
                   fontSize: "16px",
                   fontWeight: 300,
-                  color: "#5a7040",
+                  color: "#1a1a1a",
                   lineHeight: 1.7,
                   fontStyle: "italic",
                 }}
@@ -1008,7 +1043,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       fontFamily: "Inter, sans-serif",
                       fontSize: "18px",
                       fontWeight: 500,
-                      color: "#2d4a1e",
+                      color: "#1a1a1a",
                       marginTop: "10px",
                       marginBottom: "6px",
                       lineHeight: 1.3,
@@ -1021,7 +1056,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       fontFamily: "Inter, sans-serif",
                       fontSize: "16px",
                       fontWeight: 300,
-                      color: "#5a7040",
+                      color: "#1a1a1a",
                       lineHeight: 1.7,
                       marginBottom: "12px",
                     }}
@@ -1053,7 +1088,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       style={{
                         fontSize: "14px",
                         fontWeight: 300,
-                        color: "#5a7040",
+                        color: "#1a1a1a",
                         fontFamily: "Inter, sans-serif",
                       }}
                     >
@@ -1098,7 +1133,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                     fontFamily: "Inter, sans-serif",
                     fontSize: "16px",
                     fontWeight: 300,
-                    color: "#5a7040",
+                    color: "#1a1a1a",
                     lineHeight: 1.7,
                   }}
                 >
@@ -1128,7 +1163,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
               }}
             >
@@ -1151,7 +1186,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
                 marginTop: "8px",
               }}
@@ -1183,11 +1218,19 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 <img
                   src="/assets/Fishdoro-SS/Moodboard.png"
                   alt="Fishdoro moodboard"
+                  className="lb-trigger"
                   style={{
                     width: "100%",
                     height: "auto",
                     display: "block",
+                    cursor: "zoom-in",
                   }}
+                  onClick={() =>
+                    setLightbox({
+                      src: "/assets/Fishdoro-SS/Moodboard.png",
+                      alt: "Fishdoro moodboard",
+                    })
+                  }
                 />
               </div>
               <p
@@ -1212,7 +1255,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
                 marginTop: "8px",
               }}
@@ -1237,7 +1280,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       fontFamily: "Inter, sans-serif",
                       fontSize: "14px",
                       fontWeight: 500,
-                      color: "#2d4a1e",
+                      color: "#1a1a1a",
                     }}
                   >
                     {pair.label}
@@ -1257,13 +1300,13 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                     ref={sliderRefs[idx]}
                     style={{
                       position: "relative",
-                      height: "420px",
+                      height: "360px",
                       borderRadius: "10px",
                       overflow: "hidden",
                       border: "0.5px solid rgba(154,175,122,0.3)",
                       userSelect: "none",
                       cursor: "col-resize",
-                      background: "#e8e2d8",
+                      background: "#f5f5f5",
                     }}
                   >
                     {/* Before */}
@@ -1274,8 +1317,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                         style={{
                           width: "100%",
                           height: "100%",
-                          objectFit: "cover",
-                          objectPosition: "top",
+                          objectFit: "contain",
                           display: "block",
                         }}
                       />
@@ -1310,8 +1352,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                         style={{
                           width: "100%",
                           height: "100%",
-                          objectFit: "cover",
-                          objectPosition: "top",
+                          objectFit: "contain",
                           display: "block",
                         }}
                       />
@@ -1396,7 +1437,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
                 marginTop: "8px",
               }}
@@ -1408,157 +1449,42 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               0.05,
             )}
 
-            {/* Annotated full-width timer */}
+            {/* 4d: Hi-fi screens — 2-col grid (Fix 8+9) */}
+            <h2
+              className="cs-reveal"
+              style={{
+                ...reveal(0),
+                fontFamily: "Inter, sans-serif",
+                fontSize: "22px",
+                fontWeight: 500,
+                color: "#1a1a1a",
+                lineHeight: 1.3,
+                marginTop: "8px",
+              }}
+            >
+              Hi-fi screens
+            </h2>
+            {body(
+              "Once the structure was solid, I layered in all the visual elements — pixel art, animations, and the core cast → wait → catch loop.",
+              0.05,
+            )}
+
+            {/* Unified 2-col grid — 8 screens */}
             <div
               className="cs-reveal"
               style={{
                 ...reveal(0.1),
-                position: "relative",
-                borderRadius: "12px",
-                overflow: "hidden",
-                border: "0.5px solid rgba(154,175,122,0.3)",
-              }}
-            >
-              <img
-                src="/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png"
-                alt="Fishdoro focus timer — annotated"
-                style={{ width: "100%", height: "auto", display: "block" }}
-              />
-              {FISHDORO_ANNOTATIONS.map((ann) => (
-                <div
-                  key={ann.id}
-                  style={{
-                    position: "absolute",
-                    left: `${ann.x}%`,
-                    top: `${ann.y}%`,
-                    transform: "translate(-50%, -50%)",
-                    zIndex: 10,
-                  }}
-                >
-                  <button
-                    style={{
-                      width: "22px",
-                      height: "22px",
-                      borderRadius: "50%",
-                      background:
-                        activeAnnotation === ann.id ? "#4e7a30" : "#faf7f2",
-                      border: "2px solid rgba(250,247,242,0.8)",
-                      color:
-                        activeAnnotation === ann.id ? "#faf7f2" : "#4e7a30",
-                      fontSize: "10px",
-                      fontWeight: 600,
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "Inter, sans-serif",
-                      transition: "background 0.2s, color 0.2s",
-                    }}
-                    onClick={() =>
-                      setActiveAnnotation(
-                        activeAnnotation === ann.id ? null : ann.id,
-                      )
-                    }
-                  >
-                    {ann.id}
-                  </button>
-                  {activeAnnotation === ann.id && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "50%",
-                        ...(ann.y > 55
-                          ? { bottom: "calc(100% + 8px)" }
-                          : { top: "calc(100% + 8px)" }),
-                        transform: "translateX(-50%)",
-                        zIndex: 20,
-                        background: "#ffffff",
-                        border: "0.5px solid rgba(154,175,122,0.4)",
-                        borderRadius: "10px",
-                        padding: "10px 14px",
-                        width: "200px",
-                        pointerEvents: "none",
-                        boxShadow: "0 4px 16px rgba(45,74,30,0.08)",
-                      }}
-                    >
-                      <p
-                        style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "12px",
-                          fontWeight: 500,
-                          color: "#2d4a1e",
-                          marginBottom: "4px",
-                        }}
-                      >
-                        {ann.label}
-                      </p>
-                      <p
-                        style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "12px",
-                          fontWeight: 300,
-                          color: "#5a7040",
-                          lineHeight: 1.5,
-                          marginBottom: "4px",
-                        }}
-                      >
-                        {ann.desc}
-                      </p>
-                      <span
-                        style={{
-                          fontSize: "10px",
-                          fontWeight: 500,
-                          color: "#9aaf7a",
-                          fontFamily: "Inter, sans-serif",
-                        }}
-                      >
-                        {ann.insight}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.12),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "12px",
-                fontWeight: 300,
-                color: "#9aaf7a",
-                textAlign: "center",
-                fontStyle: "italic",
-              }}
-            >
-              Click the numbered circles to see design decisions
-            </p>
-            <p
-              className="cs-reveal"
-              style={{
-                ...reveal(0.13),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "11px",
-                fontWeight: 300,
-                color: "#9aaf7a",
-                textAlign: "center",
-                fontStyle: "italic",
-              }}
-            >
-              Focus timer — cast → wait → catch
-            </p>
-
-            {/* 2-col: Home + Reward reveal */}
-            <div
-              className="cs-reveal"
-              style={{
-                ...reveal(0.15),
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: "12px",
+                gap: "16px",
               }}
             >
               {[
+                {
+                  src: "/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png",
+                  alt: "Focus timer",
+                  caption: "Focus timer",
+                },
                 {
                   src: "/assets/Fishdoro-SS/HiFi-Home.png",
                   alt: "Home screen",
@@ -1567,55 +1493,8 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 {
                   src: "/assets/Fishdoro-SS/HiFi-Get-Fish-Timer-Finish.png",
                   alt: "Reward reveal",
-                  caption: "Reward reveal — the pixel fish",
+                  caption: "Reward reveal",
                 },
-              ].map((s) => (
-                <div key={s.src} className="flex flex-col gap-[6px]">
-                  <div
-                    style={{
-                      borderRadius: "10px",
-                      overflow: "hidden",
-                      border: "0.5px solid rgba(154,175,122,0.3)",
-                      background: "#e8e2d8",
-                    }}
-                  >
-                    <img
-                      src={s.src}
-                      alt={s.alt}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        display: "block",
-                      }}
-                    />
-                  </div>
-                  <p
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "11px",
-                      fontWeight: 300,
-                      color: "#9aaf7a",
-                      textAlign: "center",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {s.caption}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* 3-col: Session Setup + Session Setting + App Setting */}
-            <div
-              className="cs-reveal"
-              style={{
-                ...reveal(0.2),
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "12px",
-              }}
-            >
-              {[
                 {
                   src: "/assets/Fishdoro-SS/HiFi-Session-Setup.png",
                   alt: "Session setup",
@@ -1631,53 +1510,6 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   alt: "App settings",
                   caption: "App settings",
                 },
-              ].map((s) => (
-                <div key={s.src} className="flex flex-col gap-[6px]">
-                  <div
-                    style={{
-                      borderRadius: "10px",
-                      overflow: "hidden",
-                      border: "0.5px solid rgba(154,175,122,0.3)",
-                      background: "#e8e2d8",
-                    }}
-                  >
-                    <img
-                      src={s.src}
-                      alt={s.alt}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        display: "block",
-                      }}
-                    />
-                  </div>
-                  <p
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "11px",
-                      fontWeight: 300,
-                      color: "#9aaf7a",
-                      textAlign: "center",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {s.caption}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* 2-col: Catch Log + Catch Report */}
-            <div
-              className="cs-reveal"
-              style={{
-                ...reveal(0.25),
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "12px",
-              }}
-            >
-              {[
                 {
                   src: "/assets/Fishdoro-SS/HiFi-Catch-Log.png",
                   alt: "Fishing log",
@@ -1701,11 +1533,15 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                     <img
                       src={s.src}
                       alt={s.alt}
+                      className="lb-trigger"
                       style={{
                         width: "100%",
-                        height: "auto",
+                        height: "280px",
+                        objectFit: "cover",
                         display: "block",
+                        cursor: "zoom-in",
                       }}
+                      onClick={() => setLightbox({ src: s.src, alt: s.alt })}
                     />
                   </div>
                   <p
@@ -1724,50 +1560,6 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               ))}
             </div>
 
-            {/* 2-col: Break State */}
-            <div
-              className="cs-reveal"
-              style={{
-                ...reveal(0.3),
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "12px",
-              }}
-            >
-              <div className="flex flex-col gap-[6px]">
-                <div
-                  style={{
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    border: "0.5px solid rgba(154,175,122,0.3)",
-                    background: "#e8e2d8",
-                  }}
-                >
-                  <img
-                    src="/assets/Fishdoro-SS/HiFi-Break-State.png"
-                    alt="Break state"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      display: "block",
-                    }}
-                  />
-                </div>
-                <p
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "11px",
-                    fontWeight: 300,
-                    color: "#9aaf7a",
-                    textAlign: "center",
-                    fontStyle: "italic",
-                  }}
-                >
-                  Break state — a different pace
-                </p>
-              </div>
-            </div>
-
             {/* 4e: What's built so far */}
             <h2
               className="cs-reveal"
@@ -1776,7 +1568,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
                 marginTop: "8px",
               }}
@@ -1800,7 +1592,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "22px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.3,
               }}
             >
@@ -1834,7 +1626,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   fontFamily: "Inter, sans-serif",
                   fontSize: "16px",
                   fontWeight: 500,
-                  color: "#2d4a1e",
+                  color: "#1a1a1a",
                 }}
               >
                 Hover to see where it started
@@ -1844,7 +1636,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   fontWeight: 300,
-                  color: "#5a7040",
+                  color: "#1a1a1a",
                   lineHeight: 1.6,
                 }}
               >
@@ -1878,10 +1670,16 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       borderRadius: "12px",
                       overflow: "hidden",
                       border: "0.5px solid rgba(154,175,122,0.3)",
-                      cursor: "pointer",
+                      cursor: "zoom-in",
                     }}
                     onMouseEnter={() => setLhHovered(i)}
                     onMouseLeave={() => setLhHovered(null)}
+                    onClick={() =>
+                      setLightbox({
+                        src: lhHovered === i ? pair.lofi : pair.hifi,
+                        alt: `${pair.label} — ${lhHovered === i ? "lo-fi wireframe" : "final design"}`,
+                      })
+                    }
                   >
                     {/* Hi-fi (bottom layer) */}
                     <img
@@ -2004,63 +1802,103 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {hr()}
 
           {/* ══════════════════════════════════════════
-              SECTION 6 — KEY TAKEAWAYS
+              SECTION 6 — KEY TAKEAWAYS (accordion)
           ══════════════════════════════════════════ */}
           <section className="flex flex-col gap-4">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Key Takeaways")}
             </div>
-            <div className="flex flex-col gap-4">
-              {KEY_TAKEAWAYS.map((item, i) => (
-                <div
-                  key={item.num}
-                  className="cs-reveal"
-                  style={{
-                    ...reveal(i * 0.08),
-                    background: "#ffffff",
-                    border: "0.5px solid rgba(154,175,122,0.3)",
-                    borderRadius: "12px",
-                    padding: "16px 18px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "6px",
-                  }}
-                >
-                  <p
+            <div className="cs-reveal flex flex-col gap-2" style={reveal(0.05)}>
+              {KEY_TAKEAWAYS.map((item, i) => {
+                const isOpen = openTakeaway === i;
+                return (
+                  <div
+                    key={item.num}
                     style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                      fontSize: "22px",
-                      fontWeight: 700,
-                      color: "rgba(154,175,122,0.5)",
-                      lineHeight: 1,
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                      borderRadius: "10px",
+                      overflow: "hidden",
                     }}
                   >
-                    {item.num}
-                  </p>
-                  <h3
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "16px",
-                      fontWeight: 500,
-                      color: "#2d4a1e",
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "16px",
-                      fontWeight: 300,
-                      color: "#5a7040",
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
+                    <button
+                      onClick={() => setOpenTakeaway(isOpen ? null : i)}
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                        padding: "16px 18px",
+                        background: isOpen ? "#fafafa" : "#ffffff",
+                        border: "none",
+                        borderBottom: isOpen
+                          ? "0.5px solid rgba(154,175,122,0.2)"
+                          : "none",
+                        cursor: "pointer",
+                        textAlign: "left",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: 500,
+                          color: "#9aaf7a",
+                          letterSpacing: "0.1em",
+                          flexShrink: 0,
+                          width: "24px",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {item.num}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "16px",
+                          fontWeight: 500,
+                          color: "#1a1a1a",
+                          flex: 1,
+                          lineHeight: 1.4,
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {item.title}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          color: "#9aaf7a",
+                          flexShrink: 0,
+                          display: "inline-block",
+                          transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                          transition: "transform 0.2s ease",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        ↓
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div
+                        style={{
+                          padding: "14px 18px 18px",
+                          background: "#ffffff",
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "16px",
+                            fontWeight: 300,
+                            color: "#444444",
+                            lineHeight: 1.7,
+                          }}
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </section>
 
@@ -2087,9 +1925,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               style={{
                 ...reveal(0.15),
                 fontFamily: "Inter, sans-serif",
-                fontSize: "16px",
+                fontSize: "18px",
                 fontWeight: 500,
-                color: "#2d4a1e",
+                color: "#1a1a1a",
                 lineHeight: 1.6,
               }}
             >
@@ -2116,6 +1954,62 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           <div style={{ height: "48px" }} />
         </div>
       </div>
+
+      {/* Lightbox overlay */}
+      {lightbox &&
+        createPortal(
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.88)",
+              zIndex: 1000,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "zoom-out",
+            }}
+            onClick={() => setLightbox(null)}
+          >
+            <button
+              onClick={() => setLightbox(null)}
+              style={{
+                position: "fixed",
+                top: "20px",
+                right: "24px",
+                fontSize: "32px",
+                color: "white",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                lineHeight: 1,
+                opacity: 0.8,
+                fontFamily: "Inter, sans-serif",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.opacity = "1";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.opacity = "0.8";
+              }}
+            >
+              ×
+            </button>
+            <img
+              src={lightbox.src}
+              alt={lightbox.alt}
+              style={{
+                maxWidth: "90vw",
+                maxHeight: "90vh",
+                objectFit: "contain",
+                borderRadius: "6px",
+                cursor: "default",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
