@@ -321,17 +321,18 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [flipped, setFlipped] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [sliderPositions, setSliderPositions] = useState([50, 50, 50, 50]);
   const sliderRef0 = useRef<HTMLDivElement>(null);
   const sliderRef1 = useRef<HTMLDivElement>(null);
   const sliderRef2 = useRef<HTMLDivElement>(null);
   const sliderRef3 = useRef<HTMLDivElement>(null);
   const sliderRefs = [sliderRef0, sliderRef1, sliderRef2, sliderRef3];
-  const [lhHovered, setLhHovered] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(
     null,
   );
   const [openTakeaway, setOpenTakeaway] = useState<number | null>(null);
+  const [hoveredTakeaway, setHoveredTakeaway] = useState<number | null>(null);
 
   // Scroll progress bar — attached to scroll container, NOT window
   useEffect(() => {
@@ -427,7 +428,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
       style={{
         border: "none",
         borderTop: "0.5px solid rgba(154,175,122,0.25)",
-        margin: "40px 0",
+        margin: "56px 0",
       }}
     />
   );
@@ -453,6 +454,16 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
       className="flex flex-col flex-1 overflow-hidden"
       style={{ background: "#ffffff" }}
     >
+      {/* Global hover styles for zoomable images */}
+      <style>{`
+        .lb-trigger {
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .lb-trigger:hover {
+          transform: scale(1.02);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+      `}</style>
       {/* Back button bar */}
       <div
         style={{
@@ -570,46 +581,6 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               focus session. Catch a fish. That’s it.
             </p>
 
-            {/* Opening paragraphs */}
-            <p
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "18px",
-                fontWeight: 300,
-                color: "#1a1a1a",
-                lineHeight: 1.7,
-              }}
-            >
-              Productivity tools have a paradox: the apps designed to help you
-              focus are often the reason you stop using them. Pomodoro timers
-              are everywhere — minimal, functional, and nearly identical. Most
-              of them work fine in theory. But people keep quitting them.
-            </p>
-            <p
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "18px",
-                fontWeight: 300,
-                color: "#1a1a1a",
-                lineHeight: 1.7,
-              }}
-            >
-              I wanted to understand why. And then I wanted to build something
-              different.
-            </p>
-            <p
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "18px",
-                fontWeight: 300,
-                color: "#1a1a1a",
-                lineHeight: 1.7,
-              }}
-            >
-              This case study documents the research, design decisions, and
-              build process behind that question.
-            </p>
-
             {/* Hero image */}
             <div
               className="cs-reveal"
@@ -686,7 +657,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {/* ══════════════════════════════════════════
               SECTION 2 — BACKGROUND
           ══════════════════════════════════════════ */}
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-5">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Background")}
             </div>
@@ -762,7 +733,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {/* ══════════════════════════════════════════
               SECTION 3 — DISCOVER
           ══════════════════════════════════════════ */}
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-5">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Discover")}
             </div>
@@ -805,159 +776,176 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
             </p>
 
             {/* Flip cards */}
-            <div className="cs-reveal flex gap-3" style={{ ...reveal(0.35) }}>
-              {INSIGHT_CARDS.map((card, i) => (
-                <div
-                  key={i}
-                  style={{
-                    flex: 1,
-                    perspective: "800px",
-                    cursor: "pointer",
-                    height: "auto",
-                    minHeight: "220px",
-                  }}
-                  onClick={() => setFlipped(flipped === i ? null : i)}
-                >
+            <div
+              className="cs-reveal flex flex-col gap-3"
+              style={{ ...reveal(0.35) }}
+            >
+              {INSIGHT_CARDS.map((card, i) => {
+                const isFlipped = flipped === i;
+                const isHovered = hoveredCard === i;
+                return (
                   <div
+                    key={i}
                     style={{
-                      width: "100%",
-                      minHeight: "220px",
-                      position: "relative",
-                      transformStyle: "preserve-3d",
-                      transition: "transform 0.5s ease",
-                      transform:
-                        flipped === i ? "rotateY(180deg)" : "rotateY(0deg)",
+                      perspective: "1000px",
+                      cursor: "pointer",
+                      height: "auto",
+                      minHeight: "120px",
                     }}
+                    onClick={() => setFlipped(isFlipped ? null : i)}
+                    onMouseEnter={() => setHoveredCard(i)}
+                    onMouseLeave={() => setHoveredCard(null)}
                   >
-                    {/* Front — Reddit quote */}
                     <div
                       style={{
-                        position: "absolute",
-                        inset: 0,
-                        backfaceVisibility: "hidden",
-                        background: "#ffffff",
-                        border: "0.5px solid rgba(154,175,122,0.3)",
+                        width: "100%",
+                        minHeight: "120px",
+                        position: "relative",
+                        transformStyle: "preserve-3d",
+                        transition: "transform 0.5s ease, box-shadow 0.2s ease",
+                        transform: isFlipped
+                          ? isHovered
+                            ? "rotateY(180deg) translateY(-2px)"
+                            : "rotateY(180deg)"
+                          : isHovered
+                            ? "translateY(-2px)"
+                            : "rotateY(0deg)",
                         borderRadius: "12px",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        padding: "14px",
-                        gap: "8px",
+                        boxShadow: isHovered
+                          ? "0 4px 20px rgba(107, 143, 78, 0.15)"
+                          : "none",
                       }}
                     >
-                      <p
+                      {/* Front — Reddit quote */}
+                      <div
                         style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "12px",
-                          fontWeight: 300,
-                          fontStyle: "italic",
-                          color: "#1a1a1a",
-                          lineHeight: 1.55,
-                          flex: 1,
+                          position: "absolute",
+                          inset: 0,
+                          backfaceVisibility: "hidden",
+                          background: "#ffffff",
+                          border: "0.5px solid rgba(154,175,122,0.3)",
+                          borderRadius: "12px",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          padding: "14px",
+                          gap: "8px",
                         }}
                       >
-                        {card.quote}
-                      </p>
-                      <div className="flex items-center justify-between">
+                        <p
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "16px",
+                            fontWeight: 300,
+                            fontStyle: "italic",
+                            color: "#1a1a1a",
+                            lineHeight: 1.55,
+                            flex: 1,
+                          }}
+                        >
+                          {card.quote}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span
+                            style={{
+                              fontSize: "12px",
+                              fontWeight: 400,
+                              color: "#9aaf7a",
+                              fontFamily: "Inter, sans-serif",
+                            }}
+                          >
+                            {card.source}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: "12px",
+                              color: "#b8b0a2",
+                              fontFamily: "Inter, sans-serif",
+                            }}
+                          >
+                            flip →
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Back — Insight */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          backfaceVisibility: "hidden",
+                          transform: "rotateY(180deg)",
+                          background: "#ffffff",
+                          border: "0.5px solid rgba(107,143,78,0.4)",
+                          borderRadius: "12px",
+                          display: "flex",
+                          flexDirection: "column",
+                          padding: "14px",
+                          gap: "6px",
+                        }}
+                      >
                         <span
                           style={{
-                            fontSize: "10px",
-                            fontWeight: 400,
+                            fontSize: "12px",
+                            fontWeight: 500,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.1em",
                             color: "#9aaf7a",
                             fontFamily: "Inter, sans-serif",
                           }}
                         >
-                          {card.source}
+                          {card.insightNum}
                         </span>
-                        <span
+                        <p
                           style={{
-                            fontSize: "10px",
-                            color: "#b8b0a2",
                             fontFamily: "Inter, sans-serif",
-                          }}
-                        >
-                          flip →
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Back — Insight */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        backfaceVisibility: "hidden",
-                        transform: "rotateY(180deg)",
-                        background: "#ffffff",
-                        border: "0.5px solid rgba(107,143,78,0.4)",
-                        borderRadius: "12px",
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "14px",
-                        gap: "6px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "10px",
-                          fontWeight: 500,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.1em",
-                          color: "#9aaf7a",
-                          fontFamily: "Inter, sans-serif",
-                        }}
-                      >
-                        {card.insightNum}
-                      </span>
-                      <p
-                        style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#1a1a1a",
-                          lineHeight: 1.3,
-                        }}
-                      >
-                        {card.title}
-                      </p>
-                      <p
-                        style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "12px",
-                          fontWeight: 300,
-                          color: "#1a1a1a",
-                          lineHeight: 1.55,
-                          flex: 1,
-                        }}
-                      >
-                        {card.desc}
-                      </p>
-                      <div className="flex items-center gap-[5px]">
-                        <span
-                          style={{
-                            display: "inline-block",
-                            width: "6px",
-                            height: "6px",
-                            borderRadius: "50%",
-                            background: card.confColor,
-                            flexShrink: 0,
-                          }}
-                        />
-                        <span
-                          style={{
-                            fontSize: "10px",
+                            fontSize: "14px",
                             fontWeight: 500,
-                            color: card.confColor,
-                            fontFamily: "Inter, sans-serif",
+                            color: "#1a1a1a",
+                            lineHeight: 1.3,
                           }}
                         >
-                          {card.confidence}
-                        </span>
+                          {card.title}
+                        </p>
+                        <p
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "16px",
+                            fontWeight: 300,
+                            color: "#1a1a1a",
+                            lineHeight: 1.55,
+                            flex: 1,
+                          }}
+                        >
+                          {card.desc}
+                        </p>
+                        <div className="flex items-center gap-[5px]">
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "6px",
+                              height: "6px",
+                              borderRadius: "50%",
+                              background: card.confColor,
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: "12px",
+                              fontWeight: 500,
+                              color: card.confColor,
+                              fontFamily: "Inter, sans-serif",
+                            }}
+                          >
+                            {card.confidence}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Bridge */}
@@ -990,7 +978,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {/* ══════════════════════════════════════════
               SECTION 3 — DEFINE
           ══════════════════════════════════════════ */}
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-5">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Define")}
             </div>
@@ -1074,9 +1062,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   >
                     <span
                       style={{
-                        fontSize: "10px",
-                        fontWeight: 500,
-                        color: "#9aaf7a",
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        color: "#2d4a1e",
                         textTransform: "uppercase",
                         letterSpacing: "0.08em",
                         fontFamily: "Inter, sans-serif",
@@ -1086,9 +1074,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                     </span>
                     <span
                       style={{
-                        fontSize: "14px",
-                        fontWeight: 300,
-                        color: "#1a1a1a",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        color: "#2d4a1e",
                         fontFamily: "Inter, sans-serif",
                       }}
                     >
@@ -1150,7 +1138,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {/* ══════════════════════════════════════════
               SECTION 4 — DEVELOP
           ══════════════════════════════════════════ */}
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-5">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Develop")}
             </div>
@@ -1536,8 +1524,9 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       className="lb-trigger"
                       style={{
                         width: "100%",
-                        height: "280px",
-                        objectFit: "cover",
+                        height: "340px",
+                        objectFit: "contain",
+                        background: "#f5f5f5",
                         display: "block",
                         cursor: "zoom-in",
                       }}
@@ -1607,172 +1596,203 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               0.25,
             )}
 
-            {/* Lo-fi vs Hi-fi fade — inline */}
+            {/* Lo-fi vs Hi-fi — static side-by-side */}
             <div className="cs-reveal flex flex-col gap-3" style={reveal(0.3)}>
-              <p
+              <h2
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "10px",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "#9aaf7a",
-                }}
-              >
-                From wireframe to final design
-              </p>
-              <h3
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "22px",
                   fontWeight: 500,
                   color: "#1a1a1a",
+                  lineHeight: 1.3,
                 }}
               >
-                Hover to see where it started
-              </h3>
-              <p
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "14px",
-                  fontWeight: 300,
-                  color: "#1a1a1a",
-                  lineHeight: 1.6,
-                }}
-              >
-                The hi-fi screens above are the result of the full process —
-                from lo-fi sketch to final pixel art.
-              </p>
+                From wireframe
+                <br />
+                to final design
+              </h2>
+
+              {/* Row 1 — Home Screen */}
               <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  gap: "16px",
+                  gap: "14px",
                 }}
               >
                 {[
                   {
-                    label: "Home Screen",
-                    hifi: "/assets/Fishdoro-SS/HiFi-Home.png",
-                    lofi: "/assets/Fishdoro-SS/LoFi-Home.png",
+                    labelType: "Before",
+                    stateText: "Lo-fi wireframe",
+                    src: "/assets/Fishdoro-SS/LoFi-Home.png",
+                    alt: "Home screen — lo-fi wireframe",
                   },
                   {
-                    label: "Focus Timer",
-                    hifi: "/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png",
-                    lofi: "/assets/Fishdoro-SS/LoFi-Pomodoro-Session.png",
+                    labelType: "After",
+                    stateText: "Final design",
+                    src: "/assets/Fishdoro-SS/HiFi-Home.png",
+                    alt: "Home screen — final design",
                   },
-                ].map((pair, i) => (
+                ].map((card) => (
                   <div
-                    key={i}
+                    key={card.src}
                     style={{
-                      position: "relative",
-                      aspectRatio: "416 / 592",
-                      borderRadius: "12px",
+                      borderRadius: "10px",
                       overflow: "hidden",
                       border: "0.5px solid rgba(154,175,122,0.3)",
-                      cursor: "zoom-in",
                     }}
-                    onMouseEnter={() => setLhHovered(i)}
-                    onMouseLeave={() => setLhHovered(null)}
-                    onClick={() =>
-                      setLightbox({
-                        src: lhHovered === i ? pair.lofi : pair.hifi,
-                        alt: `${pair.label} — ${lhHovered === i ? "lo-fi wireframe" : "final design"}`,
-                      })
-                    }
                   >
-                    {/* Hi-fi (bottom layer) */}
-                    <img
-                      src={pair.hifi}
-                      alt={`${pair.label} — final design`}
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        display: "block",
-                      }}
-                    />
-                    {/* Lo-fi (top layer, fades out on hover) */}
-                    <img
-                      src={pair.lofi}
-                      alt={`${pair.label} — lo-fi wireframe`}
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        display: "block",
-                        opacity: lhHovered === i ? 0 : 1,
-                        transition: "opacity 0.4s ease",
-                      }}
-                    />
-                    {/* Top label */}
                     <div
                       style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        background:
-                          "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 100%)",
-                        padding: "10px 14px",
                         display: "flex",
                         justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        background: "#fafafa",
+                        borderBottom: "0.5px solid rgba(154,175,122,0.2)",
                       }}
                     >
                       <span
                         style={{
-                          fontFamily: "Inter, sans-serif",
                           fontSize: "12px",
-                          fontWeight: 500,
-                          color: "#fff",
+                          fontWeight: 600,
+                          color: "#2d4a1e",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          fontFamily: "Inter, sans-serif",
                         }}
                       >
-                        {pair.label}
+                        {card.labelType}
                       </span>
                       <span
                         style={{
-                          fontFamily: "Inter, sans-serif",
                           fontSize: "12px",
                           fontWeight: 300,
-                          color: "rgba(255,255,255,0.8)",
+                          color: "#9aaf7a",
+                          fontFamily: "Inter, sans-serif",
                         }}
                       >
-                        {lhHovered === i ? "Lo-fi wireframe" : "Final design"}
+                        {card.stateText}
                       </span>
                     </div>
-                    {/* Bottom hint */}
-                    {lhHovered !== i && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          background:
-                            "linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 100%)",
-                          padding: "10px 14px",
-                          textAlign: "center",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontFamily: "Inter, sans-serif",
-                            fontSize: "10px",
-                            fontWeight: 300,
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Hover to reveal wireframe
-                        </span>
-                      </div>
-                    )}
+                    <img
+                      src={card.src}
+                      alt={card.alt}
+                      className="lb-trigger"
+                      style={{
+                        width: "100%",
+                        height: "320px",
+                        objectFit: "contain",
+                        background: "#f5f5f5",
+                        display: "block",
+                        cursor: "zoom-in",
+                      }}
+                      onClick={() =>
+                        setLightbox({ src: card.src, alt: card.alt })
+                      }
+                    />
                   </div>
                 ))}
               </div>
+
+              {/* Row 2 — Focus Timer */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "14px",
+                  marginTop: "2px",
+                }}
+              >
+                {[
+                  {
+                    labelType: "Before",
+                    stateText: "Lo-fi wireframe",
+                    src: "/assets/Fishdoro-SS/LoFi-Pomodoro-Session.png",
+                    alt: "Focus timer — lo-fi wireframe",
+                  },
+                  {
+                    labelType: "After",
+                    stateText: "Final design",
+                    src: "/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png",
+                    alt: "Focus timer — final design",
+                  },
+                ].map((card) => (
+                  <div
+                    key={card.src}
+                    style={{
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      border: "0.5px solid rgba(154,175,122,0.3)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        background: "#fafafa",
+                        borderBottom: "0.5px solid rgba(154,175,122,0.2)",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          color: "#2d4a1e",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {card.labelType}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: 300,
+                          color: "#9aaf7a",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {card.stateText}
+                      </span>
+                    </div>
+                    <img
+                      src={card.src}
+                      alt={card.alt}
+                      className="lb-trigger"
+                      style={{
+                        width: "100%",
+                        height: "320px",
+                        objectFit: "contain",
+                        background: "#f5f5f5",
+                        display: "block",
+                        cursor: "zoom-in",
+                      }}
+                      onClick={() =>
+                        setLightbox({ src: card.src, alt: card.alt })
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "13px",
+                  fontWeight: 300,
+                  color: "#9aaf7a",
+                  textAlign: "center",
+                  marginTop: "6px",
+                  fontStyle: "italic",
+                }}
+              >
+                Compare the lo-fi wireframe with the final design — click any
+                image to zoom.
+              </p>
             </div>
           </section>
 
@@ -1781,7 +1801,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {/* ══════════════════════════════════════════
               SECTION 5 — VALIDATION
           ══════════════════════════════════════════ */}
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-5">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Validation")}
             </div>
@@ -1804,7 +1824,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {/* ══════════════════════════════════════════
               SECTION 6 — KEY TAKEAWAYS (accordion)
           ══════════════════════════════════════════ */}
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-5">
             <div className="cs-reveal" style={reveal(0)}>
               {sectionPill("Key Takeaways")}
             </div>
@@ -1822,19 +1842,26 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                   >
                     <button
                       onClick={() => setOpenTakeaway(isOpen ? null : i)}
+                      onMouseEnter={() => setHoveredTakeaway(i)}
+                      onMouseLeave={() => setHoveredTakeaway(null)}
                       style={{
                         width: "100%",
                         display: "flex",
                         alignItems: "center",
                         gap: "12px",
                         padding: "16px 18px",
-                        background: isOpen ? "#fafafa" : "#ffffff",
+                        background: isOpen
+                          ? "#fafafa"
+                          : hoveredTakeaway === i
+                            ? "#f5f8f0"
+                            : "#ffffff",
                         border: "none",
                         borderBottom: isOpen
                           ? "0.5px solid rgba(154,175,122,0.2)"
                           : "none",
                         cursor: "pointer",
                         textAlign: "left",
+                        transition: "background 0.15s ease",
                       }}
                     >
                       <span
@@ -1854,10 +1881,14 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                         style={{
                           fontSize: "16px",
                           fontWeight: 500,
-                          color: "#1a1a1a",
+                          color:
+                            hoveredTakeaway === i && !isOpen
+                              ? "#4e7a30"
+                              : "#1a1a1a",
                           flex: 1,
                           lineHeight: 1.4,
                           fontFamily: "Inter, sans-serif",
+                          transition: "color 0.15s ease",
                         }}
                       >
                         {item.title}
@@ -1865,11 +1896,15 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       <span
                         style={{
                           fontSize: "14px",
-                          color: "#9aaf7a",
+                          color: hoveredTakeaway === i ? "#4e7a30" : "#9aaf7a",
                           flexShrink: 0,
                           display: "inline-block",
-                          transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                          transition: "transform 0.2s ease",
+                          transform: isOpen
+                            ? "rotate(180deg)"
+                            : hoveredTakeaway === i
+                              ? "translateY(2px)"
+                              : "rotate(0deg)",
+                          transition: "transform 0.2s ease, color 0.15s ease",
                           fontFamily: "Inter, sans-serif",
                         }}
                       >
@@ -1907,7 +1942,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
           {/* ══════════════════════════════════════════
               SECTION 7 — SIGNING OFF
           ══════════════════════════════════════════ */}
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-5">
             {body(
               "The question that started Fishdoro was simple: can a boring timer become something you actually want to open?",
               0,

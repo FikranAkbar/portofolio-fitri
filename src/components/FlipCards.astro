@@ -86,15 +86,15 @@
 
 <style>
   .fc-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 12px;
     margin-bottom: 20px;
   }
 
   .fc-card {
     height: auto;
-    min-height: 220px;
+    min-height: 120px;
     perspective: 1000px;
     cursor: pointer;
     outline: none;
@@ -107,7 +107,7 @@
 
   .fc-inner {
     width: 100%;
-    min-height: 220px;
+    min-height: 120px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.5s ease;
@@ -116,6 +116,15 @@
 
   .fc-card.flipped .fc-inner {
     transform: rotateY(180deg);
+  }
+
+  .fc-card:hover .fc-inner {
+    box-shadow: 0 4px 20px rgba(107, 143, 78, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .fc-card.flipped:hover .fc-inner {
+    transform: rotateY(180deg) translateY(-2px);
   }
 
   .fc-front,
@@ -128,6 +137,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: box-shadow 0.2s ease;
   }
 
   .fc-front {
@@ -142,7 +152,7 @@
   }
 
   .fc-quote {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
     font-style: italic;
     color: #5a7040;
@@ -166,7 +176,7 @@
   }
 
   .fc-insight {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
     color: #5a7040;
     line-height: 1.5;
@@ -182,15 +192,14 @@
 
   @media (max-width: 480px) {
     .fc-grid {
-      grid-template-columns: 1fr;
       gap: 10px;
     }
     .fc-card {
       height: auto;
-      min-height: 140px;
+      min-height: 120px;
     }
     .fc-inner {
-      min-height: 140px;
+      min-height: 120px;
     }
   }
 </style>
