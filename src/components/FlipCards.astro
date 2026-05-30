@@ -94,7 +94,7 @@
 
   .fc-card {
     height: auto;
-    min-height: 120px;
+    min-height: 0;
     perspective: 1000px;
     cursor: pointer;
     outline: none;
@@ -129,15 +129,11 @@
 
   .fc-front,
   .fc-back {
+    background: #f5f8f0;
+    border: 0.5px solid rgba(107, 143, 78, 0.4);
+    transform: rotateY(180deg);
     position: absolute;
     inset: 0;
-    backface-visibility: hidden;
-    border-radius: 10px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: box-shadow 0.2s ease;
   }
 
   .fc-front {
@@ -152,10 +148,10 @@
   }
 
   .fc-quote {
-    font-size: 16px;
-    font-weight: 300;
+    font-size: 17px;
+    font-weight: 500;
     font-style: italic;
-    color: #5a7040;
+    color: #1a1a1a;
     line-height: 1.6;
     flex: 1;
   }
@@ -163,23 +159,23 @@
   .fc-hint {
     font-size: 12px;
     font-weight: 400;
-    color: #b0c890;
+    color: #9aaf7a;
     letter-spacing: 0.06em;
-    margin-top: 8px;
   }
 
   .fc-label {
-    font-size: 14px;
-    font-weight: 500;
-    color: #2d4a1e;
-    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #4e7a30;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
   .fc-insight {
     font-size: 16px;
-    font-weight: 300;
-    color: #5a7040;
-    line-height: 1.5;
+    font-weight: 400;
+    color: #1a1a1a;
+    line-height: 1.6;
     flex: 1;
   }
 

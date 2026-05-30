@@ -1,129 +1,334 @@
 ---
-// LofiHifiFade.astro — static side-by-side: Before (lo-fi) on left, After (hi-fi) on right
+// LofiHifiFade.astro — Before left (hover reveals hi-fi) / After right (static)
 ---
 
 <section class="lh-section">
-  <div class="lh-grid">
-    <div class="lh-card">
-      <div class="lh-label-bar">
-        <span class="lh-before-label">Before</span>
-        <span class="lh-state-text">Lo-fi wireframe</span>
-      </div>
-      <img
-        class="lb-trigger lh-img"
-        src="/assets/Fishdoro-SS/LoFi-Home.png"
-        alt="Home screen — lo-fi wireframe"
-      />
-    </div>
-    <div class="lh-card">
-      <div class="lh-label-bar">
-        <span class="lh-after-label">After</span>
-        <span class="lh-state-text">Final design</span>
-      </div>
-      <img
-        class="lb-trigger lh-img"
-        src="/assets/Fishdoro-SS/HiFi-Home.png"
-        alt="Home screen — final design"
-      />
-    </div>
-  </div>
 
-  <div class="lh-grid" style="margin-top: 16px;">
-    <div class="lh-card">
-      <div class="lh-label-bar">
-        <span class="lh-before-label">Before</span>
-        <span class="lh-state-text">Lo-fi wireframe</span>
-      </div>
-      <img
-        class="lb-trigger lh-img"
-        src="/assets/Fishdoro-SS/LoFi-Pomodoro-Session.png"
-        alt="Focus timer — lo-fi wireframe"
-      />
-    </div>
-    <div class="lh-card">
-      <div class="lh-label-bar">
-        <span class="lh-after-label">After</span>
-        <span class="lh-state-text">Final design</span>
-      </div>
-      <img
-        class="lb-trigger lh-img"
-        src="/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png"
-        alt="Focus timer — final design"
-      />
-    </div>
-  </div>
-
-  <p class="lh-hint-text">
-    Compare the lo-fi wireframe with the final design — click any image to zoom.
+  <p class="lh-eyebrow">From wireframe to final design</p>
+  <h3 class="lh-title">
+    From lo-fi<br>to final design
+  </h3>
+  <p class="lh-subtitle">
+    Hover the <strong>Before</strong> card to see how each screen evolved
+    from wireframe to final pixel art.
   </p>
+
+  <!-- Pair 1: Home Screen -->
+  <div class="lh-pair">
+
+    <!-- LEFT: Before (lo-fi default, hi-fi on hover) -->
+    <div class="lh-card lh-card-before">
+      <!-- Hi-fi underneath -->
+      <div class="lh-hifi-layer">
+        <img
+          src="/assets/Fishdoro-SS/HiFi-Home.png"
+          alt="Home screen — final design"
+        />
+      </div>
+      <!-- Lo-fi on top, fades out on hover -->
+      <div class="lh-lofi-layer">
+        <img
+          src="/assets/Fishdoro-SS/LoFi-Home.png"
+          alt="Home screen — lo-fi wireframe"
+        />
+      </div>
+      <!-- Top label bar -->
+      <div class="lh-label-bar">
+        <span class="lh-side-tag lh-before-tag">BEFORE</span>
+        <span class="lh-state-wrap">
+          <span class="lh-state lh-state-lofi-txt">Lo-fi wireframe</span>
+          <span class="lh-state lh-state-hifi-txt">Final design</span>
+        </span>
+      </div>
+      <!-- Bottom hint -->
+      <div class="lh-hint-bar">
+        <span class="lh-hint-text lh-hint-desktop">Hover to reveal final design</span>
+        <span class="lh-hint-text lh-hint-mobile">Tap to reveal final design</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: After (hi-fi always, static) -->
+    <div class="lh-card lh-card-after">
+      <div class="lh-static-layer">
+        <img
+          class="lb-trigger"
+          src="/assets/Fishdoro-SS/HiFi-Home.png"
+          alt="Home screen — final design"
+        />
+      </div>
+      <div class="lh-label-bar">
+        <span class="lh-side-tag lh-after-tag">AFTER</span>
+        <span class="lh-state lh-state-static">Final design</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Pair 2: Focus Timer -->
+  <div class="lh-pair">
+
+    <!-- LEFT: Before -->
+    <div class="lh-card lh-card-before">
+      <div class="lh-hifi-layer">
+        <img
+          src="/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png"
+          alt="Focus timer — final design"
+        />
+      </div>
+      <div class="lh-lofi-layer">
+        <img
+          src="/assets/Fishdoro-SS/LoFi-Pomodoro-Session.png"
+          alt="Focus timer — lo-fi wireframe"
+        />
+      </div>
+      <div class="lh-label-bar">
+        <span class="lh-side-tag lh-before-tag">BEFORE</span>
+        <span class="lh-state-wrap">
+          <span class="lh-state lh-state-lofi-txt">Lo-fi wireframe</span>
+          <span class="lh-state lh-state-hifi-txt">Final design</span>
+        </span>
+      </div>
+      <div class="lh-hint-bar">
+        <span class="lh-hint-text lh-hint-desktop">Hover to reveal final design</span>
+        <span class="lh-hint-text lh-hint-mobile">Tap to reveal final design</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: After -->
+    <div class="lh-card lh-card-after">
+      <div class="lh-static-layer">
+        <img
+          class="lb-trigger"
+          src="/assets/Fishdoro-SS/HiFi-Pomodoro-Session.png"
+          alt="Focus timer — final design"
+        />
+      </div>
+      <div class="lh-label-bar">
+        <span class="lh-side-tag lh-after-tag">AFTER</span>
+        <span class="lh-state lh-state-static">Final design</span>
+      </div>
+    </div>
+
+  </div>
+
 </section>
 
 <style>
-  .lh-section {
-    margin-bottom: 28px;
+  .lh-section { margin-bottom: 28px; }
+
+  /* Header */
+  .lh-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    color: #9aaf7a;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .lh-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .lh-subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: #5a7040;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .lh-subtitle strong {
+    font-weight: 600;
+    color: #2d4a1e;
   }
 
-  .lh-grid {
+  /* Pair layout */
+  .lh-pair {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
+    margin-bottom: 16px;
   }
+  .lh-pair:last-child { margin-bottom: 0; }
 
+  /* Card base */
   .lh-card {
-    border-radius: 10px;
+    position: relative;
+    border-radius: 12px;
     overflow: hidden;
     border: 0.5px solid rgba(154, 175, 122, 0.3);
-    position: relative;
+    height: 340px;
   }
 
-  .lh-label-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    background: #fafafa;
-    border-bottom: 0.5px solid rgba(154, 175, 122, 0.2);
-  }
+  /* BEFORE card */
+  .lh-card-before { cursor: crosshair; }
 
-  .lh-before-label,
-  .lh-after-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #2d4a1e;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  .lh-hifi-layer {
+    position: absolute;
+    inset: 0;
   }
-
-  .lh-state-text {
-    font-size: 12px;
-    font-weight: 300;
-    color: #9aaf7a;
-  }
-
-  .lh-img {
+  .lh-hifi-layer img {
     width: 100%;
-    height: 320px;
+    height: 100%;
+    object-fit: contain;
+    background: #f5f5f5;
+    display: block;
+  }
+
+  .lh-lofi-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    transition: opacity 0.45s ease;
+    z-index: 1;
+  }
+  .lh-lofi-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #f9f9f9;
+    display: block;
+  }
+
+  /* Hover/tap: lo-fi fades → hi-fi revealed */
+  .lh-card-before:hover .lh-lofi-layer,
+  .lh-card-before.tapped .lh-lofi-layer {
+    opacity: 0;
+  }
+
+  /* AFTER card */
+  .lh-card-after { cursor: default; }
+  .lh-static-layer {
+    position: absolute;
+    inset: 0;
+  }
+  .lh-static-layer img {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     background: #f5f5f5;
     display: block;
     cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .lh-static-layer img:hover {
+    transform: scale(1.02);
   }
 
-  .lh-hint-text {
-    font-size: 13px;
+  /* Label bar */
+  .lh-label-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .lh-side-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+  .lh-before-tag {
+    background: rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.9);
+  }
+  .lh-after-tag {
+    background: rgba(107,143,78,0.5);
+    color: #ffffff;
+  }
+
+  /* State text */
+  .lh-state-wrap {
+    position: relative;
+    min-width: 110px;
+    min-height: 18px;
+    display: inline-block;
+  }
+  .lh-state {
+    font-size: 12px;
     font-weight: 300;
-    color: #9aaf7a;
+    color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+  }
+  .lh-state-lofi-txt,
+  .lh-state-hifi-txt {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity 0.35s ease;
+  }
+  .lh-state-hifi-txt { opacity: 0; }
+
+  .lh-card-before:hover .lh-state-lofi-txt,
+  .lh-card-before.tapped .lh-state-lofi-txt { opacity: 0; }
+  .lh-card-before:hover .lh-state-hifi-txt,
+  .lh-card-before.tapped .lh-state-hifi-txt { opacity: 1; }
+
+  .lh-state-static { display: block; text-align: right; }
+
+  /* Bottom hint */
+  .lh-hint-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 100%);
+    padding: 10px 14px;
     text-align: center;
-    margin-top: 10px;
+    z-index: 3;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .lh-hint-bar.hidden { opacity: 0; }
+  .lh-hint-text {
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
     font-style: italic;
   }
+  .lh-hint-mobile { display: none; }
+  @media (hover: none) {
+    .lh-hint-desktop { display: none; }
+    .lh-hint-mobile  { display: inline; }
+  }
 
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .lh-card  { height: 260px; }
+    .lh-pair  { gap: 12px; }
+    .lh-title { font-size: 20px; }
+  }
   @media (max-width: 480px) {
-    .lh-grid {
-      grid-template-columns: 1fr;
-    }
-    .lh-img {
-      height: 220px;
-    }
+    .lh-pair     { grid-template-columns: 1fr; }
+    .lh-card     { height: 220px; }
+    .lh-subtitle { font-size: 13px; }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.lh-card-before').forEach(card => {
+    let interacted = false;
+    const hintBar = card.querySelector<HTMLElement>('.lh-hint-bar');
+
+    function hideHint() {
+      if (!interacted && hintBar) {
+        interacted = true;
+        hintBar.classList.add('hidden');
+      }
+    }
+
+    card.addEventListener('mouseenter', hideHint);
+    card.addEventListener('click', () => {
+      card.classList.toggle('tapped');
+      hideHint();
+    });
+  });
+</script>

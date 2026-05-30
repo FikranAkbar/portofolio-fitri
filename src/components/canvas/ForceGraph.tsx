@@ -564,7 +564,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 lineHeight: 1.2,
               }}
             >
-              Fishdoro
+              Designing a Gamified Pomodoro Timer: Can Focus Feel Like Play?
             </h1>
 
             {/* Subtitle */}
@@ -577,8 +577,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 lineHeight: 1.6,
               }}
             >
-              A cozy Pomodoro timer disguised as a fishing game. Complete a
-              focus session. Catch a fish. That’s it.
+              A personal exploration of gamification, emotional rewards, and what makes people actually stick with a productivity tool.
             </p>
 
             {/* Hero image */}
@@ -1417,27 +1416,17 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               ))}
             </div>
 
-            {/* 4d: Hi-fi screens */}
-            <h2
-              className="cs-reveal"
+            <div
+              className="hifi-section-bg"
               style={{
-                ...reveal(0),
-                fontFamily: "Inter, sans-serif",
-                fontSize: "22px",
-                fontWeight: 500,
-                color: "#1a1a1a",
-                lineHeight: 1.3,
-                marginTop: "8px",
+                background: "#f5f0e8",
+                margin: "40px -24px",
+                padding: "40px 24px",
+                borderTop: "0.5px solid rgba(154,175,122,0.2)",
+                borderBottom: "0.5px solid rgba(154,175,122,0.2)"
               }}
             >
-              Hi-fi screens
-            </h2>
-            {body(
-              "Once the structure was solid, I layered in all the visual elements — pixel art, animations, and the core cast → wait → catch loop.",
-              0.05,
-            )}
-
-            {/* 4d: Hi-fi screens — 2-col grid (Fix 8+9) */}
+{/* 4d: Hi-fi screens — 1-col grid (Fix 5) */}
             <h2
               className="cs-reveal"
               style={{
@@ -1462,9 +1451,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
               className="cs-reveal"
               style={{
                 ...reveal(0.1),
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
+                display: "flex", flexDirection: "column", gap: "20px",
               }}
             >
               {[
@@ -1523,12 +1510,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       alt={s.alt}
                       className="lb-trigger"
                       style={{
-                        width: "100%",
-                        height: "340px",
-                        objectFit: "contain",
-                        background: "#f5f5f5",
-                        display: "block",
-                        cursor: "zoom-in",
+                        width: "100%", maxHeight: "500px", objectFit: "contain", background: "#f5f5f5", border: "0.5px solid rgba(154, 175, 122, 0.3)", borderRadius: "12px", display: "block", cursor: "zoom-in", transition: "transform 0.2s ease, box-shadow 0.2s ease",
                       }}
                       onClick={() => setLightbox({ src: s.src, alt: s.alt })}
                     />
@@ -1548,6 +1530,8 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                 </div>
               ))}
             </div>
+
+                        </div>
 
             {/* 4e: What's built so far */}
             <h2
@@ -1680,12 +1664,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       alt={card.alt}
                       className="lb-trigger"
                       style={{
-                        width: "100%",
-                        height: "320px",
-                        objectFit: "contain",
-                        background: "#f5f5f5",
-                        display: "block",
-                        cursor: "zoom-in",
+                        width: "100%", maxHeight: "500px", objectFit: "contain", background: "#f5f5f5", border: "0.5px solid rgba(154, 175, 122, 0.3)", borderRadius: "12px", display: "block", cursor: "zoom-in", transition: "transform 0.2s ease, box-shadow 0.2s ease",
                       }}
                       onClick={() =>
                         setLightbox({ src: card.src, alt: card.alt })
@@ -1764,12 +1743,7 @@ function FishdoroCaseStudy({ onBack: _onBack }: { onBack: () => void }) {
                       alt={card.alt}
                       className="lb-trigger"
                       style={{
-                        width: "100%",
-                        height: "320px",
-                        objectFit: "contain",
-                        background: "#f5f5f5",
-                        display: "block",
-                        cursor: "zoom-in",
+                        width: "100%", maxHeight: "500px", objectFit: "contain", background: "#f5f5f5", border: "0.5px solid rgba(154, 175, 122, 0.3)", borderRadius: "12px", display: "block", cursor: "zoom-in", transition: "transform 0.2s ease, box-shadow 0.2s ease",
                       }}
                       onClick={() =>
                         setLightbox({ src: card.src, alt: card.alt })
